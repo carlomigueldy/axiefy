@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <app-main-container>
         <v-row>
             <v-col class="text-center">
                 Dashboard
@@ -31,7 +31,7 @@
                 </v-card>
             </v-col>
         </v-row>
-    </v-container>
+    </app-main-container>
 </template>
 
 
