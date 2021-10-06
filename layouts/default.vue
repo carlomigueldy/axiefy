@@ -6,8 +6,12 @@
       fixed
       app
     >
-      <v-sheet color="transparent" class="px-3 py-1" width="100%">
-        Hello World
+      <v-sheet
+        color="transparent"
+        class="pa-5 d-flex justify-center"
+        width="100%"
+      >
+        <div class="title">App Name</div>
       </v-sheet>
 
       <v-list>
@@ -36,8 +40,10 @@
           <v-img src="supabase-logo.jpg"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>Carlo Miguel Dy</v-list-item-title>
-          <v-list-item-subtitle>carlomigueldy@gmail.com</v-list-item-subtitle>
+          <v-list-item-title>
+            {{ userFullName }}
+          </v-list-item-title>
+          <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-navigation-drawer>
@@ -59,8 +65,24 @@ export default {
     title: "Vuetify.js"
   }),
 
+  created() {
+    this.$store.dispatch("fetchUser");
+  },
+
+  computed: {
+    userFullName() {
+      return this.$store.state?.user?.name ?? "Unknown";
+    },
+
+    userEmail() {
+      return this.$auth.user?.email;
+    }
+  },
+
   methods: {
-    onClickUser() {}
+    onClickUser() {
+      console.log("onClickUser");
+    }
   }
 };
 </script>

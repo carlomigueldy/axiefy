@@ -6,6 +6,7 @@
       <v-col>
         <v-sheet width="250" color="transparent">
           <v-text-field
+            prepend-inner-icon="mdi-magnify"
             v-model="search"
             placeholder="Search"
             outlined

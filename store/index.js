@@ -20,7 +20,7 @@ export const actions = {
     const response = await this.$supabase
       .from("users")
       .select()
-      .eq("id", payload?.user?.id)
+      .eq("id", this.$auth.user?.id)
       .single();
 
     if (response) {
