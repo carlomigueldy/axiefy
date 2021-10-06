@@ -55,8 +55,16 @@ export default {
       const response = await this.$supabase.auth.signIn(this.form);
       console.log("onSubmit", response);
 
-      this.$store.commit("setUser", response?.data?.user);
-      console.log("this.$store.state?.user", this.$store.state?.user);
+      const userResponse = await this.$supabase
+        .from("users")
+        .select()
+        .eq("id", response.user.id)
+        .single();
+
+      if (userResponse) {
+        this.$store.commit("setUser", userResponse.data);
+        console.log("this.$store.state.user", this.$store.state?.user);
+      }
     }
   }
 };
