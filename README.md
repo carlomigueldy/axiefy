@@ -27,6 +27,46 @@ Run dev server
 npm run dev
 ```
 
+## Contributing
+
+Be in `main` branch
+
+```bash
+$ git checkout main
+```
+
+Branch out from `main` by the following command
+
+```bash
+$ git checkout -b <your-branch-name> # git checkout -b feature/some-cool-feature
+```
+
+Then push upstream the latest branch
+
+```bash
+$ git push -u origin <your-branch-name> # git push -u origin feature/some-cool-feature
+```
+
+You can then stage all your changes
+
+```bash
+$ git add .
+```
+
+And push them to the branch you created
+
+```bash
+$ git push
+```
+
+And finally, create a Pull Request from the repository.
+
+Switch back to `main` branch or any branch you desire.
+
+```bash
+$ git checkout main # git checkout <branch-name>
+```
+
 ## Build Setup
 
 ```bash
