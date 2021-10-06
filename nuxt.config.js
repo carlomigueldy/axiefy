@@ -109,12 +109,12 @@ export default {
     strategies: {
       local: {
         token: {
-          property: "token",
+          property: "access_token",
           global: true,
           type: "Bearer"
         },
         user: {
-          property: "data"
+          property: false
         },
         endpoints: {
           tokenType: "Bearer",
@@ -122,7 +122,6 @@ export default {
           login: {
             url: `${process.env.SUPABASE_URL}/auth/v1/token?grant_type=password`,
             method: "post",
-            propertyName: "access_token",
             headers: {
               "Content-Type": "application/json",
               apiKey: process.env.SUPABASE_KEY,
@@ -144,7 +143,8 @@ export default {
             headers: {
               apiKey: process.env.SUPABASE_KEY,
               Authorization: `Bearer ${process.env.SUPABASE_KEY}`
-            }
+            },
+            propertyName: false
           },
           logout: {
             url: `${process.env.SUPABASE_URL}/auth/v1/logout`,
