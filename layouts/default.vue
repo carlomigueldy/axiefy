@@ -60,7 +60,12 @@ export default {
         icon: "mdi-apps",
         title: "Scholars",
         to: "/scholars"
-      }
+      },
+      {
+        icon: "mdi-apps",
+        title: "Settings",
+        to: "/settings"
+      },
     ],
     title: "Vuetify.js"
   }),

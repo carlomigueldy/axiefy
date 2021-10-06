@@ -7,9 +7,9 @@
       app
     >
       <v-app-bar-nav-icon @click.stop="$store.commit('toggleDrawer')" />
-      <v-app-bar-title>
+      <div class="px-5 title">
         <slot name="title" />
-      </v-app-bar-title>
+      </div>
       <v-spacer></v-spacer>
       <div>
         <slot name="action" />
