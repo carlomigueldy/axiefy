@@ -52,54 +52,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-  export default {
-    data() {
-      return {
-        clipped: false,
-        drawer: true,
-        fixed: false,
-        items: [
-          {
-            icon: 'mdi-view-dashboard',
-            title: 'Dashboard',
-            to: '/dashboard'
-          },
-          {
-            icon: "mdi-apps",
-            title: "Scholars",
-            to: "/scholars"
-          },
-          {
-            icon: 'mdi-apps',
-            title: 'Welcome',
-            to: '/'
-          },
-          {
-            icon: 'mdi-chart-bubble',
-            title: 'Inspire',
-            to: '/inspire'
-          },
-          {
-            icon: 'mdi-login',
-            title: 'Login',
-            to: '/login'
-          },
-          {
-            icon: 'mdi-plus',
-            title: 'Register',
-            to: '/register'
-          },
-        ],
-        miniVariant: false,
-        right: true,
-        rightDrawer: false,
-        title: 'Vuetify.js'
-      }
-  },
-}
-</script>
-=======
 export default {
   data: () => ({
     drawer: true,
@@ -139,4 +91,3 @@ export default {
   }
 };
 </script>
->>>>>>> 7f0c715ffd3fcfdc3da2849267546cc6dfab33d0
