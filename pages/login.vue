@@ -22,7 +22,7 @@
             <v-spacer></v-spacer>
             <v-btn type="submit" color="primary" large>Submit</v-btn>
             <v-btn @click="fetchUser" large>Fetch User</v-btn>
-            <v-btn @cilck="logout()" large>Logout</v-btn>
+            <v-btn @click="signOut()" large>Logout</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -90,10 +90,10 @@ export default {
 
       console.log("fetchUser", response);
     },
-    async logout() {
+    async signOut() {
       console.log("logout called");
 
-      const response = await this.$auth.logout({ strategy: "local" });
+      const response = await this.$auth.logout();
 
       console.log("logout", response);
     }

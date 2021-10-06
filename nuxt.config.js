@@ -153,6 +153,10 @@ export default {
               "Content-Type": "application/json",
               apiKey: process.env.SUPABASE_KEY,
               Authorization: `Bearer ${process.env.SUPABASE_KEY}`
+              // Authorization: [
+              //   "Bearer",
+              //   localStorage.getItem("auth._token.local")
+              // ].join(" ")
             }
           }
         }
