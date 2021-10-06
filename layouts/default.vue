@@ -46,58 +46,49 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-view-dashboard',
-          title: 'Dashboard',
-          to: '/dashboard'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        },
-        {
-          icon: 'mdi-login',
-          title: 'Login',
-          to: '/login'
-        },
-        {
-          icon: 'mdi-plus',
-          title: 'Register',
-          to: '/register'
-        },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    }
-  data: () => ({
-    drawer: true,
-    items: [
-      {
-        icon: "mdi-apps",
-        title: "Scholars",
-        to: "/scholars"
+  export default {
+    data() {
+      return {
+        clipped: false,
+        drawer: true,
+        fixed: false,
+        items: [
+          {
+            icon: 'mdi-view-dashboard',
+            title: 'Dashboard',
+            to: '/dashboard'
+          },
+          {
+            icon: "mdi-apps",
+            title: "Scholars",
+            to: "/scholars"
+          },
+          {
+            icon: 'mdi-apps',
+            title: 'Welcome',
+            to: '/'
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: 'Inspire',
+            to: '/inspire'
+          },
+          {
+            icon: 'mdi-login',
+            title: 'Login',
+            to: '/login'
+          },
+          {
+            icon: 'mdi-plus',
+            title: 'Register',
+            to: '/register'
+          },
+        ],
+        miniVariant: false,
+        right: true,
+        rightDrawer: false,
+        title: 'Vuetify.js'
       }
-    ],
-    title: "Vuetify.js"
-  }),
-
-  methods: {
-    onClickUser() {}
-  }
-};
+  },
+}
 </script>
