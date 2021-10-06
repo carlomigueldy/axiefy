@@ -32,8 +32,8 @@
 export default {
   data: () => ({
     form: {
-      email: "",
-      password: ""
+      email: "carlomigueldy@gmail.com",
+      password: "password"
     }
   }),
 
@@ -52,9 +52,11 @@ export default {
     async onSubmit() {
       if (!this.$refs.form.validate) return console.log("Form invalid");
 
-      const response = await this.$supabase.auth.signUp(this.form);
-
+      const response = await this.$supabase.auth.signIn(this.form);
       console.log("onSubmit", response);
+
+      this.$store.commit("setUser", response?.data?.user);
+      console.log("this.$store.state?.user", this.$store.state?.user);
     }
   }
 };

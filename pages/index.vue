@@ -6,16 +6,23 @@
         <VuetifyLogo />
       </v-card>
       <v-card>
-        <v-card-title class="headline">Welcome to the Vuetify + Nuxt.js template</v-card-title>
+        <v-card-title class="headline"
+          >Welcome to the Vuetify + Nuxt.js template</v-card-title
+        >
         <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
+          <p>
+            Vuetify is a progressive Material Design component framework for
+            Vue.js. It was designed to empower developers to create amazing
+            applications.
+          </p>
           <p>
             For more information on Vuetify, check out the
             <a
               href="https://vuetifyjs.com"
               target="_blank"
               rel="noopener noreferrer"
-            >documentation</a>.
+              >documentation</a
+            >.
           </p>
           <p>
             If you have questions, please join the official
@@ -24,7 +31,8 @@
               target="_blank"
               rel="noopener noreferrer"
               title="chat"
-            >discord</a>.
+              >discord</a
+            >.
           </p>
           <p>
             Find a bug? Report it on the github
@@ -33,22 +41,32 @@
               target="_blank"
               rel="noopener noreferrer"
               title="contribute"
-            >issue board</a>.
+              >issue board</a
+            >.
           </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
+          <p>
+            Thank you for developing with Vuetify and I look forward to bringing
+            more exciting features in the future.
+          </p>
           <div class="text-xs-right">
             <em>
               <small>&mdash; John Leider</small>
             </em>
           </div>
           <hr class="my-3" />
-          <a href="https://nuxtjs.org/" target="_blank" rel="noopener noreferrer">Nuxt Documentation</a>
+          <a
+            href="https://nuxtjs.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Nuxt Documentation</a
+          >
           <br />
           <a
             href="https://github.com/nuxt/nuxt.js"
             target="_blank"
             rel="noopener noreferrer"
-          >Nuxt GitHub</a>
+            >Nuxt GitHub</a
+          >
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -62,9 +80,11 @@
 <script>
 export default {
   async created() {
-    const users = await this.$supabase.from('users').select()
+    const users = await this.$supabase.from("users").select();
 
-    console.log({ users })
+    const authUser = this.$supabase.auth.user();
+
+    console.log({ users, authUser });
   }
-}
+};
 </script>
