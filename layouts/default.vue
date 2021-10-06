@@ -59,6 +59,11 @@ export default {
       fixed: false,
       items: [
         {
+          icon: 'mdi-view-dashboard',
+          title: 'Dashboard',
+          to: '/dashboard'
+        },
+        {
           icon: 'mdi-apps',
           title: 'Welcome',
           to: '/'
