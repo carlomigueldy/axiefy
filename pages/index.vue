@@ -7,8 +7,8 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn depressed to="/auth/register">
-        Get Started
+      <v-btn depressed to="/auth/login">
+        Sign In
       </v-btn>
     </app-nav-bar>
 

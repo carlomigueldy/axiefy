@@ -15,17 +15,24 @@ export const mutations = {
 
 export const actions = {
   async fetchUser({ state, commit }, payload) {
-    console.log("fetchUser", payload);
+    this.$log.info("fetchUser", payload);
 
-    const response = await this.$supabase
-      .from("users")
-      .select()
-      .eq("id", this.$auth.user?.id)
-      .single();
+    try {
+      const response = await this.$supabase
+        .from("users")
+        .select()
+        .eq("id", this.$auth.user?.id)
+        .single();
 
-    if (response) {
-      commit("setUser", response.data);
-      console.log("state?.user", state?.user);
+      if (response) {
+        commit("setUser", response.data);
+        this.$log.info("state?.user", state?.user);
+      }
+
+      return response;
+    } catch (error) {
+      this.$log.error(error);
+      return null;
     }
   }
 };

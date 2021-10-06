@@ -22,6 +22,13 @@
           <v-card-subtitle>Manage your scholars</v-card-subtitle>
           <v-card-text class="mt-16">
             <v-text-field
+              label="Name"
+              type="email"
+              v-model="form.name"
+              outlined
+              dense
+            ></v-text-field>
+            <v-text-field
               label="Email"
               type="email"
               v-model="form.email"
@@ -69,6 +76,7 @@ export default {
   data: () => ({
     loading$: false,
     form: {
+      name: "",
       email: "",
       password: ""
     }
@@ -92,15 +100,35 @@ export default {
       if (!this.$refs.form.validate) return this.$log.info("Form invalid");
 
       try {
-        const response = await this.$supabase.auth.signUp(this.form);
+        const { email, password, name } = this.form;
+        const response = await this.$supabase.auth.signUp({
+          email,
+          password
+        });
+        this.$log.info("onSubmit", response);
         await this.$auth.setUserToken(
           response.data.access_token,
           response.data.refresh_token
         );
         await this.$auth.fetchUser();
+        const fetchUserResponse = await this.$store.dispatch(
+          "fetchUser",
+          response.data
+        );
+
+        const updateUserResponse = await this.$supabase
+          .from("users")
+          .update({
+            name
+          })
+          .eq("id", fetchUserResponse.data?.id);
+        this.$log.info("updateUserResponse", updateUserResponse);
+
         await this.$store.dispatch("fetchUser", response.data);
-        this.$router.replace("/");
-        this.$log.info("onSubmit", response);
+
+        // this.$router.replace("/dashboard");
+
+        // this.$auth.init();
       } catch (error) {
         this.$log.error(error);
       } finally {

@@ -104,7 +104,7 @@ export default {
     items: [
       {
         icon: "mdi-apps",
-        title: "Scholars",
+        title: "Dashboard",
         to: "/dashboard"
       },
       {
