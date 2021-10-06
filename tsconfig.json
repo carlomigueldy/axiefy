@@ -28,7 +28,8 @@
       "@nuxtjs/axios",
       "@types/node",
       "nuxt-supabase",
-      "@nuxtjs/auth-next"
+      "@nuxtjs/auth-next",
+      "@nuxtjs/moment"
     ]
   },
   "exclude": [
