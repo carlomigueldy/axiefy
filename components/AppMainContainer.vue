@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar
+    <app-nav-bar
       style="backdrop-filter: blur(12px); background: transparent"
       :elevate-on-scroll="true"
       fixed
@@ -14,7 +14,7 @@
       <div>
         <slot name="action" />
       </div>
-    </v-app-bar>
+    </app-nav-bar>
     <v-main>
       <v-container>
         <slot />

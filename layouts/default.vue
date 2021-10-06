@@ -77,8 +77,16 @@
         <v-card-text>Are you sure you want to logout?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="dialog.logoutConfirmation = false" text>Cancel</v-btn>
-          <v-btn color="error" depressed @click="logout">Confirm</v-btn>
+          <v-btn
+            :disabled="loggingOut$"
+            @click="dialog.logoutConfirmation = false"
+            text
+          >
+            Cancel
+          </v-btn>
+          <v-btn color="error" :loading="loggingOut$" depressed @click="logout">
+            Confirm
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -89,10 +97,16 @@
 export default {
   data: () => ({
     drawer: true,
+    loggingOut$: false,
     dialog: {
       logoutConfirmation: false
     },
     items: [
+      {
+        icon: "mdi-apps",
+        title: "Scholars",
+        to: "/dashboard"
+      },
       {
         icon: "mdi-apps",
         title: "Scholars",
@@ -107,7 +121,7 @@ export default {
         icon: "mdi-apps",
         title: "About",
         to: "/about"
-      },
+      }
     ],
     appName: "App Name"
   }),
