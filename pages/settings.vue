@@ -5,10 +5,9 @@
     <v-row>
       <v-col>
         <v-card outlined>
-          <v-card-title>Profile</v-card-title>
+          <v-card-title>Account</v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <!-- TODO: Refactor -->
             <v-sheet
               @click="null"
               rounded
@@ -17,7 +16,7 @@
               height="200"
             >
               <v-img
-                src="https://upload.wikimedia.org/wikipedia/commons/5/5a/John_Doe%2C_born_John_Nommensen_Duchac.jpg"
+                src="supabase-logo.jpg"
                 lazy-src="supabase-logo.jpg"
                 class="rounded"
                 width="200"
@@ -37,6 +36,14 @@
                 </template>
               </v-img>
             </v-sheet>
+
+            <v-sheet height="25" color="transparent"></v-sheet>
+
+            <v-sheet width="325" class="my-5" color="transparent">
+              <v-text-field label="Name" outlined dense></v-text-field>
+
+              <v-text-field label="Email" outlined dense></v-text-field>
+            </v-sheet>
           </v-card-text>
         </v-card>
       </v-col>
@@ -47,10 +54,16 @@
         <v-card outlined>
           <v-card-title>Danger Zone</v-card-title>
           <v-divider></v-divider>
-          <v-card-text>Delete your account forever</v-card-text>
+          <v-card-text>
+            <div class="subtitle-1">Delete your account forever</div>
+            <v-sheet height="25" color="transparent"></v-sheet>
+            <v-btn depressed large color="error">Delete Account</v-btn>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
+
+    <v-sheet height="100" color="transparent"></v-sheet>
   </app-main-container>
 </template>
 
