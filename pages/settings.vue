@@ -1,9 +1,24 @@
 <template>
   <app-main-container>
     <template v-slot:title>{{ title }}</template>
+    <template v-slot:action>
+      <v-btn depressed>Feedback</v-btn>
+    </template>
 
     <v-row>
       <v-col>
+        <v-alert border="left" color="deep-purple accent-4" dark>
+          <div class="text-h6">Donate</div>
+          <p>Donations are welcome</p>
+          <v-btn
+            href="https://www.buymeacoffee.com/carlomigueldy"
+            depressed
+            target="_blank"
+          >
+            Buy me a Coffee
+          </v-btn>
+        </v-alert>
+
         <v-card outlined>
           <v-card-title>Account</v-card-title>
           <v-divider></v-divider>

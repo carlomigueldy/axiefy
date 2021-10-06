@@ -102,7 +102,12 @@ export default {
         icon: "mdi-apps",
         title: "Settings",
         to: "/settings"
-      }
+      },
+      {
+        icon: "mdi-apps",
+        title: "About",
+        to: "/about"
+      },
     ],
     appName: "App Name"
   }),
