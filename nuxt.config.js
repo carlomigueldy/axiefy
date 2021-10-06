@@ -100,6 +100,12 @@ export default {
   },
 
   auth: {
+    redirect: {
+      login: "/login",
+      logout: "/",
+      callback: "/login",
+      home: "/"
+    },
     strategies: {
       local: {
         token: {
@@ -111,9 +117,12 @@ export default {
           property: "data"
         },
         endpoints: {
+          tokenType: "Bearer",
+          autoFetchUser: true,
           login: {
             url: `${process.env.SUPABASE_URL}/auth/v1/token?grant_type=password`,
             method: "post",
+            propertyName: "access_token",
             headers: {
               "Content-Type": "application/json",
               apiKey: process.env.SUPABASE_KEY,
