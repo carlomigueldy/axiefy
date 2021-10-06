@@ -1,9 +1,37 @@
 <template>
-    <v-row>
-        <v-col class="text-center">
-            Dashboard
-        </v-col>
-    </v-row>
+    <v-container>
+        <v-row>
+            <v-col class="text-center">
+                Dashboard
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col
+                cols="12"
+                md="2"
+                sm="2"
+            >
+                <v-card>
+                    <v-card-text>
+                        <v-row
+                            align="center"
+                        >
+                            <v-col>
+                                <v-img
+                                    src="https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057"
+                                    max-height="40"
+                                    max-width="40"
+                                ></v-img>
+                            </v-col>
+                            <v-col>
+                                {{ slp }} SLP
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 
@@ -12,7 +40,7 @@
     export default{
         data() {
             return {
-
+                slp: 0
             }
         },
         created() {
@@ -27,7 +55,7 @@
                         'x-rapidapi-key': 'b5e6783431msh5dfe6faf063f956p16dfadjsnab843e1e67cd'
                     }
                 }).then((response) => {
-                    console.log(response.data.axies.results)
+                    console.log("Axies",response.data.axies.results)
                 })
             },
             async getUserInfo() {
@@ -37,7 +65,8 @@
                         'x-rapidapi-key': 'b5e6783431msh5dfe6faf063f956p16dfadjsnab843e1e67cd'
                     }
                 }).then((response) => {
-                    console.log(response)
+                    console.log("SLP",response)
+                    this.slp = response.slp.total
                 })
             }
         }
