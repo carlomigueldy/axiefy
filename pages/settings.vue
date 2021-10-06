@@ -8,13 +8,7 @@
           <v-card-title>Account</v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <v-sheet
-              @click="null"
-              rounded
-              color="transparent"
-              width="200"
-              height="200"
-            >
+            <v-sheet rounded color="transparent" width="200" height="200">
               <v-img
                 src="supabase-logo.jpg"
                 lazy-src="supabase-logo.jpg"
@@ -51,6 +45,18 @@
 
     <v-row>
       <v-col>
+        <v-card id="billing" ref="billing" outlined>
+          <v-card-title>Billing</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <div class="subtitle-1">Coming soon</div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
         <v-card outlined>
           <v-card-title>Danger Zone</v-card-title>
           <v-divider></v-divider>
@@ -63,7 +69,7 @@
       </v-col>
     </v-row>
 
-    <v-sheet height="100" color="transparent"></v-sheet>
+    <v-sheet height="300" color="transparent"></v-sheet>
   </app-main-container>
 </template>
 
@@ -73,6 +79,14 @@ const TITLE = "Settings";
 export default {
   head: {
     title: TITLE
+  },
+
+  mounted() {
+    const { selector } = this.$route.query;
+
+    if (selector) {
+      this.$vuetify.goTo(this.$refs[selector]);
+    }
   },
 
   computed: {

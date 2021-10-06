@@ -1,3 +1,8 @@
+:root {
+  --rgba-amber-darken-3: rgba(255, 143, 0, 0.4);
+  --rgba-blue-darken-2: rgba(25, 118, 210, 0.4);
+}
+
 html,
 body {
   background-color: black;

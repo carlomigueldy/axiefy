@@ -40,22 +40,35 @@
         </v-list-item>
       </v-list>
 
-      <v-list-item
-        @click="onClickUser"
-        class="px-3 py-1"
-        style="position: absolute; bottom: 0; left: 0; right: 0"
-      >
-        <v-list-item-avatar>
-          <v-img src="supabase-logo.jpg"></v-img>
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ userFullName }}
-          </v-list-item-title>
-          <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+      <div style="position: absolute; bottom: 0; left: 0; right: 0">
+        <div class="d-flex justify-center py-3">
+          <v-btn
+            depressed
+            color="secondary"
+            class="rounded-lg"
+            style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
+            @click="
+              $router.push({ name: 'settings', query: { selector: 'billing' } })
+            "
+          >
+            Get Premium
+          </v-btn>
+        </div>
+
+        <v-list-item @click="onClickUser" class="px-3 py-1">
+          <v-list-item-avatar>
+            <v-img src="supabase-logo.jpg"></v-img>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ userFullName }}
+            </v-list-item-title>
+            <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </div>
     </v-navigation-drawer>
+
     <Nuxt />
 
     <v-dialog v-model="dialog.logoutConfirmation" width="500">
