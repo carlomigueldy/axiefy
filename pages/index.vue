@@ -80,11 +80,18 @@
 <script>
 export default {
   async created() {
-    const users = await this.$supabase.from("users").select();
+    await this.$auth.fetchUser();
 
-    const authUser = this.$supabase.auth.user();
+    if (this.$auth.loggedIn) {
+      const users = await this.$supabase.from("users").select();
 
-    console.log({ users, authUser });
+      const authUser = this.$supabase.auth.user();
+
+      console.log('this.$supabase.from("users").select()', { users, authUser });
+      return;
+    }
+
+    // this.$router.replace("/login");
   }
 };
 </script>

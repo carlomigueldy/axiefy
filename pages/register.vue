@@ -3,7 +3,7 @@
     <v-col>
       <v-form ref="form" @submit.prevent="onSubmit">
         <v-card class="pa-5">
-          <v-card-title>Login</v-card-title>
+          <v-card-title>Register</v-card-title>
           <v-card-text>
             <v-text-field
               label="Email"
@@ -21,8 +21,6 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn type="submit" color="primary" large>Submit</v-btn>
-            <v-btn @click="fetchUser" large>Fetch User</v-btn>
-            <v-btn @click="signOut()" large>Logout</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -34,8 +32,8 @@
 export default {
   data: () => ({
     form: {
-      email: "carlomigueldy@gmail.com",
-      password: "password"
+      email: "",
+      password: ""
     }
   }),
 
@@ -54,25 +52,15 @@ export default {
     async onSubmit() {
       if (!this.$refs.form.validate) return console.log("Form invalid");
 
-      const response = await this.$auth.login({ data: this.form });
+      const response = await this.$supabase.auth.signUp(this.form);
+      await this.$auth.setUserToken(
+        response.data.access_token,
+        response.data.refresh_token
+      );
+      await this.$auth.fetchUser();
+      await this.$store.dispatch("fetchUser", response.data);
+      this.$router.replace("/");
       console.log("onSubmit", response);
-
-      console.log("this.$auth.user", this.$auth.user);
-      console.log("this.$auth.loggedIn", this.$auth.loggedIn);
-
-      this.$store.dispatch("fetchUser", response.data);
-    },
-    async fetchUser() {
-      const response = await this.$auth.fetchUser();
-
-      console.log("fetchUser", response);
-    },
-    async signOut() {
-      console.log("logout called");
-
-      const response = await this.$auth.logout();
-
-      console.log("logout", response);
     }
   }
 };

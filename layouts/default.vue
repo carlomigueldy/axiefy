@@ -73,6 +73,11 @@ export default {
           title: 'Login',
           to: '/login'
         },
+        {
+          icon: 'mdi-plus',
+          title: 'Register',
+          to: '/register'
+        },
       ],
       miniVariant: false,
       right: true,
