@@ -52,13 +52,14 @@ export default {
     async onSubmit() {
       if (!this.$refs.form.validate) return console.log("Form invalid");
 
-      const response = await this.$supabase.auth.signIn(this.form);
+      // const response = await this.$supabase.auth.signIn(this.form);
+      const response = await this.$auth.loginWith("local", { data: this.form });
       console.log("onSubmit", response);
 
       const userResponse = await this.$supabase
         .from("users")
         .select()
-        .eq("id", response.user.id)
+        .eq("id", response.data?.user?.id)
         .single();
 
       if (userResponse) {

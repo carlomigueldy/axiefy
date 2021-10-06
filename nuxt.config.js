@@ -41,6 +41,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    "@nuxtjs/auth-next",
     [
       "nuxt-supabase",
       {
@@ -94,6 +95,58 @@ export default {
       Raleway: {
         wght: [100, 400],
         ital: [100]
+      }
+    }
+  },
+
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          property: "token",
+          global: true,
+          type: "Bearer"
+        },
+        user: {
+          property: "data"
+        },
+        endpoints: {
+          login: {
+            url: `${process.env.SUPABASE_URL}/auth/v1/token?grant_type=password`,
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              apiKey: process.env.SUPABASE_KEY,
+              Authorization: `Bearer ${process.env.SUPABASE_KEY}`
+            }
+          },
+          register: {
+            url: `${process.env.SUPABASE_URL}/auth/v1/signup`,
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              apiKey: process.env.SUPABASE_KEY,
+              Authorization: `Bearer ${process.env.SUPABASE_KEY}`
+            }
+          },
+          user: {
+            url: `${process.env.SUPABASE_URL}/auth/v1/user`,
+            method: "get",
+            headers: {
+              apiKey: process.env.SUPABASE_KEY,
+              Authorization: `Bearer ${process.env.SUPABASE_KEY}`
+            }
+          },
+          logout: {
+            url: `${process.env.SUPABASE_URL}/auth/v1/logout`,
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              apiKey: process.env.SUPABASE_KEY,
+              Authorization: `Bearer ${process.env.SUPABASE_KEY}`
+            }
+          }
+        }
       }
     }
   },
