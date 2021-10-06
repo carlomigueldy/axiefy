@@ -47,7 +47,6 @@
 
 <script>
 export default {
-<<<<<<< HEAD
   data() {
     return {
       clipped: false,
@@ -85,7 +84,6 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
-=======
   data: () => ({
     drawer: true,
     items: [
@@ -100,7 +98,6 @@ export default {
 
   methods: {
     onClickUser() {}
->>>>>>> 705416a6b630fd328e83288ea958628b3dbbaf4b
   }
 };
 </script>
