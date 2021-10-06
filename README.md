@@ -1,5 +1,32 @@
 # supaaxie
 
+## Setup Development Environment
+
+Copy `.env.example` file
+
+```bash
+$ cp .env.example .env
+```
+
+Open file `.env` and put key and secret
+
+```
+SUPABASE_KEY=<SUPABASE_KEY>
+SUPABASE_URL=<SUPABASE_URL>
+```
+
+Install dependencies
+
+```bash
+npm i
+```
+
+Run dev server
+
+```bash
+npm run dev
+```
+
 ## Build Setup
 
 ```bash
