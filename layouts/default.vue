@@ -6,6 +6,10 @@
       fixed
       app
     >
+      <v-sheet color="transparent" class="px-3 py-1" width="100%">
+        Hello World
+      </v-sheet>
+
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -22,6 +26,20 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <v-list-item
+        @click="onClickUser"
+        class="px-3 py-1"
+        style="position: absolute; bottom: 0; left: 0; right: 0"
+      >
+        <v-list-item-avatar>
+          <v-img src="supabase-logo.jpg"></v-img>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title>Carlo Miguel Dy</v-list-item-title>
+          <v-list-item-subtitle>carlomigueldy@gmail.com</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
     </v-navigation-drawer>
     <Nuxt />
   </v-app>
@@ -34,26 +52,15 @@ export default {
     items: [
       {
         icon: "mdi-apps",
-        title: "Welcome",
-        to: "/"
-      },
-      {
-        icon: "mdi-apps",
         title: "Scholars",
         to: "/scholars"
-      },
-      {
-        icon: "mdi-login",
-        title: "Login",
-        to: "/auth/login"
-      },
-      {
-        icon: "mdi-plus",
-        title: "Register",
-        to: "/auth/register"
       }
     ],
     title: "Vuetify.js"
-  })
+  }),
+
+  methods: {
+    onClickUser() {}
+  }
 };
 </script>
