@@ -31,6 +31,8 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    // https://google-fonts.nuxtjs.org/
+    "@nuxtjs/google-fonts",
     // https://go.nuxtjs.dev/typescript
     "@nuxt/typescript-build",
     // https://go.nuxtjs.dev/vuetify
@@ -78,6 +80,20 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
         }
+      }
+    }
+  },
+
+  googleFonts: {
+    prefetch: true,
+    families: {
+      "DM Sans": true,
+      Roboto: true,
+      "Josefin+Sans": true,
+      Lato: [100, 300],
+      Raleway: {
+        wght: [100, 400],
+        ital: [100]
       }
     }
   },
