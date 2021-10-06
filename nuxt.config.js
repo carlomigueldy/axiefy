@@ -9,7 +9,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "%s - supaaxie",
+    titleTemplate: "supaaxie | %s",
     title: "supaaxie",
     meta: [
       { charset: "utf-8" },
@@ -41,6 +41,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    "nuxt-logger",
     "@nuxtjs/auth-next",
     [
       "nuxt-supabase",
@@ -97,6 +98,10 @@ export default {
         ital: [100]
       }
     }
+  },
+
+  router: {
+    middleware: ["auth"]
   },
 
   auth: {
