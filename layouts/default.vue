@@ -48,7 +48,7 @@
             class="rounded-lg"
             style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
             @click="
-              $router.push({ name: 'settings', query: { selector: 'billing' } })
+              $router.push({ name: 'settings', query: { section: 'billing' } })
             "
           >
             Get Premium

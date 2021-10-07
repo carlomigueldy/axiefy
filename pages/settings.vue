@@ -97,10 +97,10 @@ export default {
   },
 
   mounted() {
-    const { selector } = this.$route.query;
+    const { section } = this.$route.query;
 
-    if (selector) {
-      this.$vuetify.goTo(this.$refs[selector]);
+    if (section) {
+      this.$vuetify.goTo(this.$refs[section]);
     }
   },
 
