@@ -33,7 +33,13 @@
     </v-row>
 
     <template v-slot:action>
-      <v-btn color="primary" depressed>Invite Scholar</v-btn>
+      <v-btn
+        color="primary"
+        style="box-shadow: 0 0 20px var(--rgba-blue-darken-2);"
+        depressed
+      >
+        Invite Scholar
+      </v-btn>
     </template>
   </app-main-container>
 </template>
