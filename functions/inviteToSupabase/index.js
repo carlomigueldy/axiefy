@@ -17,8 +17,15 @@ exports.handler = async function(event, context) {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
-  const response = await supabase.auth.api.inviteUserByEmail(email);
-  console.log(response);
+  const { error } = await supabase.auth.api.inviteUserByEmail(email);
+
+  if (error) {
+    return {
+      code: 422,
+      error,
+      message: error.message
+    };
+  }
 
   return {
     code: 200,
