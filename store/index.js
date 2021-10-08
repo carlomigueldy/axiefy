@@ -8,8 +8,8 @@ export const mutations = {
     state.user = payload;
   },
 
-  toggleDrawer: (state, _) => {
-    state.drawer = !state.drawer;
+  toggleDrawer: (state, payload) => {
+    state.drawer = payload ?? !state.drawer;
   }
 };
 

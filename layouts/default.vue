@@ -3,6 +3,7 @@
     <v-navigation-drawer
       color="grey darken-4"
       :value="$store.state.drawer"
+      @input="onChangeDrawer"
       fixed
       app
     >
@@ -47,9 +48,7 @@
             color="secondary"
             class="rounded-lg"
             style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
-            @click="
-              $router.push({ name: 'settings', query: { section: 'billing' } })
-            "
+            @click="toBillingSection"
           >
             Get Premium
           </v-btn>
@@ -150,6 +149,15 @@ export default {
 
     logout() {
       this.$auth.logout();
+    },
+
+    toBillingSection() {
+      this.$router.push({ name: "settings", query: { section: "billing" } });
+    },
+
+    onChangeDrawer(event) {
+      console.log(event);
+      this.$store.commit("toggleDrawer", event);
     }
   }
 };
