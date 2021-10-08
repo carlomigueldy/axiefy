@@ -6,11 +6,7 @@
         <v-card min-height="70">
           <v-card-title>
             <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                src="https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057"
-                max-height="35"
-                max-width="35"
-              ></v-img>
+              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
               <div class="headline-1 mx-3">
                 {{ slp.total }}
               </div>
@@ -25,11 +21,7 @@
         <v-card min-height="70">
           <v-card-title>
             <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                src="https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057"
-                max-height="35"
-                max-width="35"
-              ></v-img>
+              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
               <div class="headline-1 mx-3">
                 {{ slp.inGameSLP }}
               </div>
@@ -44,11 +36,7 @@
         <v-card min-height="70">
           <v-card-title>
             <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                src="https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057"
-                max-height="35"
-                max-width="35"
-              ></v-img>
+              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
               <div class="headline-1 mx-3">
                 {{ slp.roninSLP }}
               </div>
@@ -63,11 +51,7 @@
         <v-card min-height="70">
           <v-card-title>
             <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                src="https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057"
-                max-height="35"
-                max-width="35"
-              ></v-img>
+              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
               <div class="headline-1 mx-3">
                 {{ slp.dailySLP }}
               </div>
@@ -84,17 +68,17 @@
             <v-row class="pt-5 px-5" align="center" justify="center">
               <v-img
                 class="rounded-circle"
-                src="https://chimeratribune.com/wp-content/uploads/2020/11/axieareanaswords.png"
+                :src="slpImg"
                 max-height="35"
                 max-width="35"
               ></v-img>
               <div class="headline-1 mx-3">
-                {{ rank }}
+                {{ slp.farmedToday }}
               </div>
             </v-row>
           </v-card-title>
           <v-row justify="center">
-            <v-card-title>Current Rank</v-card-title>
+            <v-card-title>Farmed Today</v-card-title>
           </v-row>
         </v-card>
       </v-col>
@@ -104,7 +88,7 @@
             <v-row class="pt-5 px-5" align="center" justify="center">
               <v-img
                 class="rounded-circle"
-                src="https://chimeratribune.com/wp-content/uploads/2020/11/axieareanaswords.png"
+                :src="arenaImg"
                 max-height="35"
                 max-width="35"
               ></v-img>
@@ -138,6 +122,8 @@
 
 <script>
 import axios from "axios";
+import { AXIE_RAPID_API_BASE_URL } from "../../constants/index.js";
+import { AXIE_GAME_API_BASE_URL } from "../../constants/index.js";
 
 export default {
   data() {
@@ -155,22 +141,30 @@ export default {
       axies: []
     };
   },
+  computed: {
+    slpImg() {
+      return this.$store.state.assets.slp;
+    },
+    arenaImg() {
+      return this.$store.state.assets.arena;
+    }
+  },
   async created() {
-    await this.getUserAxies();
-    await this.getUserInfo();
-    // await this.getSLPToday()
-    this.getDailySLP();
+    await Promise.all([
+      await this.getUserAxies(),
+      await this.getUserInfo(),
+      this.getDailySLP()
+    ]);
   },
   methods: {
     async getUserAxies() {
       try {
         const response = await this.$axios.$get(
-          "https://axie-infinity.p.rapidapi.com/get-axies/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3",
+          `${AXIE_RAPID_API_BASE_URL}/get-axies/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3`,
           {
             headers: {
               "x-rapidapi-host": "axie-infinity.p.rapidapi.com",
-              "x-rapidapi-key":
-                "b5e6783431msh5dfe6faf063f956p16dfadjsnab843e1e67cd"
+              "x-rapidapi-key": this.$config.AXIE_RAPID_API_KEY
             }
           }
         );
@@ -182,10 +176,23 @@ export default {
     },
     async getUserInfo() {
       const response = await axios.get(
-        "https://game-api.axie.technology/api/v1/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3",
+        `${AXIE_GAME_API_BASE_URL}/api/v1/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3`,
         { accept: "application/json" }
       );
+
+      const response2 = await axios.get(
+        `${AXIE_RAPID_API_BASE_URL}/get-update/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3`,
+        {
+          headers: {
+            "x-rapidapi-host": "axie-infinity.p.rapidapi.com",
+            "x-rapidapi-key": this.$config.AXIE_RAPID_API_KEY
+          }
+        }
+      );
+
       console.log("NEW API", response);
+      console.log("RESPONSE 2", response2);
+
       this.slp.total = response.data.total_slp;
       this.slp.inGameSLP = response.data.in_game_slp;
       this.slp.roninSLP = response.data.ronin_slp;
@@ -193,14 +200,7 @@ export default {
       this.mmr = response.data.mmr;
       this.rank = response.data.rank;
 
-      // const response2 = await axios.get(
-      //   "https://axie-infinity.p.rapidapi.com/get-update/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3", {
-      //     headers: {
-      //       'x-rapidapi-host': 'axie-infinity.p.rapidapi.com',
-      //       'x-rapidapi-key': 'b5e6783431msh5dfe6faf063f956p16dfadjsnab843e1e67cd'
-      //     }
-      //   });
-      //   console.log("RESPONSE 2",response2)
+      this.slp.farmedToday = response2.data.slp.todaySoFar;
     },
     getDailySLP() {
       //  Date received from API
