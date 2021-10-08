@@ -14,7 +14,7 @@
           ></v-text-field>
         </v-sheet>
 
-        <v-card min-height="585" outlined>
+        <v-card outlined>
           <v-data-table
             :search="search"
             :headers="headers"
@@ -37,16 +37,55 @@
         color="primary"
         style="box-shadow: 0 0 20px var(--rgba-blue-darken-2);"
         depressed
+        @click="onClickInviteScholar"
       >
         Invite Scholar
       </v-btn>
     </template>
+
+    <v-dialog v-model="dialog.inviteScholar" width="500">
+      <app-dialog-card>
+        <v-card-title>Invite Scholar</v-card-title>
+        <v-card-text>
+          <p>
+            Inviting a scholar will send them a confirmation link in their
+            email.
+          </p>
+          <v-text-field
+            v-model="inviteScholarEmail"
+            class="mt-10"
+            outlined
+            label="Email"
+            dense
+          ></v-text-field>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <div>
+              <v-btn @click="dialog.inviteScholar = false" text>Cancel</v-btn>
+              <v-btn
+                @click="inviteScholar"
+                :loading="inviteScholarLoading$"
+                depressed
+                color="primary"
+              >
+                Invite
+              </v-btn>
+            </div>
+          </v-card-actions>
+        </v-card-text>
+      </app-dialog-card>
+    </v-dialog>
   </app-main-container>
 </template>
 
 <script>
 export default {
   data: () => ({
+    inviteScholarEmail: "",
+    inviteScholarLoading$: false,
+    dialog: {
+      inviteScholar: false
+    },
     search: "",
     headers: [
       {
@@ -77,40 +116,31 @@ export default {
       {
         id: 3,
         email: "carlo3@gmail.com"
-      },
-      {
-        id: 4,
-        email: "carlo4@gmail.com"
-      },
-      {
-        id: 5,
-        email: "carlo4@gmail.com"
-      },
-      {
-        id: 6,
-        email: "carlo6@gmail.com"
-      },
-      {
-        id: 7,
-        email: "carlo7@gmail.com"
-      },
-      {
-        id: 8,
-        email: "carlo8@gmail.com"
-      },
-      {
-        id: 9,
-        email: "carlo9@gmail.com"
-      },
-      {
-        id: 10,
-        email: "carlo10@gmail.com"
-      },
-      {
-        id: 11,
-        email: "carlo11@gmail.com"
       }
     ]
-  })
+  }),
+
+  methods: {
+    onClickInviteScholar() {
+      this.dialog.inviteScholar = true;
+    },
+
+    /** @todo move logic in a serverless function */
+    async inviteScholar() {
+      this.inviteScholarLoading$ = true;
+      try {
+        const response = await this.$supabase.auth.api.inviteUserByEmail({
+          email: this.inviteScholarEmail
+        });
+        this.$log.info(response);
+        this.inviteScholarEmail = "";
+      } catch (error) {
+        this.$log.error(error);
+      } finally {
+        this.dialog.inviteScholar = false;
+        this.inviteScholarLoading$ = false;
+      }
+    }
+  }
 };
 </script>
