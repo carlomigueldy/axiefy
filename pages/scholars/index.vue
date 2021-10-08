@@ -131,7 +131,7 @@ export default {
     async inviteScholar() {
       this.inviteScholarLoading$ = true;
       try {
-        const response = await axios.post(
+        const { data } = await axios.post(
           `${this.$config.AWS_API_BASE_URL}/inviteToSupabase`,
           {
             email: this.inviteScholarEmail
@@ -142,6 +142,13 @@ export default {
             }
           }
         );
+
+        if (data.code != 200) {
+          console.error("Error", data);
+          this.$log.error(data);
+          return;
+        }
+
         this.$log.info(response);
         this.inviteScholarEmail = "";
       } catch (error) {

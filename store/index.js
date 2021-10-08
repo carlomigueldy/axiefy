@@ -15,16 +15,19 @@ export const state = () => ({
   drawer: true,
   oauthProviders: [
     {
+      provider: "github",
       title: "GitHub",
       subtitle: "Create an account via GitHub",
       logo: github
     },
     {
+      provider: "discord",
       title: "Discord",
       subtitle: "Create an account via Discord",
       logo: discord
     },
     {
+      provider: "google",
       title: "Google",
       subtitle: "Create an account via Google",
       logo: google
