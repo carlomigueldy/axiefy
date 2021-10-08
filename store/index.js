@@ -1,6 +1,12 @@
 export const state = () => ({
   user: null,
-  drawer: true
+  drawer: true,
+  assets: {
+    slp:
+      "https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057",
+    arena:
+      "https://chimeratribune.com/wp-content/uploads/2020/11/axieareanaswords.png"
+  }
 });
 
 export const mutations = {

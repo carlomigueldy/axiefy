@@ -86,7 +86,9 @@ export default {
       }
     }
   },
-
+  publicRuntimeConfig: {
+    AXIE_RAPID_API_KEY: process.env.AXIE_RAPID_API_KEY
+  },
   googleFonts: {
     prefetch: true,
     families: {
