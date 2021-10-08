@@ -196,15 +196,17 @@ CREATE OR REPLACE FUNCTION public.assign_role(user_id uuid, role VARCHAR)
 RETURNS void AS 
 $$
 BEGIN 
-  IF current_user = 'supabase_admin' THEN
-    INSERT INTO user_role (user_id, role_id) VALUES ($1::uuid, (SELECT id FROM roles WHERE name = $2 LIMIT 1)::uuid);
+  IF current_user::VARCHAR = 'supabase_admin' THEN
+    INSERT INTO user_role (user_id, role_id) VALUES ($1::UUID, (SELECT id FROM roles WHERE name = $2 LIMIT 1)::UUID);
+
+    RETURN;
   END IF;
 
   IF NOT public.has_role('super_admin') THEN 
       RAISE EXCEPTION 'Not authorized to perform this action';
   END IF;
 
-  INSERT INTO user_role (user_id, role_id) VALUES ($1::uuid, (SELECT id FROM roles WHERE name = $2 LIMIT 1)::uuid);
+  INSERT INTO user_role (user_id, role_id) VALUES ($1::UUID, (SELECT id FROM roles WHERE name = $2 LIMIT 1)::UUID);
 
   RETURN;
 END
