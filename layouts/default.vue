@@ -28,13 +28,13 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action> -->
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title v-text="item.title" class="subtitle-1" />
           </v-list-item-content>
         </v-list-item>
 
         <v-list-item @click="dialog.logoutConfirmation = true" dense>
           <v-list-item-content>
-            <v-list-item-title>
+            <v-list-item-title class="subtitle-1">
               Logout
             </v-list-item-title>
           </v-list-item-content>
