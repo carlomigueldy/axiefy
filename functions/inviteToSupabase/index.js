@@ -9,8 +9,6 @@ exports.handler = async function(event, context) {
       code: 400,
       message:
         "The `email` field is required and must be a valid email address.",
-      event,
-      context
     };
   }
 
