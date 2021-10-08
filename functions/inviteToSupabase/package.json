@@ -4,7 +4,7 @@
   "description": "",
   "main": "inviteToSupabase.js",
   "scripts": {
-    "deploy": "aws lambda update-function-code --function-name inviteToSupabase --zip-file fileb://.zip",
+    "deploy": "zip -r .zip . && aws lambda update-function-code --function-name inviteToSupabase --zip-file fileb://.zip",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
