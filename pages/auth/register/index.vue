@@ -21,61 +21,6 @@
 </template>
 
 <script>
-const authMethods = [
-  {
-    title: "Magic Link",
-    subtitle: "Create an account via Magic Link",
-    icon: "mdi-auto-fix",
-    route: "magic-link"
-  },
-  {
-    title: "Email & Password",
-    subtitle: "Create an account with Email and Password",
-    icon: "mdi-email",
-    route: "email-and-password"
-  },
-  {
-    provider: "github",
-    title: "GitHub",
-    subtitle: "Create an account via GitHub",
-    logo: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
-  },
-  {
-    provider: "discord",
-    title: "Discord",
-    subtitle: "Create an account via Discord",
-    logo:
-      "https://www.freepnglogos.com/uploads/discord-logo-png/discord-logo-logodownload-download-logotipos-1.png"
-  },
-  {
-    provider: "google",
-    title: "Google",
-    subtitle: "Create an account via Google",
-    logo:
-      "https://www.freepnglogos.com/uploads/google-logo-png/google-logo-icon-png-transparent-background-osteopathy-16.png"
-  },
-  {
-    provider: "facebook",
-    title: "Facebook",
-    subtitle: "Create an account via Facebook",
-    logo:
-      "https://www.pngarts.com/files/10/Square-Facebook-Logo-PNG-High-Quality-Image.png"
-  },
-  // {
-  //   provider: "twitter",
-  //   title: "Twitter",
-  //   subtitle: "Create an account via Twitter",
-  //   logo:
-  //     "https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-logo-vector-png-clipart-1.png"
-  // }
-  {
-    provider: "twitch",
-    title: "Twitch",
-    subtitle: "Create an account via Twitch",
-    logo: "https://www.freepnglogos.com/uploads/twitch-logo-vector-png-2.png"
-  }
-];
-
 export default {
   head: {
     title: "Select Auth Method"
@@ -91,7 +36,22 @@ export default {
 
   computed: {
     authMethods() {
-      return authMethods;
+      return [
+        {
+          title: "Magic Link",
+          subtitle: "Create an account via Magic Link",
+          icon: "mdi-auto-fix",
+          route: "magic-link"
+        },
+        {
+          title: "Email & Password",
+          subtitle: "Create an account with Email and Password",
+          icon: "mdi-email",
+          route: "email-and-password"
+        },
+
+        ...this.$store.state.oauthProviders
+      ];
     }
   },
 
