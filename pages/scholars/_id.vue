@@ -109,10 +109,41 @@
     </div>
     <v-row align="center" justify="center">
       <v-col cols="12" md="2" v-for="axie in axies" :key="axie.id">
-        <v-card>
-          <v-card-subtitle> #{{ axie.id }} </v-card-subtitle>
+        <v-card max-width="250" min-height="250">
+          <v-chip
+            v-if="axie.class == 'Aquatic'"
+            class="mt-3 ml-3"
+            x-small
+            color="blue"
+          >
+            <v-card-subtitle class="mx-n5"> #{{ axie.id }} </v-card-subtitle>
+          </v-chip>
+          <v-chip
+            v-if="axie.class == 'Beast'"
+            class="mt-3 ml-3"
+            x-small
+            color="orange"
+          >
+            <v-card-subtitle class="mx-n5"> #{{ axie.id }} </v-card-subtitle>
+          </v-chip>
+          <v-chip
+            v-if="axie.class == 'Bird'"
+            class="mt-3 ml-3"
+            x-small
+            color="pink lighten-3"
+          >
+            <v-card-subtitle class="mx-n5"> #{{ axie.id }} </v-card-subtitle>
+          </v-chip>
+          <v-chip
+            v-if="axie.class == 'Plant'"
+            class="mt-3 ml-3"
+            x-small
+            color="green"
+          >
+            <v-card-subtitle class="mx-n5"> #{{ axie.id }} </v-card-subtitle>
+          </v-chip>
           <v-card-text align="center" justify="center">
-            <v-img :src="axie.image" max-height="250" max-width="250"> </v-img>
+            <v-img :src="axie.image" max-height="200" max-width="200"> </v-img>
           </v-card-text>
         </v-card>
       </v-col>
@@ -122,8 +153,10 @@
 
 <script>
 import axios from "axios";
-import { AXIE_RAPID_API_BASE_URL } from "../../constants/index.js";
-import { AXIE_GAME_API_BASE_URL } from "../../constants/index.js";
+import {
+  AXIE_RAPID_API_BASE_URL,
+  AXIE_GAME_API_BASE_URL
+} from "../../constants/index.js";
 
 export default {
   data() {
