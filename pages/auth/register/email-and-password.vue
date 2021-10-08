@@ -1,28 +1,43 @@
 <template>
-  <v-sheet
-    height="100vh"
-    width="100%"
-    color="red"
-    class="d-flex justify-space-between"
-  >
-    <v-sheet width="60%">
-      <v-img
-        src="https://images.pexels.com/photos/730564/pexels-photo-730564.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-        width="100%"
-        height="100%"
-      />
-    </v-sheet>
-    <v-sheet class="d-flex justify-center align-center pa-5" width="40%">
-      <v-form style="width: 100%" ref="form" @submit.prevent="onSubmit">
-        <v-card class="pa-0" color="transparent" flat>
-          <v-card-title class="display-1">Create Account</v-card-title>
-          <v-card-subtitle>Manage your scholars</v-card-subtitle>
-
-          <nuxt-child />
-        </v-card>
-      </v-form>
-    </v-sheet>
-  </v-sheet>
+  <div>
+    <v-card-text class="mt-16">
+      <v-text-field
+        label="Name"
+        type="email"
+        v-model="form.name"
+        outlined
+        dense
+      ></v-text-field>
+      <v-text-field
+        label="Email"
+        type="email"
+        v-model="form.email"
+        :rules="rules.email"
+        outlined
+        dense
+      ></v-text-field>
+      <v-text-field
+        label="Password"
+        type="password"
+        v-model="form.password"
+        :rules="rules.password"
+        outlined
+        dense
+      ></v-text-field>
+    </v-card-text>
+    <v-card-actions>
+      <div>
+        <span>Already have an account?</span>
+        <nuxt-link replace :to="{ name: 'auth-login' }">
+          Sign-in instead
+        </nuxt-link>
+      </div>
+      <v-spacer></v-spacer>
+      <v-btn type="submit" :loading="loading$" color="primary">
+        Create Account
+      </v-btn>
+    </v-card-actions>
+  </div>
 </template>
 
 <script>
