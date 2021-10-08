@@ -24,7 +24,7 @@
                       max-width="35"
                   ></v-img>
                   <div class="headline-1 mx-3">
-                    {{ slp }}
+                    {{ slp.total }}
                   </div>
                 </v-row>
               </v-card-title>
@@ -55,7 +55,7 @@
                       max-width="35"
                   ></v-img>
                   <div class="headline-1 mx-3">
-                    {{ slp }}
+                    {{ slp.inGameSLP }}
                   </div>
                 </v-row>
               </v-card-title>
@@ -86,7 +86,7 @@
                       max-width="35"
                   ></v-img>
                   <div class="headline-1 mx-3">
-                    0
+                    {{ slp.roninSLP }}
                   </div>
                 </v-row>
               </v-card-title>
@@ -116,7 +116,7 @@
                           max-width="35"
                       ></v-img>
                     <div class="headline-1 mx-3">
-                      {{ dailySLP }} 
+                      {{ slp.dailySLP }} 
                     </div>
                   </v-row>
                 </v-card-title>
@@ -141,17 +141,18 @@
                     justify="center"
                   >
                       <v-img
-                          src="https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057"
-                          max-height="35"
-                          max-width="35"
+                        class="rounded-circle"
+                        src="https://chimeratribune.com/wp-content/uploads/2020/11/axieareanaswords.png"
+                        max-height="35"
+                        max-width="35"
                       ></v-img>
                     <div class="headline-1 mx-3">
-                      {{ farmedToday }} 
+                      {{ rank }} 
                     </div>
                   </v-row>
                 </v-card-title>
                 <v-row justify="center">
-                  <v-card-title>Farmed Today</v-card-title>
+                  <v-card-title>Current Rank</v-card-title>
                 </v-row>
             </v-card>
         </v-col>
@@ -204,7 +205,7 @@
         >
           <v-card>
             <v-card-subtitle>
-              Axie #{{ axie.id }}
+              #{{ axie.id }}
             </v-card-subtitle>
             <v-card-text
               align="center"
@@ -225,60 +226,73 @@
 </template>
 
 <script>
+import axios from "axios"
+
   export default{
     data() {
       return {
-        slp: "--",
-        dailySLP: "--",
-        farmedToday: "--",
-        lastClaimedSLP: 0,
+        slp: {
+          total: "--",
+          roninSLP: "--",
+          inGameSLP: "--",
+          dailySLP: "--",
+          farmedToday: "--",
+          lastClaimedSLP: 0,
+        },
         mmr: "--",
+        rank: "--",
         axies: []
       }
     },
     async created() {
       await this.getUserAxies()
       await this.getUserInfo()
+      // await this.getSLPToday()
       this.getDailySLP()
     },
     methods: {
       async getUserAxies() {
-        await this.$axios.$get('https://axie-infinity.p.rapidapi.com/get-axies/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3', {
+        try{
+          const response = await this.$axios.$get('https://axie-infinity.p.rapidapi.com/get-axies/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3', {
             headers: {
-                'x-rapidapi-host': 'axie-infinity.p.rapidapi.com',
-                'x-rapidapi-key': 'b5e6783431msh5dfe6faf063f956p16dfadjsnab843e1e67cd'
-            }
-        }).then((response) => {
-            console.log("Axies",response.data.axies.results)
-            this.axies = response.data.axies.results
-        })
+                  'x-rapidapi-host': 'axie-infinity.p.rapidapi.com',
+                  'x-rapidapi-key': 'b5e6783431msh5dfe6faf063f956p16dfadjsnab843e1e67cd'
+              }
+          });
+          console.log("AXIES",response.data.axies.results)
+          this.axies = response.data.axies.results
+
+
+        }catch(error){
+          console.log(error)
+        }
       },
       async getUserInfo() {
-        await this.$axios.$get('https://axie-infinity.p.rapidapi.com/get-update/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3', {
-            headers: {
-                'x-rapidapi-host': 'axie-infinity.p.rapidapi.com',
-                'x-rapidapi-key': 'b5e6783431msh5dfe6faf063f956p16dfadjsnab843e1e67cd'
-            }
-        }).then((response) => {
-            console.log("SLP",response)
-            this.slp = response.slp.total
-            this.lastClaimedSLP = response.slp.lastClaimedItemAt
-            this.farmedToday = response.slp.todaySoFar
-            this.mmr = response.leaderboard.elo
-        })
-        // await this.$axios.$get('https://game-api.axie.technology/api/v1/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3'), {
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     'Authorization': 'Bearer ' + token
-        //   }
-        // }
-        // .then((response) => {
-        //     console.log("NEW API",response)
-        // })
+        const response = await axios.get(
+          "https://game-api.axie.technology/api/v1/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3",
+          { accept: "application/json" }
+        );
+          console.log("NEW API",response)
+          this.slp.total = response.data.total_slp
+          this.slp.inGameSLP = response.data.in_game_slp
+          this.slp.roninSLP = response.data.ronin_slp
+          this.slp.lastClaimedSLP = response.data.last_claim
+          this.mmr = response.data.mmr
+          this.rank = response.data.rank
+
+        // const response2 = await axios.get(
+        //   "https://axie-infinity.p.rapidapi.com/get-update/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3", {
+        //     headers: {
+        //       'x-rapidapi-host': 'axie-infinity.p.rapidapi.com',
+        //       'x-rapidapi-key': 'b5e6783431msh5dfe6faf063f956p16dfadjsnab843e1e67cd'
+        //     }
+        //   });
+        //   console.log("RESPONSE 2",response2)
+
       },
       getDailySLP(){
         //  Date received from API
-        const claimedDate = this.lastClaimedSLP
+        const claimedDate = this.slp.lastClaimedSLP
         const currentDate = Math.floor(new Date().getTime()/1000.0)
         const dateDiff = currentDate - claimedDate
         let daysDiff = dateDiff / (3600 * 24)
@@ -287,10 +301,10 @@
         console.log(currentDate)
         console.log(Math.floor(daysDiff) + " days")
 
-        this.dailySLP = Math.ceil(this.slp / daysDiff)
+        this.slp.dailySLP = Math.ceil(this.slp.total / daysDiff)
         console.log(this.slp)
         console.log(daysDiff)
-        console.log(this.dailySLP)
+        console.log(this.slp.dailySLP)
 
       },
     }
