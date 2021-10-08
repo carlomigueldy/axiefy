@@ -88,7 +88,8 @@ export default {
   },
   publicRuntimeConfig: {
     AXIE_RAPID_API_KEY: process.env.AXIE_RAPID_API_KEY,
-    SUPABASE_URL: process.env.SUPABASE_URL
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    AWS_API_BASE_URL: process.env.AWS_API_BASE_URL
   },
   googleFonts: {
     prefetch: true,

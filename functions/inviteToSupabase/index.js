@@ -2,13 +2,15 @@ const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
 exports.handler = async function(event, context) {
-  const { email } = event;
+  const { email } = JSON.parse(event.body);
 
   if (!email) {
     return {
       code: 400,
       message:
-        "The `email` field is required and must be a valid email address."
+        "The `email` field is required and must be a valid email address.",
+      event,
+      context
     };
   }
 

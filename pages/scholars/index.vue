@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data: () => ({
     inviteScholarEmail: "",
@@ -129,9 +131,17 @@ export default {
     async inviteScholar() {
       this.inviteScholarLoading$ = true;
       try {
-        const response = await this.$supabase.auth.api.inviteUserByEmail({
-          email: this.inviteScholarEmail
-        });
+        const response = await axios.post(
+          `${this.$config.AWS_API_BASE_URL}/inviteToSupabase`,
+          {
+            email: this.inviteScholarEmail
+          },
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
         this.$log.info(response);
         this.inviteScholarEmail = "";
       } catch (error) {
