@@ -85,21 +85,19 @@ export default {
   methods: {
     async onAuthMethodSelected(method) {
       this.authMethod = method;
+      const { provider } = method;
 
       if (method.route) {
         return this.$router.push({ name: `auth-register-${method.route}` });
       }
 
-      switch (method.provider) {
-        case "discord":
-          const response = await this.$supabase.auth.signIn({
-            provider: "discord"
-          });
-          this.$log.info(response);
-          break;
-
-        default:
-          break;
+      try {
+        const response = await this.$supabase.auth.signIn({
+          provider
+        });
+        this.$log.info(response);
+      } catch (error) {
+        this.$log.error(error, { method, provder });
       }
     }
   }
