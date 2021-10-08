@@ -55,11 +55,24 @@ const authMethods = [
       "https://www.freepnglogos.com/uploads/google-logo-png/google-logo-icon-png-transparent-background-osteopathy-16.png"
   },
   {
-    provider: "twitter",
-    title: "Twitter",
-    subtitle: "Create an account via Twitter",
+    provider: "facebook",
+    title: "Facebook",
+    subtitle: "Create an account via Facebook",
     logo:
-      "https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-logo-vector-png-clipart-1.png"
+      "https://www.pngarts.com/files/10/Square-Facebook-Logo-PNG-High-Quality-Image.png"
+  },
+  // {
+  //   provider: "twitter",
+  //   title: "Twitter",
+  //   subtitle: "Create an account via Twitter",
+  //   logo:
+  //     "https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-logo-vector-png-clipart-1.png"
+  // }
+  {
+    provider: "twitch",
+    title: "Twitch",
+    subtitle: "Create an account via Twitch",
+    logo: "https://www.freepnglogos.com/uploads/twitch-logo-vector-png-2.png"
   }
 ];
 
