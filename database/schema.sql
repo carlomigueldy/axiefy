@@ -235,3 +235,15 @@ CREATE TABLE public.team_members (
   deleted_at TIMESTAMP,
   PRIMARY KEY (user_id, team_id)
 );
+
+-- view: get_scholar_wallets
+DROP VIEW IF EXISTS get_scholar_wallets;
+CREATE VIEW get_scholar_wallets AS SELECT users.id, users.ronin_address 
+FROM team_members
+INNER JOIN users 
+ON team_members.user_id = users.id 
+WHERE team_id = (
+  SELECT id 
+  FROM teams 
+  WHERE owner_id = auth.uid()
+);
