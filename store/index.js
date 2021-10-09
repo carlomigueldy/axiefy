@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const github = "https://cdn-icons-png.flaticon.com/512/25/25231.png";
 const discord =
   "https://www.freepnglogos.com/uploads/discord-logo-png/discord-logo-logodownload-download-logotipos-1.png";
@@ -68,6 +70,35 @@ export const mutations = {
 };
 
 export const actions = {
+  async rpc(_, rpc) {
+    return await this.$axios.$post(
+      `${this.$config.SUPABASE_URL}/rest/v1/rpc/${rpc}`,
+      {},
+      {
+        headers: {
+          apiKey: this.$config.SUPABASE_KEY
+        }
+      }
+    );
+  },
+
+  async inviteToSupabase(_, email) {
+    const payload = {
+      email
+    };
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("auth._token.local")}`
+      }
+    };
+    return await axios.post(
+      `${this.$config.AWS_API_BASE_URL}/inviteToSupabase`,
+      payload,
+      options
+    );
+  },
+
   async fetchUser({ state, commit }, payload) {
     this.$log.info("fetchUser", payload);
 

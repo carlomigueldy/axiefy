@@ -15,6 +15,8 @@ DROP POLICY IF EXISTS "Insert Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Update Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Delete Policy" ON public.role_permission;
 
+DROP FUNCTION IF EXISTS public.get_auth_uid;
+DROP FUNCTION IF EXISTS public.get_team_members;
 DROP FUNCTION IF EXISTS public.assign_role;
 DROP TRIGGER IF EXISTS on_tenant_created ON public.tenants;
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
@@ -236,14 +238,30 @@ CREATE TABLE public.team_members (
   PRIMARY KEY (user_id, team_id)
 );
 
--- view: get_scholar_wallets
-DROP VIEW IF EXISTS get_scholar_wallets;
-CREATE VIEW get_scholar_wallets AS SELECT users.id, users.ronin_address 
-FROM team_members
-INNER JOIN users 
-ON team_members.user_id = users.id 
-WHERE team_id = (
-  SELECT id 
-  FROM teams 
-  WHERE owner_id = auth.uid()
-);
+-- function: get_team_members
+CREATE OR REPLACE FUNCTION public.get_team_members()
+RETURNS SETOF public.users AS 
+$$
+BEGIN 
+  RETURN QUERY (SELECT users.* 
+    FROM team_members
+    INNER JOIN users 
+    ON team_members.user_id = users.id 
+    WHERE team_id = (
+      SELECT id 
+      FROM teams 
+      WHERE owner_id = auth.uid()
+    )
+  );
+END
+$$ LANGUAGE plpgsql SECURITY DEFINER; 
+
+-- function: get_auth_uid
+-- for testing purposes
+CREATE OR REPLACE FUNCTION public.get_auth_uid()
+RETURNS uuid AS 
+$$
+BEGIN 
+  RETURN auth.uid();
+END
+$$ LANGUAGE plpgsql SECURITY DEFINER; 
