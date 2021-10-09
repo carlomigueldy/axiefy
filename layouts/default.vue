@@ -149,8 +149,15 @@ export default {
       });
     },
 
-    logout() {
-      this.$auth.logout();
+    async logout() {
+      try {
+        this.loggingOut$ = true;
+        await this.$auth.logout();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loggingOut$ = false;
+      }
     },
 
     toBillingSection() {

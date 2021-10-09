@@ -21,8 +21,8 @@
             :items="$store.state.scholars"
             :items-per-page="10"
             :loading="getTeamMembersLoading$"
-            @click:row="onClickItem"
           >
+            <!-- @click:row="onClickItem" -->
             <template v-slot:[`item.ronin_address`]="{ item }">
               <span
                 v-if="item.ronin_address"
