@@ -91,6 +91,7 @@ export default {
   publicRuntimeConfig: {
     AXIE_RAPID_API_KEY: process.env.AXIE_RAPID_API_KEY,
     SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_KEY: process.env.SUPABASE_KEY,
     AWS_API_BASE_URL: process.env.AWS_API_BASE_URL
   },
   googleFonts: {
