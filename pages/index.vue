@@ -47,6 +47,9 @@ export default {
 
   async created() {
     console.log("this.$route.query", this.$route.query);
+    console.log("this.$route.path", this.$route.path);
+    console.log("this.$route.hash", this.$route.hash);
+    console.log("this.$route.fullPath", this.$route.fullPath);
   }
 };
 </script>
