@@ -1,5 +1,5 @@
 <template>
-  <app-main-container>
+  <lazy-app-main-container>
     <template v-slot:title>Scholars</template>
 
     <v-row>
@@ -75,7 +75,7 @@
         </v-card-text>
       </app-dialog-card>
     </v-dialog>
-  </app-main-container>
+  </lazy-app-main-container>
 </template>
 
 <script>
@@ -134,7 +134,8 @@ export default {
         const { data } = await axios.post(
           `${this.$config.AWS_API_BASE_URL}/inviteToSupabase`,
           {
-            email: this.inviteScholarEmail
+            email: this.inviteScholarEmail,
+            sender: this.$auth.user.email
           },
           {
             headers: {

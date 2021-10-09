@@ -46,18 +46,7 @@ export default {
   auth: "guest",
 
   async created() {
-    await this.$auth.fetchUser();
-
-    if (this.$auth.loggedIn) {
-      const users = await this.$supabase.from("users").select();
-
-      const authUser = this.$supabase.auth.user();
-
-      console.log('this.$supabase.from("users").select()', { users, authUser });
-      return;
-    }
-
-    // this.$router.replace("/login");
+    console.log("this.$route.query", this.$route.query);
   }
 };
 </script>

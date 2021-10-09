@@ -2,13 +2,13 @@ const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
 exports.handler = async function(event, context) {
-  const { email } = JSON.parse(event.body);
+  const { email, sender } = JSON.parse(event.body);
 
-  if (!email) {
+  if (!email || !sender) {
     return {
       code: 400,
       message:
-        "The `email` field is required and must be a valid email address.",
+        "The `email` and `sender` field is required and both must be a valid email address."
     };
   }
 
@@ -17,7 +17,11 @@ exports.handler = async function(event, context) {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
-  const { error } = await supabase.auth.api.inviteUserByEmail(email);
+  const { error } = await supabase.auth.api.inviteUserByEmail(email, {
+    data: {
+      inviteBy: sender
+    }
+  });
 
   if (error) {
     return {
