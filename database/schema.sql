@@ -17,12 +17,13 @@ DROP POLICY IF EXISTS "Delete Policy" ON public.role_permission;
 
 DROP FUNCTION IF EXISTS public.assign_role;
 DROP TRIGGER IF EXISTS on_tenant_created ON public.tenants;
-DROP FUNCTION IF EXISTS public.handle_new_tenant;
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 DROP FUNCTION IF EXISTS public.handle_new_user;
 DROP FUNCTION IF EXISTS public.has_permission;
 DROP FUNCTION IF EXISTS public.has_role;
 
+DROP TABLE IF EXISTS public.team_members;
+DROP TABLE IF EXISTS public.teams;
 DROP TABLE IF EXISTS public.user_role;
 DROP TABLE IF EXISTS public.role_permission;
 DROP TABLE IF EXISTS public.permissions;
@@ -140,6 +141,8 @@ RETURNS TRIGGER AS $$
 BEGIN 
   INSERT INTO public.users (id, email) VALUES (new.id, new.email);
 
+  INSERT INTO public.teams (owner_id) VALUES (new.id); 
+
   return new;
 END
 $$
@@ -211,3 +214,24 @@ BEGIN
   RETURN;
 END
 $$ LANGUAGE plpgsql SECURITY DEFINER; 
+
+-- table: teams
+CREATE TABLE public.teams (
+  id uuid PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+  name VARCHAR(64),
+  owner_id uuid REFERENCES public.users (id),
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now(),
+  deleted_at TIMESTAMP
+);
+COMMENT ON COLUMN public.teams.owner_id IS 'The manager/owner that manages scholars.';
+
+-- table: team_members
+CREATE TABLE public.team_members (
+  user_id uuid NOT NULL REFERENCES public.users (id),
+  team_id uuid NOT NULL REFERENCES public.teams (id),
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now(),
+  deleted_at TIMESTAMP,
+  PRIMARY KEY (user_id, team_id)
+);
