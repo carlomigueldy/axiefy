@@ -213,18 +213,7 @@ export default {
         { accept: "application/json" }
       );
 
-      const response2 = await axios.get(
-        `${AXIE_RAPID_API_BASE_URL}/get-update/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3`,
-        {
-          headers: {
-            "x-rapidapi-host": "axie-infinity.p.rapidapi.com",
-            "x-rapidapi-key": this.$config.AXIE_RAPID_API_KEY
-          }
-        }
-      );
-
       console.log("NEW API", response);
-      console.log("RESPONSE 2", response2);
 
       this.slp.total = response.data.total_slp;
       this.slp.inGameSLP = response.data.in_game_slp;
@@ -233,7 +222,7 @@ export default {
       this.mmr = response.data.mmr;
       this.rank = response.data.rank;
 
-      this.slp.farmedToday = response2.data.slp.todaySoFar;
+      await this.getFarmedSLPToday();
     },
     getDailySLP() {
       //  Date received from API
@@ -250,6 +239,25 @@ export default {
       console.log(this.slp);
       console.log(daysDiff);
       console.log(this.slp.dailySLP);
+    },
+    async getFarmedSLPToday() {
+      try {
+        const response = await axios.get(
+          `${AXIE_RAPID_API_BASE_URL}/get-update/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3`,
+          {
+            headers: {
+              "x-rapidapi-host": "axie-infinity.p.rapidapi.com",
+              "x-rapidapi-key": this.$config.AXIE_RAPID_API_KEY
+            }
+          }
+        );
+
+        console.log("RESPONSE 2", response);
+
+        this.slp.farmedToday = response.data.slp.todaySoFar;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };
