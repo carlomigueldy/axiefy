@@ -46,10 +46,26 @@ export default {
   auth: "guest",
 
   async created() {
-    console.log("this.$route.query", this.$route.query);
-    console.log("this.$route.path", this.$route.path);
-    console.log("this.$route.hash", this.$route.hash);
-    console.log("this.$route.fullPath", this.$route.fullPath);
+    if (Object.keys(this.$route.query).length !== 0) {
+      const {
+        access_token,
+        expires_in,
+        provider_token,
+        refresh_token,
+        token_type
+      } = this.$route.query;
+
+      await this.$supabase.auth.signIn({ refreshToken: refresh_token });
+    }
+
+    const [_, queryString] = this.$route.fullPath.split("#");
+    console.log({ first: _, last: queryString });
+
+    if (queryString) {
+      const path = `${window.location.origin}/?${queryString}`;
+      window.location.replace(path);
+      return;
+    }
   }
 };
 </script>
