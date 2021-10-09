@@ -70,36 +70,38 @@
     </template>
 
     <v-dialog v-model="dialog.inviteScholar" width="500">
-      <app-dialog-card>
-        <v-card-title>Invite Scholar</v-card-title>
-        <v-card-text>
-          <p>
-            Inviting a scholar will send them a confirmation link in their
-            email.
-          </p>
-          <v-text-field
-            v-model="inviteScholarEmail"
-            class="mt-10"
-            outlined
-            label="Email"
-            dense
-          ></v-text-field>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <div>
-              <v-btn @click="dialog.inviteScholar = false" text>Cancel</v-btn>
-              <v-btn
-                @click="inviteScholar"
-                :loading="inviteScholarLoading$"
-                depressed
-                color="primary"
-              >
-                Invite
-              </v-btn>
-            </div>
-          </v-card-actions>
-        </v-card-text>
-      </app-dialog-card>
+      <v-form ref="inviteForm" @submit.prevent="inviteScholar">
+        <app-dialog-card>
+          <v-card-title>Invite Scholar</v-card-title>
+          <v-card-text>
+            <p>
+              Inviting a scholar will send them a confirmation link in their
+              email.
+            </p>
+            <v-text-field
+              v-model="inviteScholarEmail"
+              class="mt-10"
+              outlined
+              label="Email"
+              dense
+            ></v-text-field>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <div>
+                <v-btn @click="dialog.inviteScholar = false" text>Cancel</v-btn>
+                <v-btn
+                  type="submit"
+                  :loading="inviteScholarLoading$"
+                  depressed
+                  color="primary"
+                >
+                  Invite
+                </v-btn>
+              </div>
+            </v-card-actions>
+          </v-card-text>
+        </app-dialog-card>
+      </v-form>
     </v-dialog>
   </lazy-app-main-container>
 </template>
@@ -158,6 +160,7 @@ export default {
   methods: {
     onClickWalletAddress(address) {
       this.$copyText(address);
+      this.$toast("Wallet address copied to clipboard.");
     },
 
     onClickInviteScholar() {
@@ -180,9 +183,11 @@ export default {
         }
 
         this.$log.info(data);
+        this.$toast(`You have successfully invited ${this.inviteScholarEmail}`);
         this.inviteScholarEmail = "";
       } catch (error) {
         this.$log.error(error);
+        this.$toast("An error occurred, try again later");
       } finally {
         this.dialog.inviteScholar = false;
         this.inviteScholarLoading$ = false;
