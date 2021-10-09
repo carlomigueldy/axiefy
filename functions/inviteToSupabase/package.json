@@ -1,0 +1,17 @@
+{
+  "name": "invitetosupabase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "inviteToSupabase.js",
+  "scripts": {
+    "deploy": "zip -r .zip . && aws lambda update-function-code --function-name inviteToSupabase --zip-file fileb://.zip",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@supabase/supabase-js": "^1.24.0",
+    "dotenv": "^10.0.0"
+  }
+}

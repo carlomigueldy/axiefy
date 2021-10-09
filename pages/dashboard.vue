@@ -305,9 +305,16 @@ export default {
       console.log("TOP MMR", response);
       this.leaderboards.items.world = response.data.items;
     },
-    orderByDesc(array) {}
+    orderByDesc(array) {},
+
+    async created() {
+      try {
+        const response = await this.$store.dispatch("rpc", "get_team_members");
+        this.$store.commit("setScholars", response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 };
 </script>
-
-<style></style>

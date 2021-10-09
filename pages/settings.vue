@@ -49,9 +49,32 @@
             <v-sheet height="25" color="transparent"></v-sheet>
 
             <v-sheet width="325" class="my-5" color="transparent">
-              <v-text-field label="Name" outlined dense></v-text-field>
+              <v-form ref="profileForm" @submit.prevent="updateProfile">
+                <v-text-field
+                  v-model="profile.name"
+                  label="Name"
+                  outlined
+                  dense
+                ></v-text-field>
 
-              <v-text-field label="Email" outlined dense></v-text-field>
+                <!-- <v-text-field
+                  v-model="profile.email"
+                  type="email"
+                  label="Email"
+                  outlined
+                  dense
+                ></v-text-field> -->
+
+                <v-text-field
+                  v-model="profile.password"
+                  type="password"
+                  label="New Password"
+                  outlined
+                  dense
+                ></v-text-field>
+
+                <v-btn type="submit">Update</v-btn>
+              </v-form>
             </v-sheet>
           </v-card-text>
         </v-card>
@@ -96,6 +119,13 @@ export default {
     title: TITLE
   },
 
+  data: () => ({
+    profile: {
+      name: "",
+      password: ""
+    }
+  }),
+
   mounted() {
     const { section } = this.$route.query;
 
@@ -107,6 +137,21 @@ export default {
   computed: {
     title() {
       return TITLE;
+    }
+  },
+
+  methods: {
+    async updateProfile() {
+      const { name, password } = this.profile;
+      await this.$supabase.auth.update({
+        password
+      });
+      await this.$supabase
+        .from("users")
+        .update({
+          name
+        })
+        .eq("id", this.$auth.user?.id);
     }
   }
 };

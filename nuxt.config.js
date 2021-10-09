@@ -4,6 +4,8 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  fallback: false,
+
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",
 
@@ -24,7 +26,7 @@ export default {
   css: ["~/assets/main.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ["~/plugins/string.util.js", "~/plugins/toast.js"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -42,6 +44,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    "nuxt-clipboard",
     "nuxt-logger",
     "@nuxtjs/auth-next",
     [
@@ -87,7 +90,10 @@ export default {
     }
   },
   publicRuntimeConfig: {
-    AXIE_RAPID_API_KEY: process.env.AXIE_RAPID_API_KEY
+    AXIE_RAPID_API_KEY: process.env.AXIE_RAPID_API_KEY,
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_KEY: process.env.SUPABASE_KEY,
+    AWS_API_BASE_URL: process.env.AWS_API_BASE_URL
   },
   googleFonts: {
     prefetch: true,

@@ -46,18 +46,21 @@ export default {
   auth: "guest",
 
   async created() {
-    await this.$auth.fetchUser();
+    if (Object.keys(this.$route.query).length !== 0) {
+      const { access_token, refresh_token } = this.$route.query;
 
-    if (this.$auth.loggedIn) {
-      const users = await this.$supabase.from("users").select();
-
-      const authUser = this.$supabase.auth.user();
-
-      console.log('this.$supabase.from("users").select()', { users, authUser });
+      await this.$auth.setUserToken(access_token, refresh_token);
       return;
     }
 
-    // this.$router.replace("/login");
+    const [_, queryString] = this.$route.fullPath.split("#");
+    console.log({ first: _, last: queryString });
+
+    if (queryString) {
+      const path = `${window.location.origin}/?${queryString}`;
+      window.location.replace(path);
+      return;
+    }
   }
 };
 </script>

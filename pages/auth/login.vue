@@ -50,6 +50,18 @@
               Login
             </v-btn>
           </v-card-actions>
+          <!-- <div class="d-flex justify-space-around align-center mt-10">
+            <v-sheet
+              v-for="(method, index) in $store.state.oauthProviders"
+              :key="index"
+              style="border-radius: 50%; cursor: pointer"
+              height="50"
+              width="50"
+              @click="signInWithProvider(method)"
+            >
+              <v-img :src="method.logo" height="50" width="50" />
+            </v-sheet>
+          </div> -->
         </v-card>
       </v-form>
     </v-sheet>
@@ -84,6 +96,13 @@ export default {
   },
 
   methods: {
+    async signInWithProvider(oauth) {
+      const { provider } = oauth;
+      const response = await this.$supabase.auth.signIn({
+        provider
+      });
+      this.$log.info(response);
+    },
     async onSubmit() {
       this.loading$ = true;
 

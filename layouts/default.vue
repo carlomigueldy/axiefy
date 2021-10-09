@@ -71,7 +71,7 @@
     <Nuxt />
 
     <v-dialog v-model="dialog.logoutConfirmation" width="500">
-      <v-card class="pa-5" flat>
+      <app-dialog-card>
         <v-card-title>Logout</v-card-title>
         <v-card-text>Are you sure you want to logout?</v-card-text>
         <v-card-actions>
@@ -87,8 +87,10 @@
             Confirm
           </v-btn>
         </v-card-actions>
-      </v-card>
+      </app-dialog-card>
     </v-dialog>
+
+    <lazy-app-snackbar />
   </v-app>
 </template>
 
@@ -147,8 +149,15 @@ export default {
       });
     },
 
-    logout() {
-      this.$auth.logout();
+    async logout() {
+      try {
+        this.loggingOut$ = true;
+        await this.$auth.logout();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loggingOut$ = false;
+      }
     },
 
     toBillingSection() {
