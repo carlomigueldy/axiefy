@@ -8,103 +8,105 @@ exports.handler = async function(event, context) {
   );
 
   const { email } = JSON.parse(event?.body || "{}");
-  const headers = event?.headers;
+  const headers = event.headers;
 
-  if (!email) {
-    return {
-      code: 400,
-      message:
-        "The `email` field is required and must be a valid email address."
-    };
-  }
+  console.log(headers);
 
-  if (!headers["Authorization"]) {
+  if (!headers.authorization) {
+    const message = `No authorization header found in request.`;
+    console.error(message, { headers, email });
     return {
       code: 401,
-      message: `No request header "Authorization" found.`
+      message,
+      metadata: {
+        email,
+        authorization: headers.authorization,
+        headers
+      }
     };
   }
 
-  try {
-    const {
+  if (!email) {
+    const message =
+      "The `email` field is required and must be a valid email address.";
+    console.error(message, { headers, email });
+    return {
+      code: 400,
+      message
+    };
+  }
+
+  const [_, token] = headers.authorization.split("Bearer ");
+  const { error: authError, user: authUser } = await supabase.auth.api.getUser(
+    token
+  );
+  console.log({ token, authError, authUser });
+
+  if (authError) {
+    const message = "You are not authenticated.";
+    console.error(message, { authError, token, headers, email });
+    return {
+      code: 401,
       error: authError,
-      user: authUser
-    } = await supabase.auth.api.getUser(
-      headers["Authorization"].split("Bearer ")[1]
-    );
+      message
+    };
+  }
 
-    if (authError) {
-      const message = "You are not authenticated.";
-      console.error(message, authError);
-      return {
-        code: 401,
-        error: authError,
-        message
-      };
-    }
+  const {
+    data: inviteData,
+    error: inviteError
+  } = await supabase.auth.api.inviteUserByEmail(email);
+  console.log({ inviteData, inviteError });
 
-    const {
-      data: inviteData,
-      error: inviteError
-    } = await supabase.auth.api.inviteUserByEmail(email, {
-      data: {
-        invited_by: authUser
-      }
-    });
+  if (inviteError) {
+    return {
+      code: 422,
+      error: inviteError,
+      message: inviteError.message
+    };
+  }
 
-    if (inviteError) {
-      return {
-        code: 422,
-        error: inviteError,
-        message: inviteError.message
-      };
-    }
+  const { data: team, error: teamError } = await supabase
+    .from("teams")
+    .select()
+    .eq("owner_id", authUser.id)
+    .single();
+  console.log({ team, teamError });
 
-    const { data: team, error: teamError } = await supabase
-      .from("teams")
-      .select()
-      .eq("owner_id", authUser.id)
-      .single();
+  if (teamError) {
+    const message = `The user did not have a Team`;
+    console.error(message, teamError);
+    return {
+      code: 500,
+      message,
+      error: teamError
+    };
+  }
 
-    if (teamError) {
-      const message = `The user did not have a Team`;
-      console.error(message, teamError);
-      return {
-        code: 500,
-        message,
-        error: teamError
-      };
-    }
-
-    const {
-      data: teamMemberData,
-      error: teamMemberError
-    } = await supabase.from("team_members").insert({
+  const { data: teamMemberData, error: teamMemberError } = await supabase
+    .from("team_members")
+    .insert({
       user_id: inviteData.id,
       team_id: team.id
     });
+  console.log({ teamMemberData, teamMemberError });
 
-    if (teamMemberError) {
-      const message = `Error ocurred when inserting a record for "team_members"`;
-      console.error(message, teamMemberError);
-      return {
-        code: 500,
-        message,
-        error: teamMemberError
-      };
-    }
-
+  if (teamMemberError) {
+    const message = `Error ocurred when inserting a record for "team_members"`;
+    console.error(message, teamMemberError);
     return {
-      code: 200,
-      message: `Invitation sent to ${email}.`,
-      data: {
-        teamMemberData,
-        inviteData
-      }
-    };
-  } catch (error) {
-    return {
-      error
+      code: 500,
+      message,
+      error: teamMemberError
     };
   }
+
+  return {
+    code: 200,
+    message: `Invitation sent to ${email}.`,
+    data: {
+      teamMemberData,
+      inviteData
+    }
+  };
 };

@@ -140,7 +140,7 @@ export default {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${this.$auth}`
+              Authorization: `Bearer ${localStorage.getItem('auth._token.local')}`
             }
           }
         );
