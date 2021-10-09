@@ -57,6 +57,10 @@ export const state = () => ({
       "https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057",
     arena:
       "https://chimeratribune.com/wp-content/uploads/2020/11/axieareanaswords.png"
+  },
+  snackbar: {
+    value: false,
+    message: ""
   }
 });
 
@@ -71,6 +75,18 @@ export const mutations = {
 
   toggleDrawer: (state, payload) => {
     state.drawer = payload ?? !state.drawer;
+  },
+
+  toggleSnackbar: (state, payload) => {
+    if (state.snackbar.value) {
+      state.snackbar.value = false;
+    }
+
+    state.snackbar.value = payload ?? !state.snackbar.value;
+  },
+
+  setSnackbarMessage: (state, message) => {
+    state.snackbar.message = message;
   }
 };
 

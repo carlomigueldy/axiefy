@@ -89,6 +89,8 @@
         </v-card-actions>
       </app-dialog-card>
     </v-dialog>
+
+    <lazy-app-snackbar />
   </v-app>
 </template>
 
