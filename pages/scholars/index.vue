@@ -21,9 +21,11 @@
             :items="$store.state.scholars"
             :items-per-page="10"
             :loading="getTeamMembersLoading$"
+            @click:row="onClickItem"
           >
             <template v-slot:[`item.ronin_address`]="{ item }">
               <span
+                v-if="item.ronin_address"
                 v-text="$stringUtil.truncateWallet(item.ronin_address)"
                 class="subtitle-1 pa-5"
                 style="cursor: pointer"
@@ -158,6 +160,14 @@ export default {
   }),
 
   methods: {
+    onClickItem(item) {
+      console.log("onClickItem", item);
+      this.$router.push({
+        name: "scholars-id",
+        params: { id: item.id }
+      });
+    },
+
     onClickWalletAddress(address) {
       this.$copyText(address);
       this.$toast("Wallet address copied to clipboard.");
