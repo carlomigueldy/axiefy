@@ -18,12 +18,38 @@
           <v-data-table
             :search="search"
             :headers="headers"
-            :items="items"
+            :items="$store.state.scholars"
             :items-per-page="10"
+            :loading="getTeamMembersLoading$"
           >
-            <template v-slot:[`item.action`]>
-              <v-btn width="80" depressed small>Edit</v-btn>
-              <v-btn width="80" depressed small>Remove</v-btn>
+            <template v-slot:[`item.ronin_address`]="{ item }">
+              <span
+                v-text="$stringUtil.truncateWallet(item.ronin_address)"
+                class="subtitle-1 pa-5"
+                style="cursor: pointer"
+                @click="onClickWalletAddress(item.ronin_address)"
+              />
+            </template>
+            <template v-slot:[`item.action`]="{ item }">
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" icon v-on="on">
+                    <v-icon>mdi-dots-horizontal</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item
+                    @click="
+                      $router.push({
+                        name: 'scholars-id',
+                        params: { id: item.id }
+                      })
+                    "
+                  >
+                    <v-list-item-title>View Scholar</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </template>
           </v-data-table>
         </v-card>
@@ -79,24 +105,45 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
+  async created() {
+    if (this.$store.state.scholars.length !== 0) {
+      return;
+    }
+
+    try {
+      this.getTeamMembersLoading$ = true;
+      const response = await this.$store.dispatch("rpc", "get_team_members");
+      this.$store.commit("setScholars", response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.getTeamMembersLoading$ = false;
+    }
+  },
+
   data: () => ({
     inviteScholarEmail: "",
     inviteScholarLoading$: false,
+    getTeamMembersLoading$: false,
     dialog: {
       inviteScholar: false
     },
     search: "",
     headers: [
       {
-        text: "#",
-        value: "id"
-      },
-      {
         text: "Email",
         value: "email"
+      },
+      {
+        width: "20%",
+        text: "Name",
+        value: "name"
+      },
+      {
+        text: "Ronin Wallet",
+        value: "ronin_address",
+        width: "5%"
       },
       {
         text: "Action",
@@ -105,29 +152,18 @@ export default {
         align: "center",
         width: "30%"
       }
-    ],
-    items: [
-      {
-        id: 1,
-        email: "carlo@gmail.com"
-      },
-      {
-        id: 2,
-        email: "carlo2@gmail.com"
-      },
-      {
-        id: 3,
-        email: "carlo3@gmail.com"
-      }
     ]
   }),
 
   methods: {
+    onClickWalletAddress(address) {
+      this.$copyText(address);
+    },
+
     onClickInviteScholar() {
       this.dialog.inviteScholar = true;
     },
 
-    /** @todo move logic in a serverless function */
     async inviteScholar() {
       this.inviteScholarLoading$ = true;
       try {

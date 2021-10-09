@@ -15,6 +15,7 @@ const facebook =
 export const state = () => ({
   user: null,
   drawer: true,
+  scholars: [],
   oauthProviders: [
     {
       provider: "github",
@@ -64,9 +65,17 @@ export const mutations = {
     state.user = payload;
   },
 
+  setScholars: (state, payload) => {
+    state.scholars = payload;
+  },
+
   toggleDrawer: (state, payload) => {
     state.drawer = payload ?? !state.drawer;
   }
+};
+
+export const getters = {
+  scholarWallets: state => state.scholars.map(scholar => scholar.ronin_address)
 };
 
 export const actions = {
