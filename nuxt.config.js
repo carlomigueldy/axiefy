@@ -4,6 +4,8 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  fallback: false,
+
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",
 
