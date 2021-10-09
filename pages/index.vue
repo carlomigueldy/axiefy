@@ -47,15 +47,10 @@ export default {
 
   async created() {
     if (Object.keys(this.$route.query).length !== 0) {
-      const {
-        access_token,
-        expires_in,
-        provider_token,
-        refresh_token,
-        token_type
-      } = this.$route.query;
+      const { access_token, refresh_token } = this.$route.query;
 
-      await this.$supabase.auth.signIn({ refreshToken: refresh_token });
+      await this.$auth.setUserToken(access_token, refresh_token);
+      return;
     }
 
     const [_, queryString] = this.$route.fullPath.split("#");
