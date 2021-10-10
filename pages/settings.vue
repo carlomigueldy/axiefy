@@ -7,7 +7,7 @@
 
     <v-row>
       <v-col>
-        <v-alert border="left" color="deep-purple accent-4" dark>
+        <v-alert border="left" color="deep-purple accent-4" dense dark>
           <div class="text-h6">Donate</div>
           <p>Donations are welcome</p>
           <v-btn
@@ -15,7 +15,7 @@
             depressed
             target="_blank"
           >
-            Buy me a Coffee
+            ☕ Buy me a Coffee
           </v-btn>
         </v-alert>
 
@@ -86,8 +86,21 @@
         <v-card id="billing" ref="billing" outlined>
           <v-card-title>Billing</v-card-title>
           <v-divider></v-divider>
-          <v-card-text>
-            <div class="subtitle-1">Coming soon</div>
+          <v-card-text class="d-flex justify-space-around align-center pa-10">
+            <app-plan-preview-card
+              title="Free Tier"
+              subtitle="Details coming soon"
+            />
+
+            <app-plan-preview-card
+              title="Basic"
+              subtitle="Details coming soon"
+            />
+
+            <app-plan-preview-card
+              title="Premium"
+              subtitle="Details coming soon"
+            />
           </v-card-text>
         </v-card>
       </v-col>
@@ -99,9 +112,9 @@
           <v-card-title>Danger Zone</v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <div class="subtitle-1">Delete your account forever</div>
+            <div class="subtitle-1">Disable your account</div>
             <v-sheet height="25" color="transparent"></v-sheet>
-            <v-btn depressed large color="error">Delete Account</v-btn>
+            <v-btn outlined large color="error">Disable Account</v-btn>
           </v-card-text>
         </v-card>
       </v-col>
@@ -134,8 +147,12 @@ export default {
   async created() {
     const { section } = this.$route.query;
 
+    console.log("created", { section });
+
     if (section) {
-      this.$vuetify.goTo(this.$refs[section]);
+      setTimeout(() => {
+        this.$vuetify.goTo(this.$refs[section]);
+      }, 100);
     }
 
     this.form.name = this.$store.state?.user?.name;

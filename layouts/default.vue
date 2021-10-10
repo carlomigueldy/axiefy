@@ -24,9 +24,6 @@
           exact
           dense
         >
-          <!-- <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action> -->
           <v-list-item-content>
             <v-list-item-title v-text="item.title" class="subtitle-1" />
           </v-list-item-content>
@@ -50,7 +47,7 @@
             style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
             @click="toBillingSection"
           >
-            Get Premium
+            👑 Get Premium
           </v-btn>
         </div>
 
