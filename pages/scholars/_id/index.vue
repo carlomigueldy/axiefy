@@ -52,7 +52,7 @@
       <h2>{{ axies.length }} Axies</h2>
     </div>
 
-    <v-row align="center" justify="center">
+    <v-row class="mt-5" align="center" justify="center">
       <v-col cols="12" md="2" v-for="axie in axies" :key="axie.id">
         <app-axie-card :axie="axie" />
       </v-col>
@@ -114,6 +114,8 @@ export default {
   methods: {
     async getUserAxies(wallet) {
       try {
+        var splitAddress = wallet.split("ronin:");
+        wallet = "0x" + splitAddress[1];
         const response = await this.$axios.$get(
           `${AXIE_RAPID_API_BASE_URL}/get-axies/${wallet}`,
           {
