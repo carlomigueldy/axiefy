@@ -47,8 +47,12 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    "nuxt-highcharts",
+
     "nuxt-clipboard",
+
     "nuxt-logger",
+
     "@nuxtjs/auth-next",
     [
       "nuxt-supabase",
