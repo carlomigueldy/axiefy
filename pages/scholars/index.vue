@@ -77,7 +77,7 @@
     </v-row>
 
     <template v-slot:action>
-      <app-tooltip message="Invite a Scholar">
+      <app-tooltip bottom message="Invite a Scholar">
         <v-btn
           color="primary"
           style="box-shadow: 0 0 20px var(--rgba-blue-darken-2);"
@@ -116,7 +116,7 @@
             </div>
 
             <p>
-              Inviting a labo.. I mean Scholar will send them a confirmation
+              Inviting a labo... I mean Scholar will send them a confirmation
               link in their email.
             </p>
             <v-text-field

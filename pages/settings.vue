@@ -108,16 +108,19 @@
             <app-plan-preview-card
               title="Free Tier"
               subtitle="Details coming soon"
+              emoji="💡"
             />
 
             <app-plan-preview-card
               title="Basic"
               subtitle="Details coming soon"
+              emoji="🍕"
             />
 
             <app-plan-preview-card
               title="Premium"
               subtitle="Details coming soon"
+              emoji="👑"
             />
           </v-card-text>
         </v-card>
