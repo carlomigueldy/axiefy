@@ -52,7 +52,7 @@
       <h2>{{ axies.length }} Axies</h2>
     </div>
 
-    <v-row align="center" justify="center">
+    <v-row class="mt-5" align="center" justify="center">
       <v-col cols="12" md="2" v-for="axie in axies" :key="axie.id">
         <app-axie-card :axie="axie" />
       </v-col>
