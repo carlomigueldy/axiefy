@@ -28,7 +28,7 @@ export default {
       return;
     }
 
-    const [_, queryString] = this.$route.fullPath.split("#");
+    const [_, queryString] = this.$route.fullPath.split("callback#");
     console.log({ first: _, last: queryString });
 
     if (queryString) {
