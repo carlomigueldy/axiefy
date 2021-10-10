@@ -56,7 +56,11 @@ export const state = () => ({
     slp:
       "https://assets.coingecko.com/coins/images/10366/large/SLP.png?1578640057",
     arena:
-      "https://chimeratribune.com/wp-content/uploads/2020/11/axieareanaswords.png"
+      "https://chimeratribune.com/wp-content/uploads/2020/11/axieareanaswords.png",
+    axie:
+      "https://storage.googleapis.com/assets.axieinfinity.com/axies/5334859/axie/axie-full-transparent.png",
+    scholar:
+      "https://png.pngtree.com/element_origin_min_pic/17/09/17/58c7e2f4435c8bfc09400154cdd9b89e.jpg"
   },
   snackbar: {
     value: false,
