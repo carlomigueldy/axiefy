@@ -1,5 +1,11 @@
 <template>
   <app-main-container>
+    <template v-slot:action>
+      <v-btn @click="dialog.review = true" depressed>Feedback</v-btn>
+    </template>
+
+    <app-review-dialog v-model="dialog.review" />
+
     <v-row>
       <v-col>
         <v-card flat outlined>
@@ -244,7 +250,13 @@
 export default {
   head: {
     title: "About"
-  }
+  },
+
+  data: () => ({
+    dialog: {
+      review: false
+    }
+  })
 };
 </script>
 

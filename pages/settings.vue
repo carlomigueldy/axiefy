@@ -2,7 +2,7 @@
   <app-main-container>
     <template v-slot:title>{{ title }}</template>
     <template v-slot:action>
-      <v-btn depressed>Feedback</v-btn>
+      <v-btn @click="showReviewDialog" depressed>Feedback</v-btn>
     </template>
 
     <v-row>
@@ -123,6 +123,8 @@
     </v-row>
 
     <v-sheet height="300" color="transparent"></v-sheet>
+
+    <app-review-dialog v-model="dialog.review"></app-review-dialog>
   </app-main-container>
 </template>
 
@@ -137,6 +139,9 @@ export default {
   data: () => ({
     fileForm: {},
     loading$: false,
+    dialog: {
+      review: false
+    },
     form: {
       name: "",
       password: "",
@@ -169,6 +174,10 @@ export default {
   },
 
   methods: {
+    showReviewDialog() {
+      this.dialog.review = true;
+    },
+
     onFileChange(event) {
       console.log("onFileChange", event);
       this.fileForm = event;

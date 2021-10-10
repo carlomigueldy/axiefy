@@ -24,6 +24,7 @@ DROP FUNCTION IF EXISTS public.handle_new_user;
 DROP FUNCTION IF EXISTS public.has_permission;
 DROP FUNCTION IF EXISTS public.has_role;
 
+DROP TABLE IF EXISTS public.reviews;
 DROP TABLE IF EXISTS public.team_members;
 DROP TABLE IF EXISTS public.teams;
 DROP TABLE IF EXISTS public.user_role;
@@ -266,3 +267,15 @@ BEGIN
   RETURN auth.uid();
 END
 $$ LANGUAGE plpgsql SECURITY DEFINER; 
+
+-- table: reviews
+CREATE TABLE public.reviews (
+  id uuid PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES public.users (id) DEFAULT auth.uid(),
+  message TEXT NOT NULL CHECK (message <> ''),
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now(),
+  deleted_at TIMESTAMP,
+  PRIMARY KEY (user_id, team_id)
+);
+COMMENT ON TABLE public.reviews IS 'User feedback/reviews/feature requests will be recorded here.';
