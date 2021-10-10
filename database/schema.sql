@@ -122,7 +122,7 @@ CREATE TABLE public.users (
   name VARCHAR CHECK (name <> ''),
   email TEXT UNIQUE NOT NULL CHECK (email <> ''), 
   username VARCHAR UNIQUE CHECK (username <> ''),
-  ronin_address VARCHAR(42) UNIQUE CHECK (ronin_address <> ''),
+  ronin_address VARCHAR(128) UNIQUE CHECK (ronin_address <> ''),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now(),
   deleted_at TIMESTAMP
