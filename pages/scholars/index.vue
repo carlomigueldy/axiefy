@@ -203,7 +203,10 @@ export default {
       .from("users")
       .on("INSERT", event => {
         if (event.new) {
-          this.$store.commit("addScholar", event.new);
+          this.$store.commit("addScholar", {
+            ...event.new,
+            share: 0
+          });
         }
       })
       .subscribe();

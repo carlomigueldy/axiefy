@@ -69,6 +69,7 @@ export default {
           provider
         });
         this.$log.info(response);
+        await this.$store.dispatch('init')
       } catch (error) {
         this.$toast.showUnexpectedError();
         this.$log.error(error, { method, provder });
