@@ -1,15 +1,33 @@
 export default ({ app }, inject) => {
   inject("stringUtil", {
-    truncateWallet: value => {
+    truncateAddress: value => {
+      console.log("truncateAddress=", value);
+
       if (!value) {
         return "";
       }
 
       if (value.length === 0) return "";
 
-      return `${value[0]}${value[1]}${value[2]}...${value[value.length - 3]}${
-        value[value.length - 2]
-      }${value[value.length - 1]}`.trim();
+      const [first, second, third] = value;
+      const firstThreeChars = [first, second, third].join("");
+      const lastThreeChars = [
+        value[value.length - 3],
+        value[value.length - 2],
+        value[value.length - 1]
+      ].join("");
+
+      return `${firstThreeChars}...${lastThreeChars}`.trim();
+    },
+
+    extractRoninAddress: address => {
+      console.log("extractRoninAddress=", address);
+
+      if (!address.includes("ronin:")) return null;
+
+      const [_, wallet] = address.split("ronin:");
+
+      return wallet;
     }
   });
 };

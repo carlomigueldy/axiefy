@@ -15,6 +15,7 @@ DROP POLICY IF EXISTS "Insert Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Update Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Delete Policy" ON public.role_permission;
 
+DROP FUNCTION IF EXISTS public.disable_account;
 DROP FUNCTION IF EXISTS public.get_auth_uid;
 DROP FUNCTION IF EXISTS public.get_team_members;
 DROP FUNCTION IF EXISTS public.assign_role;
@@ -24,6 +25,7 @@ DROP FUNCTION IF EXISTS public.handle_new_user;
 DROP FUNCTION IF EXISTS public.has_permission;
 DROP FUNCTION IF EXISTS public.has_role;
 
+DROP TABLE IF EXISTS public.reviews;
 DROP TABLE IF EXISTS public.team_members;
 DROP TABLE IF EXISTS public.teams;
 DROP TABLE IF EXISTS public.user_role;
@@ -119,10 +121,12 @@ WHERE name NOT IN (
 -- table: users
 CREATE TABLE public.users (
   id uuid PRIMARY KEY NOT NULL REFERENCES auth.users (id),
+  profile_image_url VARCHAR CHECK (profile_image_url <> ''),
   name VARCHAR CHECK (name <> ''),
   email TEXT UNIQUE NOT NULL CHECK (email <> ''), 
   username VARCHAR UNIQUE CHECK (username <> ''),
-  ronin_address VARCHAR(42) UNIQUE CHECK (ronin_address <> ''),
+  ronin_address VARCHAR(128) UNIQUE CHECK (ronin_address <> ''),
+  disabled_at TIMESTAMP,
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now(),
   deleted_at TIMESTAMP
@@ -263,5 +267,30 @@ RETURNS uuid AS
 $$
 BEGIN 
   RETURN auth.uid();
+END
+$$ LANGUAGE plpgsql SECURITY DEFINER; 
+
+-- table: reviews
+CREATE TABLE public.reviews (
+  id uuid PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES public.users (id) DEFAULT auth.uid(),
+  message TEXT NOT NULL CHECK (message <> ''),
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now(),
+  deleted_at TIMESTAMP,
+  PRIMARY KEY (user_id, team_id)
+);
+COMMENT ON TABLE public.reviews IS 'User feedback/reviews/feature requests will be recorded here.';
+
+-- function: disable_account
+CREATE OR REPLACE FUNCTION public.disable_account(email VARCHAR)
+RETURNS void AS 
+$$
+BEGIN 
+  IF NOT EXISTS(SELECT public.users.email FROM public.users WHERE id = auth.uid() AND users.email = $1) THEN
+    RAISE EXCEPTION 'No matching email on given input. It must be your email address.';
+  END IF;
+
+  UPDATE public.users SET disabled_at = now() WHERE id = auth.uid();
 END
 $$ LANGUAGE plpgsql SECURITY DEFINER; 

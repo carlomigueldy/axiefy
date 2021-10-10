@@ -24,9 +24,6 @@
           exact
           dense
         >
-          <!-- <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action> -->
           <v-list-item-content>
             <v-list-item-title v-text="item.title" class="subtitle-1" />
           </v-list-item-content>
@@ -43,20 +40,27 @@
 
       <div style="position: absolute; bottom: 0; left: 0; right: 0">
         <div class="d-flex justify-center py-3">
-          <v-btn
-            depressed
-            color="secondary"
-            class="rounded-lg"
-            style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
-            @click="toBillingSection"
-          >
-            Get Premium
-          </v-btn>
+          <app-tooltip message="Coming soon">
+            <v-btn
+              depressed
+              color="secondary"
+              class="rounded-lg"
+              style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
+              @click="toBillingSection"
+            >
+              👑 Get Premium
+            </v-btn>
+          </app-tooltip>
         </div>
 
-        <v-list-item @click="onClickUser" class="px-3 py-1">
-          <v-list-item-avatar>
-            <v-img src="supabase-logo.jpg"></v-img>
+        <v-list-item
+          :to="{
+            name: 'settings'
+          }"
+          class="px-3 py-1"
+        >
+          <v-list-item-avatar color="black">
+            <v-img :src="userProfileImage" color="black" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -72,8 +76,35 @@
 
     <v-dialog v-model="dialog.logoutConfirmation" width="500">
       <app-dialog-card>
-        <v-card-title>Logout</v-card-title>
-        <v-card-text>Are you sure you want to logout?</v-card-text>
+        <v-card-title>Is this goodbye?</v-card-title>
+        <v-card-text>
+          <div class="rounded my-5">
+            <div
+              style="width:100%;height:0;padding-bottom:56%;position:relative;"
+            >
+              <iframe
+                src="https://giphy.com/embed/vxNCVEe0PI9A3YVJEX"
+                width="100%"
+                height="100%"
+                style="position:absolute"
+                frameBorder="0"
+                class="giphy-embed"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <p>
+              <a
+                href="https://giphy.com/gifs/athomewithamysedaris-amy-sedaris-at-home-with-ah208-vxNCVEe0PI9A3YVJEX"
+              >
+                via GIPHY
+              </a>
+            </p>
+          </div>
+
+          <p>
+            Are you sure you want to logout?
+          </p>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -99,6 +130,7 @@ export default {
   data: () => ({
     drawer: true,
     loggingOut$: false,
+    userProfileImage: "",
     dialog: {
       logoutConfirmation: false
     },
@@ -113,11 +145,11 @@ export default {
         title: "Scholars",
         to: "/scholars"
       },
-      {
-        icon: "mdi-apps",
-        title: "Settings",
-        to: "/settings"
-      },
+      // {
+      //   icon: "mdi-apps",
+      //   title: "Settings",
+      //   to: "/settings"
+      // },
       {
         icon: "mdi-apps",
         title: "About",
@@ -127,8 +159,11 @@ export default {
     appName: "App Name"
   }),
 
-  created() {
-    this.$store.dispatch("fetchUser");
+  async created() {
+    console.log("Init");
+    await this.$store.dispatch("init");
+
+    this.userProfileImage = await this.$store.dispatch("getProfileImage");
   },
 
   computed: {
@@ -142,13 +177,6 @@ export default {
   },
 
   methods: {
-    onClickUser() {
-      console.log("onClickUser");
-      this.$router.push({
-        name: "settings"
-      });
-    },
-
     async logout() {
       try {
         this.loggingOut$ = true;

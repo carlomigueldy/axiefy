@@ -27,7 +27,11 @@
               <v-chip
                 v-if="item.ronin_address"
                 color="orange"
-                v-text="$stringUtil.truncateWallet(item.ronin_address)"
+                v-text="
+                  $stringUtil.truncateAddress(
+                    $stringUtil.extractRoninAddress(item.ronin_address)
+                  )
+                "
                 class="subtitle-1"
                 style="cursor: pointer"
                 @click="onClickWalletAddress(item.ronin_address)"
@@ -50,6 +54,17 @@
                     "
                   >
                     <v-list-item-title>View Scholar</v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-item
+                    @click="
+                      $router.push({
+                        name: 'scholars-id-edit',
+                        params: { id: item.id }
+                      })
+                    "
+                  >
+                    <v-list-item-title>Edit Scholar</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -75,8 +90,29 @@
     <v-dialog v-model="dialog.inviteScholar" width="500">
       <v-form ref="inviteForm" @submit.prevent="inviteScholar">
         <app-dialog-card>
-          <v-card-title>Invite Scholar</v-card-title>
+          <v-card-title>🎓 Invite Scholar</v-card-title>
           <v-card-text>
+            <div class="rounded my-5">
+              <div
+                style="width:100%;height:0;padding-bottom:56%;position:relative;"
+              >
+                <iframe
+                  src="https://giphy.com/embed/befaYZCgtZfZm"
+                  width="100%"
+                  height="100%"
+                  style="position:absolute"
+                  frameBorder="0"
+                  class="giphy-embed"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <p>
+                <a href="https://giphy.com/gifs/ussr-befaYZCgtZfZm">
+                  via GIPHY
+                </a>
+              </p>
+            </div>
+
             <p>
               Inviting a scholar will send them a confirmation link in their
               email.
@@ -87,6 +123,7 @@
               outlined
               label="Email"
               dense
+              :rules="$store.getters.validationRules.required"
             ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -98,7 +135,7 @@
                   depressed
                   color="primary"
                 >
-                  Invite
+                  Invite 🎉
                 </v-btn>
               </div>
             </v-card-actions>
@@ -111,22 +148,6 @@
 
 <script>
 export default {
-  async created() {
-    if (this.$store.state.scholars.length !== 0) {
-      return;
-    }
-
-    try {
-      this.getTeamMembersLoading$ = true;
-      const response = await this.$store.dispatch("rpc", "get_team_members");
-      this.$store.commit("setScholars", response);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.getTeamMembersLoading$ = false;
-    }
-  },
-
   data: () => ({
     inviteScholarEmail: "",
     inviteScholarLoading$: false,
@@ -148,7 +169,7 @@ export default {
       {
         text: "Ronin Wallet",
         value: "ronin_address",
-        width: "5%"
+        width: "15%"
       },
       {
         text: "Action",
@@ -157,8 +178,39 @@ export default {
         align: "center",
         width: "30%"
       }
-    ]
+    ],
+    usersSubscription$: null
   }),
+
+  async created() {
+    this.usersSubscription$ = this.$supabase
+      .from("users")
+      .on("INSERT", event => {
+        if (event.new) {
+          this.$store.commit("addScholar", event.new);
+        }
+      })
+      .subscribe();
+
+    if (this.$store.state.scholars.length !== 0) {
+      return;
+    }
+
+    try {
+      this.getTeamMembersLoading$ = true;
+      const response = await this.$store.dispatch("rpc", "get_team_members");
+      this.$store.commit("setScholars", response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.getTeamMembersLoading$ = false;
+    }
+  },
+
+  destroyed() {
+    console.log("destroyed");
+    this.usersSubscription$?.unsubscribe();
+  },
 
   methods: {
     onClickItem(item) {
@@ -179,7 +231,12 @@ export default {
     },
 
     async inviteScholar() {
+      if (!this.$refs.inviteForm.validate()) {
+        return this.$toast("Must provide an email address");
+      }
+
       this.inviteScholarLoading$ = true;
+
       try {
         const { data } = await this.$store.dispatch(
           "inviteToSupabase",
@@ -193,9 +250,15 @@ export default {
           return;
         }
 
+        this.$confetti.start();
+
         this.$log.info(data);
         this.$toast(`You have successfully invited ${this.inviteScholarEmail}`);
         this.inviteScholarEmail = "";
+
+        setTimeout(() => {
+          this.$confetti.stop();
+        }, 6000);
       } catch (error) {
         this.$log.error(error);
         this.$toast("An error occurred, try again later");

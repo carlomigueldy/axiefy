@@ -2,40 +2,56 @@
   <app-main-container>
     <v-row align="center" justify="center">
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Total Gross SLP" :image-url="slpImg">
-          {{ manager.gross }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Total Gross SLP"
+          :image-url="slpImg"
+          :value="manager.gross"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Total Share" :image-url="slpImg">
-          {{ manager.net }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Total Share"
+          :image-url="slpImg"
+          :value="manager.net"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Daily Share" :image-url="slpImg">
-          {{ manager.daily }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Daily Share"
+          :image-url="slpImg"
+          :value="manager.daily"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="SLP Price" :image-url="slpImg">
-          {{ slp.currentPrice }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="SLP Price"
+          :image-url="slpImg"
+          :value="slp.currentPrice"
+        />
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Average MMR" :image-url="arenaImg">
-          {{ averageMMR }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Average MMR"
+          :image-url="arenaImg"
+          :value="averageMMR"
+          image-rounded
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Axies" :image-url="axieImg">
-          {{ axies.count }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Axies"
+          :image-url="axieImg"
+          :value="axies.count"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Scholars" :image-url="scholarImg">
-          {{ scholars.count }}
+        <app-simple-data-card
+          title="Scholars"
+          :image-url="scholarImg"
+          :value="scholars.count"
+        >
           <template v-slot:image>
             <span style="font-size: 40px">🎓</span>
           </template>
@@ -45,7 +61,7 @@
 
     <v-row class="mt-10" justify="center" align="center">
       <v-col cols="12" md="4">
-        <v-card>
+        <v-card outlined>
           <v-toolbar flat>
             <v-toolbar-title>Leaderboards</v-toolbar-title>
             <template v-slot:extension>

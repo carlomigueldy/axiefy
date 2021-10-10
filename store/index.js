@@ -77,6 +77,10 @@ export const mutations = {
     state.scholars = payload;
   },
 
+  addScholar: (state, payload) => {
+    state.scholars.push(payload);
+  },
+
   toggleDrawer: (state, payload) => {
     state.drawer = payload ?? !state.drawer;
   },
@@ -95,7 +99,11 @@ export const mutations = {
 };
 
 export const getters = {
-  scholarWallets: state => state.scholars.map(scholar => scholar.ronin_address)
+  scholarWallets: state => state.scholars.map(scholar => scholar.ronin_address),
+
+  validationRules: _ => ({
+    required: [v => !!v || "This field is required"]
+  })
 };
 
 export const actions = {
@@ -128,6 +136,21 @@ export const actions = {
     );
   },
 
+  async init({ dispatch }) {
+    await dispatch("fetchUser");
+
+    const refreshToken = this.$auth.strategy.refreshToken.get();
+    const { data, error } = await this.$supabase.auth.signIn({
+      refreshToken
+    });
+
+    if (error) {
+      console.error(error);
+    }
+
+    this.$auth.strategy.refreshToken.set(data?.refresh_token);
+  },
+
   async fetchUser({ state, commit }, payload) {
     this.$log.info("fetchUser", payload);
 
@@ -148,5 +171,23 @@ export const actions = {
       this.$log.error(error);
       return null;
     }
+  },
+
+  async getProfileImage({ state }) {
+    const url = state?.user?.profile_image_url;
+    const defaultUrl = "supabase-logo.jpg";
+
+    if (!url) return defaultUrl;
+
+    const { data, error, publicURL } = this.$supabase.storage
+      .from("public")
+      .getPublicUrl(url);
+
+    if (error) {
+      console.error(error);
+      return defaultUrl;
+    }
+
+    return publicURL || defaultUrl;
   }
 };

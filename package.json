@@ -24,6 +24,7 @@
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/vuetify": "^1.12.1",
     "nuxt-logger": "^0.2.0",
-    "nuxt-supabase": "^2.1.0"
+    "nuxt-supabase": "^2.1.0",
+    "vue-confetti": "^2.2.2"
   }
 }

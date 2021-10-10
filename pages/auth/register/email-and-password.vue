@@ -5,6 +5,8 @@
         label="Name"
         type="email"
         v-model="form.name"
+        aria-autocomplete="none"
+        autocomplete="new-name"
         outlined
         dense
       ></v-text-field>
@@ -13,6 +15,8 @@
         type="email"
         v-model="form.email"
         :rules="rules.email"
+        aria-autocomplete="none"
+        autocomplete="new-email"
         outlined
         dense
       ></v-text-field>
@@ -21,6 +25,8 @@
         type="password"
         v-model="form.password"
         :rules="rules.password"
+        aria-autocomplete="none"
+        autocomplete="new-password"
         outlined
         dense
       ></v-text-field>
