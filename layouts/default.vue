@@ -40,15 +40,17 @@
 
       <div style="position: absolute; bottom: 0; left: 0; right: 0">
         <div class="d-flex justify-center py-3">
-          <v-btn
-            depressed
-            color="secondary"
-            class="rounded-lg"
-            style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
-            @click="toBillingSection"
-          >
-            👑 Get Premium
-          </v-btn>
+          <app-tooltip message="Coming soon">
+            <v-btn
+              depressed
+              color="secondary"
+              class="rounded-lg"
+              style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
+              @click="toBillingSection"
+            >
+              👑 Get Premium
+            </v-btn>
+          </app-tooltip>
         </div>
 
         <v-list-item @click="onClickUser" class="px-3 py-1">

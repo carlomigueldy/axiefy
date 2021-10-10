@@ -30,14 +30,35 @@
               <div class="subtitle-1 white--text">Core Contributors</div>
               <ul style="font-size: 16px">
                 <li>
-                  <a href="https://github.com/carlomigueldy" target="_blank">
-                    carlomigueldy
-                  </a>
+                  <p>
+                    <a href="https://github.com/carlomigueldy" target="_blank">
+                      carlomigueldy
+                    </a>
+                  </p>
                 </li>
                 <li>
-                  <a href="https://github.com/sushiAlii" target="_blank">
-                    sushiAlii
-                  </a>
+                  <p>
+                    <a href="https://github.com/sushiAlii" target="_blank">
+                      sushiAlii
+                    </a>
+                  </p>
+                </li>
+              </ul>
+            </section>
+
+            <section class="mb-10">
+              <div class="subtitle-1 white--text">Contributors</div>
+              <ul style="font-size: 16px">
+                <li>
+                  <p>
+                    No one have contributed to this project yet. Create a
+                    <a
+                      href="https://github.com/carlomigueldy/supa"
+                      target="_blank"
+                    >
+                      Pull Request </a
+                    >!
+                  </p>
                 </li>
               </ul>
             </section>
@@ -123,11 +144,16 @@
 
               <p>
                 Feel free to report any bugs to
+                <app-main-author-email />
+              </p>
+              <p>
+                Or directly from the
                 <a
                   class="font-weight-bold"
-                  href="mailto:carlomigueldy@gmail.com"
+                  href="https://github.com/carlomigueldy/supa"
+                  target="_blank"
                 >
-                  carlomigueldy@gmail.com
+                  repo
                 </a>
               </p>
             </section>
@@ -135,6 +161,39 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <v-row>
+      <v-col>
+        <v-card outlined>
+          <v-card-title>Roadmap</v-card-title>
+          <v-divider />
+          <v-card-text>
+            <ul>
+              <li>
+                <p>Supabase Hackathon Submission 🎉</p>
+              </li>
+              <li>
+                <p>When Nuxt 3 comes out this app will get updated.</p>
+              </li>
+              <li>
+                <p>TypeScript migration</p>
+              </li>
+              <li>
+                <p>
+                  Maybe a UI redesign? If you're a designer and willing to
+                  redesign the entire open-source app for free then feel free to
+                  reach me
+                  <app-main-author-email />. Your name will be added into the
+                  "Contributors" section
+                </p>
+              </li>
+            </ul>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-sheet color="transparent" height="30vh" />
   </app-main-container>
 </template>
 

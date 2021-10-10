@@ -23,30 +23,32 @@
           <v-card-title>Account</v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <app-file-input @change="onFileChange" type="image">
-              <v-sheet rounded color="transparent" width="200" height="200">
-                <v-img
-                  :src="fileForm.preview || userProfileImage"
-                  lazy-src="supabase-logo.jpg"
-                  class="rounded"
-                  width="200"
-                  height="200"
-                >
-                  <template v-slot:placeholder>
-                    <v-row
-                      class="fill-height ma-0"
-                      align="center"
-                      justify="center"
-                    >
-                      <v-progress-circular
-                        indeterminate
-                        color="grey lighten-5"
-                      ></v-progress-circular>
-                    </v-row>
-                  </template>
-                </v-img>
-              </v-sheet>
-            </app-file-input>
+            <app-tooltip message="Click to select image">
+              <app-file-input @change="onFileChange" type="image">
+                <v-sheet rounded color="transparent" width="200" height="200">
+                  <v-img
+                    :src="fileForm.preview || userProfileImage"
+                    lazy-src="supabase-logo.jpg"
+                    class="rounded"
+                    width="200"
+                    height="200"
+                  >
+                    <template v-slot:placeholder>
+                      <v-row
+                        class="fill-height ma-0"
+                        align="center"
+                        justify="center"
+                      >
+                        <v-progress-circular
+                          indeterminate
+                          color="grey lighten-5"
+                        ></v-progress-circular>
+                      </v-row>
+                    </template>
+                  </v-img>
+                </v-sheet>
+              </app-file-input>
+            </app-tooltip>
 
             <v-sheet height="25" color="transparent"></v-sheet>
 

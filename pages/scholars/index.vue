@@ -92,6 +92,27 @@
         <app-dialog-card>
           <v-card-title>🎓 Invite Scholar</v-card-title>
           <v-card-text>
+            <div class="rounded my-5">
+              <div
+                style="width:100%;height:0;padding-bottom:56%;position:relative;"
+              >
+                <iframe
+                  src="https://giphy.com/embed/befaYZCgtZfZm"
+                  width="100%"
+                  height="100%"
+                  style="position:absolute"
+                  frameBorder="0"
+                  class="giphy-embed"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <p>
+                <a href="https://giphy.com/gifs/ussr-befaYZCgtZfZm">
+                  via GIPHY
+                </a>
+              </p>
+            </div>
+
             <p>
               Inviting a scholar will send them a confirmation link in their
               email.
