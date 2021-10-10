@@ -24,10 +24,11 @@
           >
             <!-- @click:row="onClickItem" -->
             <template v-slot:[`item.ronin_address`]="{ item }">
-              <span
+              <v-chip
                 v-if="item.ronin_address"
+                color="orange"
                 v-text="$stringUtil.truncateWallet(item.ronin_address)"
-                class="subtitle-1 pa-5"
+                class="subtitle-1"
                 style="cursor: pointer"
                 @click="onClickWalletAddress(item.ronin_address)"
               />
