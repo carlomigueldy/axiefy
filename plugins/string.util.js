@@ -23,6 +23,10 @@ export default ({ app }, inject) => {
 
       const [_, wallet] = address.split("ronin:");
 
+      if (!wallet) {
+        return null;
+      }
+
       return wallet;
     }
   });

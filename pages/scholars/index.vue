@@ -35,13 +35,9 @@
             </template>
             <template v-slot:[`item.ronin_address`]="{ item }">
               <v-chip
-                v-if="item.ronin_address"
+                v-if="formatRoninAddress(item.ronin_address)"
                 color="orange"
-                v-text="
-                  $stringUtil.truncateAddress(
-                    $stringUtil.extractRoninAddress(item.ronin_address)
-                  )
-                "
+                v-text="formatRoninAddress(item.ronin_address)"
                 class="subtitle-1"
                 style="cursor: pointer"
                 @click="onClickWalletAddress(item.ronin_address)"
@@ -234,6 +230,12 @@ export default {
   },
 
   methods: {
+    formatRoninAddress(address) {
+      return this.$stringUtil.truncateAddress(
+        this.$stringUtil.extractRoninAddress(address || "")
+      );
+    },
+
     onClickItem(item) {
       console.log("onClickItem", item);
       this.$router.push({
