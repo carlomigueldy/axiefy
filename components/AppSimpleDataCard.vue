@@ -1,24 +1,22 @@
 <template>
-  <v-card min-height="70">
-    <v-card-title>
-      <v-row class="pt-5 px-5" align="center" justify="center">
+  <v-card outlined min-height="70">
+    <v-card-text>
+      <div class="d-flex justify-center align-center">
         <slot name="image">
           <v-img
             :src="imageUrl"
-            :height="imageSize || imageHeight"
-            :width="imageSize || imageWidth"
+            :max-height="imageSize || imageHeight"
+            :max-width="imageSize || imageWidth"
           />
         </slot>
-        <div class="headline-1 mx-3">
-          <slot>
-            {{ value }}
-          </slot>
+        <div class="title mx-3 white--text">
+          <slot v-text="value" />
         </div>
-      </v-row>
-    </v-card-title>
-    <v-row justify="center">
-      <v-card-title v-text="title" />
-    </v-row>
+      </div>
+      <div class="text-center mt-5">
+        <div class="subtitle-1 white--text" v-text="title" />
+      </div>
+    </v-card-text>
   </v-card>
 </template>
 

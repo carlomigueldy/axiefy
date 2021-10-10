@@ -3,104 +3,43 @@
     <template v-slot:title>{{ $route.params.id }}</template>
     <v-row>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
-              <div class="headline-1 mx-3">
-                {{ slp.total }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Total SLP</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Total SLP" :image-url="slpImg">
+          {{ slp.total }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
-              <div class="headline-1 mx-3">
-                {{ slp.inGameSLP }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>In Game SLP</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="In Game SLP" :image-url="slpImg">
+          {{ slp.inGameSLP }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
-              <div class="headline-1 mx-3">
-                {{ slp.roninSLP }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Ronin SLP</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Ronin SLP" :image-url="slpImg">
+          {{ slp.roninSLP }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
-              <div class="headline-1 mx-3">
-                {{ slp.dailySLP }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Daily Average</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Daily Average" :image-url="slpImg">
+          {{ slp.dailySLP }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                class="rounded-circle"
-                :src="slpImg"
-                max-height="35"
-                max-width="35"
-              ></v-img>
-              <div class="headline-1 mx-3">
-                {{ slp.farmedToday }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Farmed Today</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Farmed Today" :image-url="slpImg">
+          {{ slp.farmedToday }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                class="rounded-circle"
-                :src="arenaImg"
-                max-height="35"
-                max-width="35"
-              ></v-img>
-              <div class="headline-1 mx-3">
-                {{ mmr }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Current MMR</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Current MMR" :image-url="arenaImg">
+          {{ mmr }}
+
+          <template v-slot:image>
+            <v-img
+              class="rounded-circle"
+              :src="arenaImg"
+              max-height="35"
+              max-width="35"
+            ></v-img>
+          </template>
+        </app-simple-data-card>
       </v-col>
     </v-row>
     <v-divider class="mt-10"></v-divider>
