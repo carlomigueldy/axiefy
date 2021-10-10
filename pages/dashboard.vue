@@ -176,7 +176,7 @@ export default {
     }
   },
   async created() {
-    const response = await this.$store.dispatch("rpc", "get_team_members");
+    const response = await this.$store.dispatch("users/all");
     this.$store.commit("setScholars", response);
 
     console.log(this.$store.state.scholars);
