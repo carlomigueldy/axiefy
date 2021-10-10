@@ -14,6 +14,10 @@ DROP POLICY IF EXISTS "Read Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Insert Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Update Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Delete Policy" ON public.role_permission;
+DROP POLICY IF EXISTS "Only authenticated users can read" ON public.users;
+DROP POLICY IF EXISTS "Only managers and super admins can insert" ON public.users;
+DROP POLICY IF EXISTS "Only managers and super admins can update" ON public.users;
+DROP POLICY IF EXISTS "Only super admins can delete" ON public.users;
 
 DROP FUNCTION IF EXISTS public.disable_account;
 DROP FUNCTION IF EXISTS public.get_auth_uid;
