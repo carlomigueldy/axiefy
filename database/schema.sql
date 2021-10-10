@@ -261,22 +261,28 @@ CREATE TABLE public.team_members (
 );
 
 -- function: get_team_members
+-- todo: to be removed
 CREATE OR REPLACE FUNCTION public.get_team_members()
-RETURNS SETOF public.users AS 
+RETURNS SETOF public.get_team_members AS 
 $$
 BEGIN 
-  RETURN QUERY (SELECT users.* 
-    FROM team_members
-    INNER JOIN users 
-    ON team_members.user_id = users.id 
-    WHERE team_id = (
-      SELECT id 
-      FROM teams 
-      WHERE owner_id = auth.uid()
-    )
-  );
+  RETURN QUERY (SELECT * FROM get_team_members);
 END
 $$ LANGUAGE plpgsql SECURITY DEFINER; 
+
+-- view: get_team_members
+CREATE VIEW get_team_members AS (
+  SELECT users.*, team_members.share AS share
+  FROM team_members
+  INNER JOIN users 
+  ON team_members.user_id = users.id 
+  WHERE team_id = (
+    SELECT id 
+    FROM teams 
+    WHERE owner_id = auth.uid()
+  )
+);
+  
 
 -- function: get_auth_uid
 -- for testing purposes
