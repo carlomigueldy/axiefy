@@ -119,6 +119,7 @@ WHERE name NOT IN (
 -- table: users
 CREATE TABLE public.users (
   id uuid PRIMARY KEY NOT NULL REFERENCES auth.users (id),
+  profile_image_url VARCHAR CHECK (profile_image_url <> ''),
   name VARCHAR CHECK (name <> ''),
   email TEXT UNIQUE NOT NULL CHECK (email <> ''), 
   username VARCHAR UNIQUE CHECK (username <> ''),
