@@ -253,6 +253,7 @@ COMMENT ON COLUMN public.teams.owner_id IS 'The manager/owner that manages schol
 CREATE TABLE public.team_members (
   user_id uuid NOT NULL REFERENCES public.users (id),
   team_id uuid NOT NULL REFERENCES public.teams (id),
+  share SMALLINT CHECK (share <= 100 AND share >= 0 ),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now(),
   deleted_at TIMESTAMP,

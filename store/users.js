@@ -13,7 +13,7 @@ export const actions = {
     try {
       const { data, error } = await this.$supabase
         .from("users")
-        .select()
+        .select("*, detail: team_members ( share )")
         .eq("id", id)
         .single();
 
