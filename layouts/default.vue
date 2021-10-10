@@ -62,7 +62,7 @@
 
         <div style="position: absolute; bottom: 0; left: 0; right: 0">
           <div class="d-flex justify-center py-3">
-            <app-tooltip message="Coming soon">
+            <app-tooltip top message="Coming soon">
               <v-btn
                 depressed
                 color="secondary"
@@ -214,7 +214,7 @@ export default {
 
       this.userProfileImage = await this.$store.dispatch("getProfileImage");
     } catch (error) {
-        this.$toast.showUnexpectedError();
+      this.$toast.showUnexpectedError();
       console.error(error);
     } finally {
       setTimeout(() => {
