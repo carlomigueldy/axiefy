@@ -103,6 +103,7 @@ export default {
         provider
       });
       this.$log.info(response);
+      await this.$store.dispatch("init");
     },
     async onSubmit() {
       this.loading$ = true;
