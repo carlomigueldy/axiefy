@@ -41,6 +41,8 @@
       </v-col>
       <v-col cols="12" md="2" sm="2">
         <app-simple-data-card
+          imgReduceMargin
+          imageSize="75"
           title="Axies"
           :image-url="axieImg"
           :value="axies.count"
@@ -114,6 +116,10 @@ export default {
         net: 0,
         daily: 0
       },
+      scholar: {
+        addresses: "",
+        addressArr: []
+      },
       axies: {
         count: 0
       },
@@ -169,16 +175,24 @@ export default {
       }
     }
   },
-  created() {
-    this.getTotalSLP();
-    this.getSLPDetails();
-    this.getTopPlayers();
+  async created() {
+    const response = await this.$store.dispatch("rpc", "get_team_members");
+    this.$store.commit("setScholars", response);
+
+    console.log(this.$store.state.scholars);
+    await Promise.all([
+      this.parseScholarAddress(),
+      this.getTotalSLP(),
+      this.getTotalAxies(),
+      this.getSLPDetails(),
+      this.getTopPlayers()
+    ]);
   },
   methods: {
     async getTotalSLP() {
       try {
         const response = await axios.get(
-          `${AXIE_GAME_API_BASE_URL}/api/v1/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3,ronin:926813711d56434ea6f1e1ae8c53e47e2eface87,ronin:0a59a1440f03d4113a922c2b6b1f5918af2100a5,ronin:ca786a0d7259a866413261d7d08767aa9633ebd9`,
+          `${AXIE_GAME_API_BASE_URL}/api/v1/${this.scholar.addresses}`,
           {
             accept: "application/json"
           }
@@ -198,13 +212,15 @@ export default {
         console.log("MAPPING", data);
         this.scholars.count = data.length;
         data.forEach(item => {
-          console.log(item.total_slp, item.name);
-          this.manager.gross = this.manager.gross + item.total_slp;
-          this.manager.daily = Math.ceil(
-            this.manager.daily +
-              this.getDailySLP(item.last_claim, item.in_game_slp)
-          );
-          this.averageMMR = this.averageMMR + item.mmr;
+          console.log("ITEM", item.total_slp, item.name, item.mmr);
+          if (item.total_slp !== undefined) {
+            this.manager.gross = this.manager.gross + item.total_slp;
+            this.manager.daily = Math.ceil(
+              this.manager.daily +
+                this.getDailySLP(item.last_claim, item.in_game_slp)
+            );
+            this.averageMMR = this.averageMMR + item.mmr;
+          }
         });
         this.manager.net = Math.ceil(this.manager.gross * 0.6);
         console.log("MMR", this.averageMMR);
@@ -222,7 +238,26 @@ export default {
 
       return Math.ceil(slp / dateDiff) * 0.6;
     },
-    getTotalAxies() {},
+    async getTotalAxies() {
+      console.log("AXIE", this.scholar.addressArr);
+      try {
+        for (let i = 0; i < this.scholar.addressArr.length; i++) {
+          const response = await axios.get(
+            `${AXIE_RAPID_API_BASE_URL}/get-axies/${this.scholar.addressArr[i]}`,
+            {
+              headers: {
+                "x-rapidapi-host": "axie-infinity.p.rapidapi.com",
+                "x-rapidapi-key": this.$config.AXIE_RAPID_API_KEY
+              }
+            }
+          );
+          this.axies.count = this.axies.count + response.data.data.axies.total;
+          console.log("TOTAL", this.axies.count);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getSLPDetails() {
       const response = await axios.get(
         `${COIN_GECKO_API_BASE_URL}/api/v3/coins/markets?vs_currency=usd&ids=smooth-love-potion&order=market_cap_desc&per_page=100&page=1&sparkline=false`
@@ -242,16 +277,28 @@ export default {
       console.log("TOP MMR", response);
       this.leaderboards.items.world = response.data.items;
     },
-    orderByDesc(array) {},
 
-    async created() {
-      try {
-        const response = await this.$store.dispatch("rpc", "get_team_members");
-        this.$store.commit("setScholars", response);
-      } catch (error) {
-        this.$toast.showUnexpectedError();
-        console.error(error);
+    parseScholarAddress() {
+      var addressArrIndex = 0;
+      for (let i = 0; i < this.$store.state.scholars.length; i++) {
+        if (this.$store.state.scholars[i].ronin_address != null) {
+          var address = this.$store.state.scholars[i].ronin_address.split(
+            "ronin:"
+          );
+          this.scholar.addressArr[addressArrIndex] = "0x" + address[1];
+          addressArrIndex++;
+        }
       }
+      for (let i = 0; i < this.scholar.addressArr.length; i++) {
+        if (i == 0) {
+          this.scholar.addresses =
+            this.scholar.addresses + this.scholar.addressArr[i];
+        } else {
+          this.scholar.addresses =
+            this.scholar.addresses + "," + this.scholar.addressArr[i];
+        }
+      }
+      console.log("ADDRESS 1", this.scholar.addresses);
     }
   }
 };
