@@ -132,7 +132,14 @@
           <v-card-text>
             <div class="subtitle-1">Disable your account</div>
             <v-sheet height="25" color="transparent"></v-sheet>
-            <v-btn outlined large color="error">Disable Account</v-btn>
+            <v-btn
+              @click="dialog.disableAccount = true"
+              outlined
+              large
+              color="error"
+            >
+              Disable Account
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-col>
@@ -140,7 +147,8 @@
 
     <v-sheet height="300" color="transparent"></v-sheet>
 
-    <app-review-dialog v-model="dialog.review"></app-review-dialog>
+    <app-review-dialog v-model="dialog.review" />
+    <app-disable-account-dialog v-model="dialog.disableAccount" />
   </app-main-container>
 </template>
 
@@ -156,7 +164,8 @@ export default {
     fileForm: {},
     loading$: false,
     dialog: {
-      review: false
+      review: false,
+      disableAccount: false
     },
     form: {
       name: "",

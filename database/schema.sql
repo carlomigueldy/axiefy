@@ -15,6 +15,7 @@ DROP POLICY IF EXISTS "Insert Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Update Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Delete Policy" ON public.role_permission;
 
+DROP FUNCTION IF EXISTS public.disable_account;
 DROP FUNCTION IF EXISTS public.get_auth_uid;
 DROP FUNCTION IF EXISTS public.get_team_members;
 DROP FUNCTION IF EXISTS public.assign_role;
@@ -125,6 +126,7 @@ CREATE TABLE public.users (
   email TEXT UNIQUE NOT NULL CHECK (email <> ''), 
   username VARCHAR UNIQUE CHECK (username <> ''),
   ronin_address VARCHAR(128) UNIQUE CHECK (ronin_address <> ''),
+  disabled_at TIMESTAMP,
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now(),
   deleted_at TIMESTAMP
@@ -279,3 +281,16 @@ CREATE TABLE public.reviews (
   PRIMARY KEY (user_id, team_id)
 );
 COMMENT ON TABLE public.reviews IS 'User feedback/reviews/feature requests will be recorded here.';
+
+-- function: disable_account
+CREATE OR REPLACE FUNCTION public.disable_account(email VARCHAR)
+RETURNS void AS 
+$$
+BEGIN 
+  IF NOT EXISTS(SELECT public.users.email FROM public.users WHERE id = auth.uid() AND users.email = $1) THEN
+    RAISE EXCEPTION 'No matching email on given input. It must be your email address.';
+  END IF;
+
+  UPDATE public.users SET disabled_at = now() WHERE id = auth.uid();
+END
+$$ LANGUAGE plpgsql SECURITY DEFINER; 
