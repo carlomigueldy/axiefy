@@ -132,6 +132,21 @@ export const actions = {
     );
   },
 
+  async init({ dispatch }) {
+    await dispatch("fetchUser");
+
+    const refreshToken = this.$auth.strategy.refreshToken.get();
+    const { data, error } = await this.$supabase.auth.signIn({
+      refreshToken
+    });
+
+    if (error) {
+      console.error(error);
+    }
+
+    this.$auth.strategy.refreshToken.set(data?.refresh_token);
+  },
+
   async fetchUser({ state, commit }, payload) {
     this.$log.info("fetchUser", payload);
 

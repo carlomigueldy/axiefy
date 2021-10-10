@@ -89,12 +89,14 @@ export default {
       }
     }
   },
+
   publicRuntimeConfig: {
     AXIE_RAPID_API_KEY: process.env.AXIE_RAPID_API_KEY,
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_KEY: process.env.SUPABASE_KEY,
     AWS_API_BASE_URL: process.env.AWS_API_BASE_URL
   },
+
   googleFonts: {
     prefetch: true,
     families: {
@@ -123,17 +125,27 @@ export default {
     },
     strategies: {
       local: {
+        scheme: "refresh",
+
         token: {
           property: "access_token",
           global: true,
           type: "Bearer"
         },
+
+        refreshToken: {
+          property: "refresh_token",
+          data: "refresh_token"
+        },
+
         user: {
           property: false
         },
+
         endpoints: {
           tokenType: "Bearer",
           autoFetchUser: true,
+
           login: {
             url: `${process.env.SUPABASE_URL}/auth/v1/token?grant_type=password`,
             method: "post",
@@ -143,6 +155,7 @@ export default {
               Authorization: `Bearer ${process.env.SUPABASE_KEY}`
             }
           },
+
           register: {
             url: `${process.env.SUPABASE_URL}/auth/v1/signup`,
             method: "post",
@@ -152,6 +165,7 @@ export default {
               Authorization: `Bearer ${process.env.SUPABASE_KEY}`
             }
           },
+
           user: {
             url: `${process.env.SUPABASE_URL}/auth/v1/user`,
             method: "get",
@@ -161,6 +175,7 @@ export default {
             },
             propertyName: false
           },
+
           logout: {
             url: `${process.env.SUPABASE_URL}/auth/v1/logout`,
             method: "post",
@@ -168,10 +183,6 @@ export default {
               "Content-Type": "application/json",
               apiKey: process.env.SUPABASE_KEY,
               Authorization: `Bearer ${process.env.SUPABASE_KEY}`
-              // Authorization: [
-              //   "Bearer",
-              //   localStorage.getItem("auth._token.local")
-              // ].join(" ")
             }
           }
         }

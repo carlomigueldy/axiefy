@@ -127,8 +127,8 @@ export default {
     appName: "App Name"
   }),
 
-  created() {
-    this.$store.dispatch("fetchUser");
+  async created() {
+    await this.$store.dispatch("init");
   },
 
   computed: {
