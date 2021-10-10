@@ -1,7 +1,7 @@
 export default ({ $supabase }, inject) => {
   inject("util", {
     getProfileImageUrl: value => {
-      const defaultUrl = "supabase-logo.jpg";
+      const defaultUrl = "/supabase-logo.jpg";
 
       if (!value) return defaultUrl;
 
