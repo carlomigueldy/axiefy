@@ -5,19 +5,22 @@
     <v-card-text class="d-flex justify-space-around align-center pa-10">
       <app-plan-preview-card
         title="Free Tier"
-        subtitle="Details coming soon"
+        description="Pay Nothing like Jon Snow"
+        subtitle="Coming soon"
         emoji="💡"
       />
 
       <app-plan-preview-card
         title="Basic"
-        subtitle="Details coming soon"
+        description="Can't Afford Premium?"
+        subtitle="Coming soon"
         emoji="🍕"
       />
 
       <app-plan-preview-card
         title="Premium"
-        subtitle="Details coming soon"
+        description="PRO TIP: Not Worth It"
+        subtitle="Coming soon"
         emoji="👑"
       />
     </v-card-text>
