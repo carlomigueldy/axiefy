@@ -167,5 +167,23 @@ export const actions = {
       this.$log.error(error);
       return null;
     }
+  },
+
+  async getProfileImage({ state }) {
+    const url = state?.user?.profile_image_url;
+    const defaultUrl = "supabase-logo.jpg";
+
+    if (!url) return defaultUrl;
+
+    const { data, error, publicURL } = this.$supabase.storage
+      .from("public")
+      .getPublicUrl(url);
+
+    if (error) {
+      console.error(error);
+      return defaultUrl;
+    }
+
+    return publicURL || defaultUrl;
   }
 };

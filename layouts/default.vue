@@ -55,8 +55,8 @@
         </div>
 
         <v-list-item @click="onClickUser" class="px-3 py-1">
-          <v-list-item-avatar>
-            <v-img src="supabase-logo.jpg"></v-img>
+          <v-list-item-avatar color="black">
+            <v-img :src="userProfileImage" color="black" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
@@ -99,6 +99,7 @@ export default {
   data: () => ({
     drawer: true,
     loggingOut$: false,
+    userProfileImage: "",
     dialog: {
       logoutConfirmation: false
     },
@@ -128,7 +129,10 @@ export default {
   }),
 
   async created() {
+    console.log("Init");
     await this.$store.dispatch("init");
+
+    this.userProfileImage = await this.$store.dispatch("getProfileImage");
   },
 
   computed: {
