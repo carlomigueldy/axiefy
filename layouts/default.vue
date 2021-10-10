@@ -53,7 +53,12 @@
           </app-tooltip>
         </div>
 
-        <v-list-item @click="onClickUser" class="px-3 py-1">
+        <v-list-item
+          :to="{
+            name: 'settings'
+          }"
+          class="px-3 py-1"
+        >
           <v-list-item-avatar color="black">
             <v-img :src="userProfileImage" color="black" />
           </v-list-item-avatar>
@@ -172,13 +177,6 @@ export default {
   },
 
   methods: {
-    onClickUser() {
-      console.log("onClickUser");
-      this.$router.push({
-        name: "settings"
-      });
-    },
-
     async logout() {
       try {
         this.loggingOut$ = true;
