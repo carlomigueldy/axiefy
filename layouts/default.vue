@@ -1,78 +1,111 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      color="grey darken-4"
-      :value="$store.state.drawer"
-      @input="onChangeDrawer"
-      fixed
-      app
+    <v-container
+      fill-height
+      v-if="$store.getters.userDisabled && !initializing$"
     >
-      <v-sheet
-        color="transparent"
-        class="pa-5 d-flex justify-center"
-        width="100%"
+      <v-row justify="center" align="center">
+        <v-col>
+          <div class="text-center ">
+            <div class="display-1 error--text">Account Disabled</div>
+            <div class="subtitle-1 mb-5">
+              <span>Send a message to re-enable your account at</span>
+              <app-main-author-email />
+            </div>
+            <v-btn @click="logout" x-large text>Ok</v-btn>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <div
+      ref="wrapper"
+      v-else-if="!$store.getters.userDisabled && !initializing$"
+    >
+      <v-navigation-drawer
+        color="grey darken-4"
+        :value="$store.state.drawer"
+        @input="onChangeDrawer"
+        fixed
+        app
       >
-        <div class="title">{{ appName }}</div>
-      </v-sheet>
-
-      <v-list nav>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-          dense
+        <v-sheet
+          color="transparent"
+          class="pa-5 d-flex justify-center"
+          width="100%"
         >
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" class="subtitle-1" />
-          </v-list-item-content>
-        </v-list-item>
+          <div class="title">{{ appName }}</div>
+        </v-sheet>
 
-        <v-list-item @click="dialog.logoutConfirmation = true" dense>
-          <v-list-item-content>
-            <v-list-item-title class="subtitle-1">
-              Logout
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+        <v-list nav>
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :to="item.to"
+            router
+            exact
+            dense
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" class="subtitle-1" />
+            </v-list-item-content>
+          </v-list-item>
 
-      <div style="position: absolute; bottom: 0; left: 0; right: 0">
-        <div class="d-flex justify-center py-3">
-          <app-tooltip message="Coming soon">
-            <v-btn
-              depressed
-              color="secondary"
-              class="rounded-lg"
-              style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
-              @click="toBillingSection"
-            >
-              👑 Get Premium
-            </v-btn>
-          </app-tooltip>
+          <v-list-item @click="dialog.logoutConfirmation = true" dense>
+            <v-list-item-content>
+              <v-list-item-title class="subtitle-1">
+                Logout
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <div style="position: absolute; bottom: 0; left: 0; right: 0">
+          <div class="d-flex justify-center py-3">
+            <app-tooltip message="Coming soon">
+              <v-btn
+                depressed
+                color="secondary"
+                class="rounded-lg"
+                style="box-shadow: 0 0px 15px var(--rgba-amber-darken-3);"
+                @click="toBillingSection"
+              >
+                👑 Get Premium
+              </v-btn>
+            </app-tooltip>
+          </div>
+
+          <v-list-item
+            :to="{
+              name: 'settings'
+            }"
+            class="px-3 py-1"
+          >
+            <v-list-item-avatar color="black">
+              <v-img :src="userProfileImage" color="black" />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ userFullName }}
+              </v-list-item-title>
+              <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
         </div>
+      </v-navigation-drawer>
 
-        <v-list-item
-          :to="{
-            name: 'settings'
-          }"
-          class="px-3 py-1"
-        >
-          <v-list-item-avatar color="black">
-            <v-img :src="userProfileImage" color="black" />
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ userFullName }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </div>
-    </v-navigation-drawer>
+      <Nuxt />
+    </div>
 
-    <Nuxt />
+    <v-container fill-height v-else-if="initializing$">
+      <v-row justify="center" align="center">
+        <v-col>
+          <div class="text-center ">
+            <div class="title">Discovering new ways of making you wait ...</div>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <v-dialog v-model="dialog.logoutConfirmation" width="500">
       <app-dialog-card>
@@ -129,6 +162,7 @@
 export default {
   data: () => ({
     drawer: true,
+    initializing$: false,
     loggingOut$: false,
     userProfileImage: "",
     dialog: {
@@ -160,10 +194,21 @@ export default {
   }),
 
   async created() {
-    console.log("Init");
-    await this.$store.dispatch("init");
+    this.initializing$ = true;
 
-    this.userProfileImage = await this.$store.dispatch("getProfileImage");
+    try {
+      console.log("Init");
+      await this.$store.dispatch("init");
+
+      this.userProfileImage = await this.$store.dispatch("getProfileImage");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setTimeout(() => {
+        this.initializing$ = false;
+        this.$toast("Still faster than Windows update 😉");
+      }, 3000);
+    }
   },
 
   computed: {

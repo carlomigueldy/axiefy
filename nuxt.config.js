@@ -122,9 +122,10 @@ export default {
     redirect: {
       login: "/auth/login",
       logout: "/auth/login",
-      callback: "/dashboard",
+      callback: "/",
       home: "/dashboard"
     },
+
     strategies: {
       local: {
         scheme: "refresh",

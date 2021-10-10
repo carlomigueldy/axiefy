@@ -77,14 +77,16 @@
     </v-row>
 
     <template v-slot:action>
-      <v-btn
-        color="primary"
-        style="box-shadow: 0 0 20px var(--rgba-blue-darken-2);"
-        depressed
-        @click="onClickInviteScholar"
-      >
-        Invite Scholar
-      </v-btn>
+      <app-tooltip message="Invite a Scholar">
+        <v-btn
+          color="primary"
+          style="box-shadow: 0 0 20px var(--rgba-blue-darken-2);"
+          depressed
+          @click="onClickInviteScholar"
+        >
+          Hire Laborer
+        </v-btn>
+      </app-tooltip>
     </template>
 
     <v-dialog v-model="dialog.inviteScholar" width="500">
@@ -114,8 +116,8 @@
             </div>
 
             <p>
-              Inviting a scholar will send them a confirmation link in their
-              email.
+              Inviting a labo.. I mean Scholar will send them a confirmation
+              link in their email.
             </p>
             <v-text-field
               v-model="inviteScholarEmail"

@@ -99,6 +99,8 @@ export const mutations = {
 };
 
 export const getters = {
+  userDisabled: state => state.user?.disabled_at != null,
+
   scholarWallets: state => state.scholars.map(scholar => scholar.ronin_address),
 
   validationRules: _ => ({
