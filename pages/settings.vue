@@ -97,57 +97,19 @@
 
     <v-row>
       <v-col>
-        <v-card id="billing" ref="billing" outlined>
-          <v-card-title>Billing</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text class="d-flex justify-space-around align-center pa-10">
-            <app-plan-preview-card
-              title="Free Tier"
-              subtitle="Details coming soon"
-              emoji="💡"
-            />
-
-            <app-plan-preview-card
-              title="Basic"
-              subtitle="Details coming soon"
-              emoji="🍕"
-            />
-
-            <app-plan-preview-card
-              title="Premium"
-              subtitle="Details coming soon"
-              emoji="👑"
-            />
-          </v-card-text>
-        </v-card>
+        <app-billing-container ref="billing" id="billing" />
       </v-col>
     </v-row>
 
     <v-row>
       <v-col>
-        <v-card outlined>
-          <v-card-title>Danger Zone</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div class="subtitle-1">Disable your account</div>
-            <v-sheet height="25" color="transparent"></v-sheet>
-            <v-btn
-              @click="dialog.disableAccount = true"
-              outlined
-              large
-              color="error"
-            >
-              Disable Account
-            </v-btn>
-          </v-card-text>
-        </v-card>
+        <app-danger-zone-container ref="danger-zone" id="danger-zone" />
       </v-col>
     </v-row>
 
     <v-sheet height="300" color="transparent"></v-sheet>
 
     <app-review-dialog v-model="dialog.review" />
-    <app-disable-account-dialog v-model="dialog.disableAccount" />
   </app-main-container>
 </template>
 
@@ -163,8 +125,7 @@ export default {
     fileForm: {},
     loading$: false,
     dialog: {
-      review: false,
-      disableAccount: false
+      review: false
     },
     form: {
       name: "",
