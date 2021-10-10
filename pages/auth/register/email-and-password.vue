@@ -107,6 +107,7 @@ export default {
 
         await this.$store.dispatch("fetchUser", response.data);
       } catch (error) {
+        this.$toast.showUnexpectedError();
         this.$log.error(error);
       } finally {
         this.loading$ = false;

@@ -51,7 +51,7 @@
               Login
             </v-btn>
           </v-card-actions>
-          <!-- <div class="d-flex justify-space-around align-center mt-10">
+          <div class="d-flex justify-space-around align-center mt-10">
             <v-sheet
               v-for="(method, index) in $store.state.oauthProviders"
               :key="index"
@@ -62,7 +62,7 @@
             >
               <v-img :src="method.logo" height="50" width="50" />
             </v-sheet>
-          </div> -->
+          </div>
         </v-card>
       </v-form>
     </v-sheet>
@@ -117,8 +117,10 @@ export default {
         this.$log.info("this.$auth.loggedIn", this.$auth.loggedIn);
 
         this.$store.dispatch("fetchUser", response.data);
-        this.$toast("You have logged in");
+        this.$toast.show("You have logged in");
+        await this.$store.dispatch("init");
       } catch (error) {
+        this.$toast.showUnexpectedError();
         this.$log.error(error);
       } finally {
         this.loading$ = false;

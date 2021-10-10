@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tooltip bottom>
+    <v-tooltip :right="right" :left="left" :top="top" :bottom="bottom">
       <template v-slot:activator="{ on, attrs }">
         <div v-bind="attrs" v-on="on" style="display: table;">
           <slot />
@@ -16,7 +16,15 @@ export default {
   props: {
     message: {
       type: String
-    }
+    },
+
+    bottom: Boolean,
+
+    top: Boolean,
+
+    right: Boolean,
+
+    left: Boolean
   }
 };
 </script>

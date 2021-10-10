@@ -62,7 +62,7 @@
 
         <div style="position: absolute; bottom: 0; left: 0; right: 0">
           <div class="d-flex justify-center py-3">
-            <app-tooltip message="Coming soon">
+            <app-tooltip top message="Coming soon">
               <v-btn
                 depressed
                 color="secondary"
@@ -75,22 +75,24 @@
             </app-tooltip>
           </div>
 
-          <v-list-item
-            :to="{
-              name: 'settings'
-            }"
-            class="px-3 py-1"
-          >
-            <v-list-item-avatar color="black">
-              <v-img :src="userProfileImage" color="black" />
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ userFullName }}
-              </v-list-item-title>
-              <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+          <app-tooltip right message="Update your profile">
+            <v-list-item
+              :to="{
+                name: 'settings'
+              }"
+              class="px-3 py-1"
+            >
+              <v-list-item-avatar color="black">
+                <v-img :src="userProfileImage" color="black" />
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ userFullName }}
+                </v-list-item-title>
+                <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </app-tooltip>
         </div>
       </v-navigation-drawer>
 
@@ -101,6 +103,15 @@
       <v-row justify="center" align="center">
         <v-col>
           <div class="text-center ">
+            <iframe
+              allow="fullscreen"
+              frameBorder="0"
+              height="320"
+              src="https://giphy.com/embed/u2wg2uXJbHzkXkPphr/video"
+              width="400px"
+              class="mb-10"
+            ></iframe>
+
             <div class="title">Discovering new ways of making you wait ...</div>
           </div>
         </v-col>
@@ -166,7 +177,8 @@ export default {
     loggingOut$: false,
     userProfileImage: "",
     dialog: {
-      logoutConfirmation: false
+      logoutConfirmation: false,
+      loadingComplete: false
     },
     items: [
       {
@@ -202,11 +214,12 @@ export default {
 
       this.userProfileImage = await this.$store.dispatch("getProfileImage");
     } catch (error) {
+      this.$toast.showUnexpectedError();
       console.error(error);
     } finally {
       setTimeout(() => {
         this.initializing$ = false;
-        this.$toast("Still faster than Windows update 😉");
+        this.$toast.show("Still faster than Windows update 😉");
       }, 3000);
     }
   },
@@ -227,6 +240,7 @@ export default {
         this.loggingOut$ = true;
         await this.$auth.logout();
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       } finally {
         this.loggingOut$ = false;

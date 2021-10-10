@@ -28,12 +28,14 @@ export default {
       return;
     }
 
-    const [_, queryString] = this.$route.fullPath.split("#");
+    const [_, queryString] = this.$route.fullPath.split("callback#");
     console.log({ first: _, last: queryString });
 
     if (queryString) {
-      const path = `${window.location.origin}/?${queryString}`;
-      window.location.replace(path);
+      setTimeout(() => {
+        const path = `${window.location.origin}/?${queryString}`;
+        window.location.replace(path);
+      }, 1000);
       return;
     }
   }

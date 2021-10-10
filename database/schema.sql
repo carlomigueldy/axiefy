@@ -133,6 +133,23 @@ CREATE TABLE public.users (
 );
 COMMENT ON COLUMN public.users.id IS 'The auth.users reference';
 
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Only authenticated users can read" ON public.users FOR SELECT USING ( auth.role() = 'authenticated' );
+CREATE POLICY "Only managers and super admins can insert" ON public.users FOR INSERT WITH CHECK ( 
+  public.has_role('manager') OR 
+  public.has_role('super_admin') OR 
+  current_user = 'supabase_admin' 
+);
+CREATE POLICY "Only managers and super admins can update" ON public.users FOR UPDATE USING ( 
+  public.has_role('manager') OR 
+  public.has_role('super_admin') OR 
+  current_user = 'supabase_admin' 
+);
+CREATE POLICY "Only super admins can delete" ON public.users FOR DELETE USING ( 
+  public.has_role('super_admin') OR current_user = 'supabase_admin' 
+);
+
 -- table: user_role
 CREATE TABLE public.user_role (
   user_id uuid NOT NULL REFERENCES users (id),

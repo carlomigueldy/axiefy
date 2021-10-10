@@ -23,7 +23,7 @@
           <v-card-title>Account</v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <app-tooltip message="Click to select image">
+            <app-tooltip bottom message="Click to select image">
               <app-file-input @change="onFileChange" type="image">
                 <v-sheet rounded color="transparent" width="200" height="200">
                   <v-img
@@ -79,16 +79,6 @@
                   autocomplete="new-ronin-wallet-address"
                 ></v-text-field>
 
-                <v-text-field
-                  v-model="form.password"
-                  type="password"
-                  label="New Password"
-                  outlined
-                  aria-autocomplete="none"
-                  autocomplete="new-password"
-                  dense
-                ></v-text-field>
-
                 <v-btn color="primary" :loading="loading$" type="submit">
                   Update
                 </v-btn>
@@ -101,54 +91,25 @@
 
     <v-row>
       <v-col>
-        <v-card id="billing" ref="billing" outlined>
-          <v-card-title>Billing</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text class="d-flex justify-space-around align-center pa-10">
-            <app-plan-preview-card
-              title="Free Tier"
-              subtitle="Details coming soon"
-            />
-
-            <app-plan-preview-card
-              title="Basic"
-              subtitle="Details coming soon"
-            />
-
-            <app-plan-preview-card
-              title="Premium"
-              subtitle="Details coming soon"
-            />
-          </v-card-text>
-        </v-card>
+        <app-security-container />
       </v-col>
     </v-row>
 
     <v-row>
       <v-col>
-        <v-card outlined>
-          <v-card-title>Danger Zone</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div class="subtitle-1">Disable your account</div>
-            <v-sheet height="25" color="transparent"></v-sheet>
-            <v-btn
-              @click="dialog.disableAccount = true"
-              outlined
-              large
-              color="error"
-            >
-              Disable Account
-            </v-btn>
-          </v-card-text>
-        </v-card>
+        <app-billing-container ref="billing" id="billing" />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <app-danger-zone-container ref="danger-zone" id="danger-zone" />
       </v-col>
     </v-row>
 
     <v-sheet height="300" color="transparent"></v-sheet>
 
     <app-review-dialog v-model="dialog.review" />
-    <app-disable-account-dialog v-model="dialog.disableAccount" />
   </app-main-container>
 </template>
 
@@ -164,12 +125,10 @@ export default {
     fileForm: {},
     loading$: false,
     dialog: {
-      review: false,
-      disableAccount: false
+      review: false
     },
     form: {
       name: "",
-      password: "",
       profile_image_url: "",
       ronin_address: "",
       profile_image_file: null
@@ -215,13 +174,13 @@ export default {
       console.log("updateProfile", this.form);
 
       if (!this.$refs.form.validate()) {
-        return this.$toast("Must fill in required fields");
+        return this.$toast.show("Must fill in required fields");
       }
 
       try {
         this.loading$ = true;
 
-        await Promise.all([this._updateAuthProfile(), this._updateUser()]);
+        await this._updateUser();
 
         if (!this.form?.profile_image_file) {
           return;
@@ -239,7 +198,7 @@ export default {
 
         if (error) {
           console.error(error);
-          return this.$toast(error.message);
+          return this.$toast.show(error.message);
         }
 
         const [_, url] = data.Key.split("public/");
@@ -248,27 +207,12 @@ export default {
 
         await this._updateUser();
 
-        return this.$toast("Profile updated");
+        return this.$toast.show("Profile updated");
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       } finally {
         this.loading$ = false;
-      }
-    },
-
-    async _updateAuthProfile() {
-      const { password } = this.form;
-      try {
-        const { error } = await this.$supabase.auth.update({
-          password
-        });
-
-        if (error) {
-          console.error(error);
-          return this.$toast(error.message);
-        }
-      } catch (error) {
-        console.error(error);
       }
     },
 
@@ -286,11 +230,12 @@ export default {
 
         if (error) {
           console.error(error);
-          return this.$toast(error.message);
+          return this.$toast.show(error.message);
         }
 
         this.form.profile_image_url = "";
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       }
     }
