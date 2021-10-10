@@ -45,16 +45,8 @@
           title="Current MMR"
           :image-url="arenaImg"
           :value="mmr"
-        >
-          <template v-slot:image>
-            <v-img
-              class="rounded-circle"
-              :src="arenaImg"
-              max-height="35"
-              max-width="35"
-            ></v-img>
-          </template>
-        </app-simple-data-card>
+          image-rounded
+        />
       </v-col>
     </v-row>
 

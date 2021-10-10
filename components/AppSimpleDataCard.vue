@@ -7,6 +7,9 @@
             :src="imageUrl"
             :max-height="imageSize || imageHeight"
             :max-width="imageSize || imageWidth"
+            :class="{
+              'rounded-circle': imageRounded
+            }"
           />
         </slot>
         <div class="title mx-3 white--text">
@@ -33,18 +36,24 @@ export default {
       type: [String, Number],
       default: () => null
     },
+
+    imageRounded: Boolean,
+
     imageUrl: {
       type: String,
       default: () => null
     },
+
     imageHeight: {
       type: String,
       default: () => "35"
     },
+
     imageWidth: {
       type: String,
       default: () => "35"
     },
+
     imageSize: {
       type: String,
       default: () => "35"
