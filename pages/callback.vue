@@ -32,8 +32,10 @@ export default {
     console.log({ first: _, last: queryString });
 
     if (queryString) {
-      const path = `${window.location.origin}/?${queryString}`;
-      window.location.replace(path);
+      setTimeout(() => {
+        const path = `${window.location.origin}/?${queryString}`;
+        window.location.replace(path);
+      }, 1000);
       return;
     }
   }
