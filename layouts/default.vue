@@ -69,8 +69,35 @@
 
     <v-dialog v-model="dialog.logoutConfirmation" width="500">
       <app-dialog-card>
-        <v-card-title>Logout</v-card-title>
-        <v-card-text>Are you sure you want to logout?</v-card-text>
+        <v-card-title>Is this goodbye?</v-card-title>
+        <v-card-text>
+          <div class="rounded my-5">
+            <div
+              style="width:100%;height:0;padding-bottom:56%;position:relative;"
+            >
+              <iframe
+                src="https://giphy.com/embed/vxNCVEe0PI9A3YVJEX"
+                width="100%"
+                height="100%"
+                style="position:absolute"
+                frameBorder="0"
+                class="giphy-embed"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <p>
+              <a
+                href="https://giphy.com/gifs/athomewithamysedaris-amy-sedaris-at-home-with-ah208-vxNCVEe0PI9A3YVJEX"
+              >
+                via GIPHY
+              </a>
+            </p>
+          </div>
+
+          <p>
+            Are you sure you want to logout?
+          </p>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
