@@ -114,6 +114,8 @@ export default {
   methods: {
     async getUserAxies(wallet) {
       try {
+        var splitAddress = wallet.split("ronin:");
+        wallet = "0x" + splitAddress[1];
         const response = await this.$axios.$get(
           `${AXIE_RAPID_API_BASE_URL}/get-axies/${wallet}`,
           {
