@@ -23,7 +23,7 @@
           <v-card-title>Account</v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <app-tooltip message="Click to select image">
+            <app-tooltip bottom message="Click to select image">
               <app-file-input @change="onFileChange" type="image">
                 <v-sheet rounded color="transparent" width="200" height="200">
                   <v-img
