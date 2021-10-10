@@ -18,7 +18,7 @@
           <v-data-table
             :search="search"
             :headers="headers"
-            :items="$store.state.users.users"
+            :items="$store.state.scholars"
             :items-per-page="10"
             :loading="getTeamMembersLoading$"
           >
