@@ -140,11 +140,11 @@ export default {
         title: "Scholars",
         to: "/scholars"
       },
-      {
-        icon: "mdi-apps",
-        title: "Settings",
-        to: "/settings"
-      },
+      // {
+      //   icon: "mdi-apps",
+      //   title: "Settings",
+      //   to: "/settings"
+      // },
       {
         icon: "mdi-apps",
         title: "About",
