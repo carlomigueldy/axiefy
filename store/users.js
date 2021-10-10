@@ -1,10 +1,15 @@
 export const state = () => ({
-  user: null
+  user: null,
+  users: []
 });
 
 export const mutations = {
   setUser: (state, user) => {
     state.user = user;
+  },
+
+  setUsers: (state, payload) => {
+    state.users = payload;
   }
 };
 
@@ -27,6 +32,26 @@ export const actions = {
     } catch (error) {
       console.error(error);
       return null;
+    }
+  },
+
+  async all({ commit }) {
+    try {
+      const { data, error } = await this.$supabase
+        .from("get_team_members")
+        .select()
+        .order("share");
+
+      if (error) {
+        console.error(error);
+        return null;
+      }
+
+      commit("setUsers", data);
+      return data;
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   }
 };

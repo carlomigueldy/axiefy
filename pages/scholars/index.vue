@@ -18,7 +18,7 @@
           <v-data-table
             :search="search"
             :headers="headers"
-            :items="$store.state.scholars"
+            :items="$store.state.users.users"
             :items-per-page="10"
             :loading="getTeamMembersLoading$"
           >
@@ -218,7 +218,7 @@ export default {
 
     try {
       this.getTeamMembersLoading$ = true;
-      const response = await this.$store.dispatch("rpc", "get_team_members");
+      const response = await this.$store.dispatch("users/all");
       this.$store.commit("setScholars", response);
     } catch (error) {
       this.$toast.showUnexpectedError();
