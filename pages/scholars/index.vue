@@ -148,22 +148,6 @@
 
 <script>
 export default {
-  async created() {
-    if (this.$store.state.scholars.length !== 0) {
-      return;
-    }
-
-    try {
-      this.getTeamMembersLoading$ = true;
-      const response = await this.$store.dispatch("rpc", "get_team_members");
-      this.$store.commit("setScholars", response);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.getTeamMembersLoading$ = false;
-    }
-  },
-
   data: () => ({
     inviteScholarEmail: "",
     inviteScholarLoading$: false,
@@ -185,7 +169,7 @@ export default {
       {
         text: "Ronin Wallet",
         value: "ronin_address",
-        width: "5%"
+        width: "15%"
       },
       {
         text: "Action",
@@ -194,8 +178,39 @@ export default {
         align: "center",
         width: "30%"
       }
-    ]
+    ],
+    usersSubscription$: null
   }),
+
+  async created() {
+    this.usersSubscription$ = this.$supabase
+      .from("users")
+      .on("INSERT", event => {
+        if (event.new) {
+          this.$store.commit("addScholar", event.new);
+        }
+      })
+      .subscribe();
+
+    if (this.$store.state.scholars.length !== 0) {
+      return;
+    }
+
+    try {
+      this.getTeamMembersLoading$ = true;
+      const response = await this.$store.dispatch("rpc", "get_team_members");
+      this.$store.commit("setScholars", response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.getTeamMembersLoading$ = false;
+    }
+  },
+
+  destroyed() {
+    console.log("destroyed");
+    this.usersSubscription$?.unsubscribe();
+  },
 
   methods: {
     onClickItem(item) {

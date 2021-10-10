@@ -77,6 +77,10 @@ export const mutations = {
     state.scholars = payload;
   },
 
+  addScholar: (state, payload) => {
+    state.scholars.push(payload);
+  },
+
   toggleDrawer: (state, payload) => {
     state.drawer = payload ?? !state.drawer;
   },

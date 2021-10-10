@@ -219,6 +219,23 @@
       </v-col>
     </v-row>
 
+    <v-row>
+      <v-col>
+        <v-card outlined>
+          <v-card-title>Disclaimer</v-card-title>
+          <v-divider />
+          <v-card-text>
+            <p>
+              We are not affiliated with
+              <a href="https://axieinfinity.com" target="_blank">
+                Axie Infinity
+              </a>
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
     <v-sheet color="transparent" height="30vh" />
   </app-main-container>
 </template>
