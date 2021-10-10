@@ -39,6 +39,7 @@
 
         <v-list nav>
           <v-list-item
+            color="primary"
             v-for="(item, i) in items"
             :key="i"
             :to="item.to"
@@ -75,24 +76,24 @@
             </app-tooltip>
           </div>
 
-          <app-tooltip right message="Update your profile">
-            <v-list-item
-              :to="{
-                name: 'settings'
-              }"
-              class="px-3 py-1"
-            >
-              <v-list-item-avatar color="black">
-                <v-img :src="userProfileImage" color="black" />
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ userFullName }}
-                </v-list-item-title>
-                <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </app-tooltip>
+          <v-list-item
+            color="light"
+            nav
+            :to="{
+              name: 'settings'
+            }"
+            class="px-3 py-1"
+          >
+            <v-list-item-avatar color="black">
+              <v-img :src="userProfileImage" color="black" />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ userFullName }}
+              </v-list-item-title>
+              <v-list-item-subtitle>{{ userEmail }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
         </div>
       </v-navigation-drawer>
 
@@ -112,7 +113,9 @@
               class="mb-10"
             ></iframe>
 
-            <div class="title">Discovering new ways of making you wait ...</div>
+            <div class="title">
+              {{ $store.getters["funny/random"] }}
+            </div>
           </div>
         </v-col>
       </v-row>
