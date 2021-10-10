@@ -95,7 +95,11 @@ export const mutations = {
 };
 
 export const getters = {
-  scholarWallets: state => state.scholars.map(scholar => scholar.ronin_address)
+  scholarWallets: state => state.scholars.map(scholar => scholar.ronin_address),
+
+  validationRules: _ => ({
+    required: [v => !!v || "This field is required"]
+  })
 };
 
 export const actions = {

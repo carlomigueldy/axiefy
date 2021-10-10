@@ -98,6 +98,7 @@ export default {
   googleFonts: {
     prefetch: true,
     families: {
+      Sora: true,
       "DM Sans": true,
       Roboto: true,
       "Josefin+Sans": true,

@@ -90,7 +90,7 @@
     <v-dialog v-model="dialog.inviteScholar" width="500">
       <v-form ref="inviteForm" @submit.prevent="inviteScholar">
         <app-dialog-card>
-          <v-card-title>Invite Scholar</v-card-title>
+          <v-card-title>🎓 Invite Scholar</v-card-title>
           <v-card-text>
             <p>
               Inviting a scholar will send them a confirmation link in their
@@ -102,6 +102,7 @@
               outlined
               label="Email"
               dense
+              :rules="$store.getters.validationRules.required"
             ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -113,7 +114,7 @@
                   depressed
                   color="primary"
                 >
-                  Invite
+                  Invite 🎉
                 </v-btn>
               </div>
             </v-card-actions>
@@ -194,7 +195,12 @@ export default {
     },
 
     async inviteScholar() {
+      if (!this.$refs.inviteForm.validate()) {
+        return this.$toast("Must provide an email address");
+      }
+
       this.inviteScholarLoading$ = true;
+
       try {
         const { data } = await this.$store.dispatch(
           "inviteToSupabase",
