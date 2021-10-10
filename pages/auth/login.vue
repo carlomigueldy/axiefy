@@ -22,6 +22,7 @@
           <v-card-subtitle>Manage your scholars</v-card-subtitle>
           <v-card-text class="mt-16">
             <v-text-field
+              name="email"
               label="Email"
               type="email"
               v-model="form.email"
@@ -116,6 +117,7 @@ export default {
         this.$log.info("this.$auth.loggedIn", this.$auth.loggedIn);
 
         this.$store.dispatch("fetchUser", response.data);
+        this.$toast("You have logged in");
       } catch (error) {
         this.$log.error(error);
       } finally {
