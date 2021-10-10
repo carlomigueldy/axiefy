@@ -6,8 +6,8 @@
         <v-card-text>
           <p>
             Type in your email address
-            <span class="font-weight-bold">{{ $auth.user.email }}</span> to confirm
-            disabling account.
+            <span class="font-weight-bold">{{ $auth.user.email }}</span> to
+            confirm disabling account.
           </p>
 
           <v-text-field
@@ -42,14 +42,14 @@
 <script>
 export default {
   props: {
-    value: Boolean,
+    value: Boolean
   },
 
   data: () => ({
     loading$: false,
     form: {
-      email: "",
-    },
+      email: ""
+    }
   }),
 
   methods: {
@@ -68,7 +68,10 @@ export default {
 
       try {
         this.loading$ = true;
-        const { data, error } = await this.$supabase.rpc("disable_account", this.form);
+        const { data, error } = await this.$supabase.rpc(
+          "disable_account",
+          this.form
+        );
         console.log(data);
 
         if (error) {
@@ -78,15 +81,15 @@ export default {
         }
 
         this.$emit("input", false);
-        this.$toast.show("Thank you so much for the feedback! 🎉");
-        this.form.message = "";
+        this.$toast.show("Your account has been disabled");
+        this.$auth.logout();
       } catch (error) {
         this.$toast.showUnexpectedError();
         console.error(error);
       } finally {
         this.loading$ = false;
       }
-    },
-  },
+    }
+  }
 };
 </script>
