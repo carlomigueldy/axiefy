@@ -68,11 +68,9 @@ export default {
   },
 
   created() {
-    const [detail] = this.user.detail;
-
     this.form.name = this.user.name;
     this.form.ronin_address = this.user.ronin_address;
-    this.form.share = detail?.share;
+    this.form.share = this.user.share;
   },
 
   methods: {

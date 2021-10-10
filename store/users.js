@@ -12,8 +12,8 @@ export const actions = {
   async find({ commit }, id) {
     try {
       const { data, error } = await this.$supabase
-        .from("users")
-        .select("*, detail: team_members ( share )")
+        .from("get_team_members")
+        .select()
         .eq("id", id)
         .single();
 
