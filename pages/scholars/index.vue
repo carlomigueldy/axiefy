@@ -30,6 +30,9 @@
                 :src="$util.getProfileImageUrl(item.profile_image_url)"
               />
             </template>
+            <template v-slot:[`item.share`]="{ item }">
+              {{ item.share ? `${item.share}%` : "" }}
+            </template>
             <template v-slot:[`item.ronin_address`]="{ item }">
               <v-chip
                 v-if="item.ronin_address"
@@ -183,6 +186,10 @@ export default {
         text: "Ronin Wallet",
         value: "ronin_address",
         width: "15%"
+      },
+      {
+        text: "Share",
+        value: "share"
       },
       {
         text: "Action",
