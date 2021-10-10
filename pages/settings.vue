@@ -150,7 +150,9 @@ export default {
     this.form.name = this.$store.state?.user?.name;
     this.form.ronin_address = this.$store.state?.user?.ronin_address;
 
-    this.userProfileImage = await this.$store.dispatch("getProfileImage");
+    this.userProfileImage = await this.$util.getProfileImageUrl(
+      this.$store.state?.user?.profile_image_url
+    );
   },
 
   computed: {

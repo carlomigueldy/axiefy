@@ -22,7 +22,14 @@
             :items-per-page="10"
             :loading="getTeamMembersLoading$"
           >
-            <!-- @click:row="onClickItem" -->
+            <template v-slot:[`item.profile_image_url`]="{ item }">
+              <v-img
+                class="rounded-circle"
+                height="35"
+                width="35"
+                :src="$util.getProfileImageUrl(item.profile_image_url)"
+              />
+            </template>
             <template v-slot:[`item.ronin_address`]="{ item }">
               <v-chip
                 v-if="item.ronin_address"
@@ -160,6 +167,10 @@ export default {
     search: "",
     headers: [
       {
+        text: "Avatar",
+        value: "profile_image_url"
+      },
+      {
         text: "Email",
         value: "email"
       },
@@ -203,7 +214,7 @@ export default {
       const response = await this.$store.dispatch("rpc", "get_team_members");
       this.$store.commit("setScholars", response);
     } catch (error) {
-        this.$toast.showUnexpectedError();
+      this.$toast.showUnexpectedError();
       console.error(error);
     } finally {
       this.getTeamMembersLoading$ = false;
@@ -256,7 +267,9 @@ export default {
         this.$confetti.start();
 
         this.$log.info(data);
-        this.$toast.show(`You have successfully invited ${this.inviteScholarEmail}`);
+        this.$toast.show(
+          `You have successfully invited ${this.inviteScholarEmail}`
+        );
         this.inviteScholarEmail = "";
 
         setTimeout(() => {

@@ -215,7 +215,9 @@ export default {
       console.log("Init");
       await this.$store.dispatch("init");
 
-      this.userProfileImage = await this.$store.dispatch("getProfileImage");
+      this.userProfileImage = await this.$util.getProfileImageUrl(
+        this.$store.state?.user?.profile_image_url
+      );
     } catch (error) {
       this.$toast.showUnexpectedError();
       console.error(error);

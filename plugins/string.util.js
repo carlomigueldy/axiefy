@@ -1,8 +1,6 @@
 export default ({ app }, inject) => {
   inject("stringUtil", {
     truncateAddress: value => {
-      console.log("truncateAddress=", value);
-
       if (!value) {
         return "";
       }
@@ -21,8 +19,6 @@ export default ({ app }, inject) => {
     },
 
     extractRoninAddress: address => {
-      console.log("extractRoninAddress=", address);
-
       if (!address.includes("ronin:")) return null;
 
       const [_, wallet] = address.split("ronin:");

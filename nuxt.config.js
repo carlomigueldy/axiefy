@@ -27,7 +27,8 @@ export default {
   plugins: [
     "~/plugins/string.util.js",
     "~/plugins/toast.js",
-    "~/plugins/confetti.js"
+    "~/plugins/confetti.js",
+    "~/plugins/util.js"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
