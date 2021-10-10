@@ -61,7 +61,7 @@
 
     <v-row class="mt-10" justify="center" align="center">
       <v-col cols="12" md="4">
-        <v-card>
+        <v-card outlined>
           <v-toolbar flat>
             <v-toolbar-title>Leaderboards</v-toolbar-title>
             <template v-slot:extension>

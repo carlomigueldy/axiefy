@@ -51,6 +51,17 @@
                   >
                     <v-list-item-title>View Scholar</v-list-item-title>
                   </v-list-item>
+
+                  <v-list-item
+                    @click="
+                      $router.push({
+                        name: 'scholars-id-edit',
+                        params: { id: item.id }
+                      })
+                    "
+                  >
+                    <v-list-item-title>Edit Scholar</v-list-item-title>
+                  </v-list-item>
                 </v-list>
               </v-menu>
             </template>
