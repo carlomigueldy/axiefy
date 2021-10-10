@@ -2,128 +2,47 @@
   <app-main-container>
     <v-row align="center" justify="center">
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
-              <div class="headline-1 mx-3">
-                {{ manager.gross }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Total Gross SLP</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Total Gross SLP" :image-url="slpImg">
+          {{ manager.gross }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
-              <div class="headline-1 mx-3">
-                {{ manager.net }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Total Share</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Total Share" :image-url="slpImg">
+          {{ manager.net }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
-              <div class="headline-1 mx-3">
-                {{ manager.daily }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Daily Share</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Daily Share" :image-url="slpImg">
+          {{ manager.daily }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img :src="slpImg" max-height="35" max-width="35"></v-img>
-              <div class="headline-1 mx-3">
-                {{ slp.currentPrice }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>SLP Price</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="SLP Price" :image-url="slpImg">
+          {{ slp.currentPrice }}
+        </app-simple-data-card>
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                class="rounded-circle"
-                :src="arenaImg"
-                max-height="35"
-                max-width="35"
-              ></v-img>
-              <div class="headline-1 mx-3">
-                {{ averageMMR }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Average MMR</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Average MMR" :image-url="arenaImg">
+          {{ averageMMR }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                class="ma-n5"
-                :src="axieImg"
-                max-height="90"
-                max-width="90"
-              ></v-img>
-              <div class="headline-1 mx-3">
-                {{ axies.count }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Axies</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Axies" :image-url="axieImg">
+          {{ axies.count }}
+        </app-simple-data-card>
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <v-card min-height="70">
-          <v-card-title>
-            <v-row class="pt-5 px-5" align="center" justify="center">
-              <v-img
-                class="rounded-circle"
-                :src="scholarImg"
-                max-height="35"
-                max-width="35"
-              ></v-img>
-              <div class="headline-1 mx-3">
-                {{ scholars.count }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <v-row justify="center">
-            <v-card-title>Scholars</v-card-title>
-          </v-row>
-        </v-card>
+        <app-simple-data-card title="Scholars" :image-url="scholarImg">
+          {{ scholars.count }}
+          <template v-slot:image>
+            <span style="font-size: 40px">🎓</span>
+          </template>
+        </app-simple-data-card>
       </v-col>
     </v-row>
+    
     <v-row class="mt-10" justify="center" align="center">
       <v-col cols="12" md="4">
         <v-card>
