@@ -94,7 +94,8 @@
 import AppMainContainer from "~/components/AppMainContainer.vue";
 import {
   AXIE_RAPID_API_BASE_URL,
-  AXIE_GAME_API_BASE_URL
+  AXIE_GAME_API_BASE_URL,
+  COIN_GECKO_API_BASE_URL
 } from "../constants/index.js";
 import { formatUSD, formatPHP } from "~/utils/currencyFormatter.js";
 import axios from "axios";
@@ -224,7 +225,7 @@ export default {
     getTotalAxies() {},
     async getSLPDetails() {
       const response = await axios.get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=smooth-love-potion&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+        `${COIN_GECKO_API_BASE_URL}/api/v3/coins/markets?vs_currency=usd&ids=smooth-love-potion&order=market_cap_desc&per_page=100&page=1&sparkline=false`
       );
       console.log("COIN", response);
 
@@ -235,7 +236,7 @@ export default {
     },
     async getTopPlayers() {
       const response = await axios.get(
-        "https://game-api.axie.technology/toprank?offset=0&limit=50",
+        `${AXIE_GAME_API_BASE_URL}/toprank?offset=0&limit=50`,
         { accept: "application/json" }
       );
       console.log("TOP MMR", response);
