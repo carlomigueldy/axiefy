@@ -79,16 +79,6 @@
                   autocomplete="new-ronin-wallet-address"
                 ></v-text-field>
 
-                <v-text-field
-                  v-model="form.password"
-                  type="password"
-                  label="New Password"
-                  outlined
-                  aria-autocomplete="none"
-                  autocomplete="new-password"
-                  dense
-                ></v-text-field>
-
                 <v-btn color="primary" :loading="loading$" type="submit">
                   Update
                 </v-btn>
@@ -96,6 +86,12 @@
             </v-sheet>
           </v-card-text>
         </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <app-security-container />
       </v-col>
     </v-row>
 
@@ -172,7 +168,6 @@ export default {
     },
     form: {
       name: "",
-      password: "",
       profile_image_url: "",
       ronin_address: "",
       profile_image_file: null
@@ -218,13 +213,13 @@ export default {
       console.log("updateProfile", this.form);
 
       if (!this.$refs.form.validate()) {
-        return this.$toast("Must fill in required fields");
+        return this.$toast.show("Must fill in required fields");
       }
 
       try {
         this.loading$ = true;
 
-        await Promise.all([this._updateAuthProfile(), this._updateUser()]);
+        await this._updateUser();
 
         if (!this.form?.profile_image_file) {
           return;
@@ -242,7 +237,7 @@ export default {
 
         if (error) {
           console.error(error);
-          return this.$toast(error.message);
+          return this.$toast.show(error.message);
         }
 
         const [_, url] = data.Key.split("public/");
@@ -251,27 +246,12 @@ export default {
 
         await this._updateUser();
 
-        return this.$toast("Profile updated");
+        return this.$toast.show("Profile updated");
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       } finally {
         this.loading$ = false;
-      }
-    },
-
-    async _updateAuthProfile() {
-      const { password } = this.form;
-      try {
-        const { error } = await this.$supabase.auth.update({
-          password
-        });
-
-        if (error) {
-          console.error(error);
-          return this.$toast(error.message);
-        }
-      } catch (error) {
-        console.error(error);
       }
     },
 
@@ -289,11 +269,12 @@ export default {
 
         if (error) {
           console.error(error);
-          return this.$toast(error.message);
+          return this.$toast.show(error.message);
         }
 
         this.form.profile_image_url = "";
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       }
     }

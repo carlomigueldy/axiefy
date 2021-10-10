@@ -211,6 +211,7 @@ export default {
         console.log("TOTAL", this.manager.gross);
         console.log("DAILY", this.manager.daily);
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.log(error);
       }
     },
@@ -247,6 +248,7 @@ export default {
         const response = await this.$store.dispatch("rpc", "get_team_members");
         this.$store.commit("setScholars", response);
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       }
     }

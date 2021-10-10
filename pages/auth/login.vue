@@ -117,8 +117,9 @@ export default {
         this.$log.info("this.$auth.loggedIn", this.$auth.loggedIn);
 
         this.$store.dispatch("fetchUser", response.data);
-        this.$toast("You have logged in");
+        this.$toast.show("You have logged in");
       } catch (error) {
+        this.$toast.showUnexpectedError();
         this.$log.error(error);
       } finally {
         this.loading$ = false;

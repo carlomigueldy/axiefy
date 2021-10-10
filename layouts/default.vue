@@ -214,11 +214,12 @@ export default {
 
       this.userProfileImage = await this.$store.dispatch("getProfileImage");
     } catch (error) {
+        this.$toast.showUnexpectedError();
       console.error(error);
     } finally {
       setTimeout(() => {
         this.initializing$ = false;
-        this.$toast("Still faster than Windows update 😉");
+        this.$toast.show("Still faster than Windows update 😉");
       }, 3000);
     }
   },
@@ -239,6 +240,7 @@ export default {
         this.loggingOut$ = true;
         await this.$auth.logout();
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       } finally {
         this.loggingOut$ = false;

@@ -203,6 +203,7 @@ export default {
       const response = await this.$store.dispatch("rpc", "get_team_members");
       this.$store.commit("setScholars", response);
     } catch (error) {
+        this.$toast.showUnexpectedError();
       console.error(error);
     } finally {
       this.getTeamMembersLoading$ = false;
@@ -225,7 +226,7 @@ export default {
 
     onClickWalletAddress(address) {
       this.$copyText(address);
-      this.$toast("Wallet address copied to clipboard.");
+      this.$toast.show("Wallet address copied to clipboard.");
     },
 
     onClickInviteScholar() {
@@ -234,7 +235,7 @@ export default {
 
     async inviteScholar() {
       if (!this.$refs.inviteForm.validate()) {
-        return this.$toast("Must provide an email address");
+        return this.$toast.show("Must provide an email address");
       }
 
       this.inviteScholarLoading$ = true;
@@ -255,15 +256,16 @@ export default {
         this.$confetti.start();
 
         this.$log.info(data);
-        this.$toast(`You have successfully invited ${this.inviteScholarEmail}`);
+        this.$toast.show(`You have successfully invited ${this.inviteScholarEmail}`);
         this.inviteScholarEmail = "";
 
         setTimeout(() => {
           this.$confetti.stop();
         }, 6000);
       } catch (error) {
+        this.$toast.showUnexpectedError();
         this.$log.error(error);
-        this.$toast("An error occurred, try again later");
+        this.$toast.show("An error occurred, try again later");
       } finally {
         this.dialog.inviteScholar = false;
         this.inviteScholarLoading$ = false;

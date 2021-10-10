@@ -105,6 +105,7 @@ export default {
 
       this.getDailySLP();
     } catch (error) {
+        this.$toast.showUnexpectedError();
       console.error(error);
     } finally {
       this.loading$ = false;
@@ -126,6 +127,7 @@ export default {
         console.log("AXIES", response.data.axies.results);
         this.axies = response.data.axies.results;
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.log(error);
       }
     },
@@ -148,6 +150,7 @@ export default {
 
         await this.getFarmedSLPToday();
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       }
     },
@@ -185,6 +188,7 @@ export default {
 
         this.slp.farmedToday = response.data.slp.todaySoFar;
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.log(error);
       }
     }

@@ -60,7 +60,7 @@ export default {
   methods: {
     async update() {
       if (!this.$refs.form.validate()) {
-        return this.$toast("Please fill in the required fields");
+        return this.$toast.show("Please fill in the required fields");
       }
 
       try {
@@ -71,11 +71,12 @@ export default {
 
         if (error) {
           console.error(error);
-          return this.$toast(error.message);
+          return this.$toast.show(error.message);
         }
 
-        return this.$toast("Updated");
+        return this.$toast.show("Updated");
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       }
     }

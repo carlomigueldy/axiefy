@@ -58,6 +58,7 @@ export default {
         });
         this.$log.info(response)
       } catch (error) {
+        this.$toast.showUnexpectedError();
         this.$log.error(error);
       } finally {
         this.loading$ = false;
