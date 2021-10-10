@@ -192,7 +192,7 @@
                 <p>When Nuxt 3 comes out this app will get updated.</p>
               </li>
               <li>
-                <p>TypeScript migration</p>
+                <p>A complete TypeScript migration</p>
               </li>
               <li>
                 <p>

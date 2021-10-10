@@ -57,10 +57,26 @@
                 <v-text-field
                   v-model="form.name"
                   label="Name"
+                  :rules="$store.getters.validationRules.required"
+                  hint="Required"
+                  persistent-hint
                   outlined
                   dense
                   aria-autocomplete="none"
                   autocomplete="new-name"
+                ></v-text-field>
+
+                <v-text-field
+                  v-model="form.ronin_address"
+                  label="Ronin Wallet Address"
+                  placeholder="ronin:0x0...000"
+                  :rules="$store.getters.validationRules.required"
+                  hint="Required"
+                  persistent-hint
+                  outlined
+                  dense
+                  aria-autocomplete="none"
+                  autocomplete="new-ronin-wallet-address"
                 ></v-text-field>
 
                 <v-text-field
@@ -146,6 +162,7 @@ export default {
       name: "",
       password: "",
       profile_image_url: "",
+      ronin_address: "",
       profile_image_file: null
     },
     userProfileImage: null
@@ -163,6 +180,7 @@ export default {
     }
 
     this.form.name = this.$store.state?.user?.name;
+    this.form.ronin_address = this.$store.state?.user?.ronin_address;
 
     this.userProfileImage = await this.$store.dispatch("getProfileImage");
   },
@@ -186,6 +204,10 @@ export default {
 
     async updateProfile() {
       console.log("updateProfile", this.form);
+
+      if (!this.$refs.form.validate()) {
+        return this.$toast("Must fill in required fields");
+      }
 
       try {
         this.loading$ = true;
@@ -242,12 +264,13 @@ export default {
     },
 
     async _updateUser() {
-      const { name, profile_image_url } = this.form;
+      const { name, profile_image_url, ronin_address } = this.form;
       try {
         const { error } = await this.$supabase
           .from("users")
           .update({
             name,
+            ronin_address,
             ...(profile_image_url ? { profile_image_url } : null)
           })
           .eq("id", this.$auth.user?.id);
