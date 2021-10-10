@@ -1,36 +1,51 @@
 <template>
   <app-main-container>
-    <template v-slot:title>{{ $route.params.id }}</template>
+    <template v-if="!loading$" v-slot:title>
+      {{ user.name || user.email }}
+    </template>
+
     <v-row>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Total SLP" :image-url="slpImg">
-          {{ slp.total }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Total SLP"
+          :image-url="slpImg"
+          :value="slp.total"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="In Game SLP" :image-url="slpImg">
-          {{ slp.inGameSLP }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="In Game SLP"
+          :image-url="slpImg"
+          :value="slp.inGameSLP"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Ronin SLP" :image-url="slpImg">
-          {{ slp.roninSLP }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Ronin SLP"
+          :image-url="slpImg"
+          :value="slp.roninSLP"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Daily Average" :image-url="slpImg">
-          {{ slp.dailySLP }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Daily Average"
+          :image-url="slpImg"
+          :value="slp.dailySLP"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Farmed Today" :image-url="slpImg">
-          {{ slp.farmedToday }}
-        </app-simple-data-card>
+        <app-simple-data-card
+          title="Farmed Today"
+          :image-url="slpImg"
+          :value="slp.farmedToday"
+        />
       </v-col>
       <v-col cols="12" md="2" sm="2">
-        <app-simple-data-card title="Current MMR" :image-url="arenaImg">
-          {{ mmr }}
-
+        <app-simple-data-card
+          title="Current MMR"
+          :image-url="arenaImg"
+          :value="mmr"
+        >
           <template v-slot:image>
             <v-img
               class="rounded-circle"
@@ -42,49 +57,16 @@
         </app-simple-data-card>
       </v-col>
     </v-row>
-    <v-divider class="mt-10"></v-divider>
+
+    <v-divider class="mt-10" />
+
     <div class="mt-5">
       <h2>{{ axies.length }} Axies</h2>
     </div>
+
     <v-row align="center" justify="center">
       <v-col cols="12" md="2" v-for="axie in axies" :key="axie.id">
-        <v-card max-width="250" min-height="250">
-          <v-chip
-            v-if="axie.class == 'Aquatic'"
-            class="mt-3 ml-3"
-            x-small
-            color="blue"
-          >
-            <v-card-subtitle class="mx-n5"> #{{ axie.id }} </v-card-subtitle>
-          </v-chip>
-          <v-chip
-            v-if="axie.class == 'Beast'"
-            class="mt-3 ml-3"
-            x-small
-            color="orange"
-          >
-            <v-card-subtitle class="mx-n5"> #{{ axie.id }} </v-card-subtitle>
-          </v-chip>
-          <v-chip
-            v-if="axie.class == 'Bird'"
-            class="mt-3 ml-3"
-            x-small
-            color="pink lighten-3"
-          >
-            <v-card-subtitle class="mx-n5"> #{{ axie.id }} </v-card-subtitle>
-          </v-chip>
-          <v-chip
-            v-if="axie.class == 'Plant'"
-            class="mt-3 ml-3"
-            x-small
-            color="green"
-          >
-            <v-card-subtitle class="mx-n5"> #{{ axie.id }} </v-card-subtitle>
-          </v-chip>
-          <v-card-text align="center" justify="center">
-            <v-img :src="axie.image" max-height="200" max-width="200"> </v-img>
-          </v-card-text>
-        </v-card>
+        <app-axie-card :axie="axie" />
       </v-col>
     </v-row>
   </app-main-container>
@@ -98,21 +80,22 @@ import {
 } from "../../constants/index.js";
 
 export default {
-  data() {
-    return {
-      slp: {
-        total: "--",
-        roninSLP: "--",
-        inGameSLP: "--",
-        dailySLP: "--",
-        farmedToday: "--",
-        lastClaimedSLP: 0
-      },
-      mmr: "--",
-      rank: "--",
-      axies: []
-    };
-  },
+  data: () => ({
+    user: null,
+    loading$: false,
+    slp: {
+      total: "--",
+      roninSLP: "--",
+      inGameSLP: "--",
+      dailySLP: "--",
+      farmedToday: "--",
+      lastClaimedSLP: 0
+    },
+    mmr: "--",
+    rank: "--",
+    axies: []
+  }),
+
   computed: {
     slpImg() {
       return this.$store.state.assets.slp;
@@ -121,18 +104,40 @@ export default {
       return this.$store.state.assets.arena;
     }
   },
+
   async created() {
-    await Promise.all([
-      await this.getUserAxies(),
-      await this.getUserInfo(),
-      this.getDailySLP()
-    ]);
+    this.loading$ = true;
+    /** @todo to be removed */
+    const wallet = "0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3";
+
+    try {
+      await Promise.all([
+        this.getUserAxies(wallet),
+        this.getUserInfo(wallet),
+        (async () => {
+          const { data, error } = await this.$supabase
+            .from("users")
+            .select()
+            .eq("id", this.$route.params.id)
+            .single();
+
+          this.user = data;
+        })()
+      ]);
+
+      this.getDailySLP();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading$ = false;
+    }
   },
+
   methods: {
-    async getUserAxies() {
+    async getUserAxies(wallet) {
       try {
         const response = await this.$axios.$get(
-          `${AXIE_RAPID_API_BASE_URL}/get-axies/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3`,
+          `${AXIE_RAPID_API_BASE_URL}/get-axies/${wallet}`,
           {
             headers: {
               "x-rapidapi-host": "axie-infinity.p.rapidapi.com",
@@ -146,23 +151,29 @@ export default {
         console.log(error);
       }
     },
-    async getUserInfo() {
-      const response = await axios.get(
-        `${AXIE_GAME_API_BASE_URL}/api/v1/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3`,
-        { accept: "application/json" }
-      );
 
-      console.log("NEW API", response);
+    async getUserInfo(wallet) {
+      try {
+        const response = await axios.get(
+          `${AXIE_GAME_API_BASE_URL}/api/v1/${wallet}`,
+          { accept: "application/json" }
+        );
 
-      this.slp.total = response.data.total_slp;
-      this.slp.inGameSLP = response.data.in_game_slp;
-      this.slp.roninSLP = response.data.ronin_slp;
-      this.slp.lastClaimedSLP = response.data.last_claim;
-      this.mmr = response.data.mmr;
-      this.rank = response.data.rank;
+        console.log("NEW API", response);
 
-      await this.getFarmedSLPToday();
+        this.slp.total = response.data.total_slp;
+        this.slp.inGameSLP = response.data.in_game_slp;
+        this.slp.roninSLP = response.data.ronin_slp;
+        this.slp.lastClaimedSLP = response.data.last_claim;
+        this.mmr = response.data.mmr;
+        this.rank = response.data.rank;
+
+        await this.getFarmedSLPToday();
+      } catch (error) {
+        console.error(error);
+      }
     },
+
     getDailySLP() {
       //  Date received from API
       const claimedDate = this.slp.lastClaimedSLP;
@@ -179,6 +190,7 @@ export default {
       console.log(daysDiff);
       console.log(this.slp.dailySLP);
     },
+
     async getFarmedSLPToday() {
       try {
         const response = await axios.get(

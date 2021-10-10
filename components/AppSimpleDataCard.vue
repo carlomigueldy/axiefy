@@ -10,7 +10,9 @@
           />
         </slot>
         <div class="title mx-3 white--text">
-          <slot v-text="value" />
+          <slot>
+            <span v-text="value" />
+          </slot>
         </div>
       </div>
       <div class="text-center mt-5">
@@ -28,6 +30,7 @@ export default {
       required: true
     },
     value: {
+      type: [String, Number],
       default: () => null
     },
     imageUrl: {
