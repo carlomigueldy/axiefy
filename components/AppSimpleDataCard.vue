@@ -8,7 +8,8 @@
             :max-height="imageSize || imageHeight"
             :max-width="imageSize || imageWidth"
             :class="{
-              'rounded-circle': imageRounded
+              'rounded-circle': imageRounded,
+              'ma-n5': imgReduceMargin
             }"
           />
         </slot>
@@ -38,6 +39,7 @@ export default {
     },
 
     imageRounded: Boolean,
+    imgReduceMargin: Boolean,
 
     imageUrl: {
       type: String,
