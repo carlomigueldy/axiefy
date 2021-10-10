@@ -235,9 +235,15 @@ export default {
           return;
         }
 
+        this.$confetti.start();
+
         this.$log.info(data);
         this.$toast(`You have successfully invited ${this.inviteScholarEmail}`);
         this.inviteScholarEmail = "";
+
+        setTimeout(() => {
+          this.$confetti.stop();
+        }, 6000);
       } catch (error) {
         this.$log.error(error);
         this.$toast("An error occurred, try again later");

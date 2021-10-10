@@ -4,8 +4,6 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
-  fallback: false,
-
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",
 
@@ -26,7 +24,11 @@ export default {
   css: ["~/assets/main.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/string.util.js", "~/plugins/toast.js"],
+  plugins: [
+    "~/plugins/string.util.js",
+    "~/plugins/toast.js",
+    "~/plugins/confetti.js"
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

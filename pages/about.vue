@@ -7,7 +7,8 @@
           <v-divider></v-divider>
           <v-card-text>
             <p>
-              An open-source software that aims to help NFT Game (e.g like
+              An open-source software that aims to help NFT Game Managers (e.g
+              like
               <a
                 href="axieinfinity.com"
                 target="_blank"
@@ -15,8 +16,8 @@
               >
                 "Axie Infinity"
               </a>
-              ) Managers manage and track their scholars. While also being an
-              entry to Supabase's 2nd Hackathon
+              ) manage and track their scholars. While also being an entry to
+              Supabase's 2nd Hackathon
               <a
                 href="https://supabase.io/blog/2021/09/28/supabase-hacktoberfest-hackathon-2021"
                 target="_blank"
@@ -66,6 +67,15 @@
             <section class="mb-10">
               <div class="subtitle-1 white--text">Technology Stack & Usage</div>
               <ul style="font-size: 16px">
+                <li>
+                  <p>
+                    <a href="https://www.postgresql.org/" target="_blank">
+                      PostgreSQL </a
+                    >: Also known as Postgres, is a free and open-source
+                    relational database management system emphasizing
+                    extensibility and SQL compliance.
+                  </p>
+                </li>
                 <li>
                   <p>
                     <a href="https://supabase.io/" target="_blank"> Supabase </a
@@ -185,6 +195,22 @@
                   reach me
                   <app-main-author-email />. Your name will be added into the
                   "Contributors" section
+                </p>
+              </li>
+              <li>
+                <p>
+                  "Connect to Ronin Wallet" integration. We don't know how to do
+                  it yet but let us know if you got any ideas
+                </p>
+              </li>
+              <li>
+                <p>
+                  App Logo
+                </p>
+              </li>
+              <li>
+                <p>
+                  Better landing page design
                 </p>
               </li>
             </ul>
