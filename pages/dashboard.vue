@@ -41,6 +41,8 @@
       </v-col>
       <v-col cols="12" md="2" sm="2">
         <app-simple-data-card
+          imgReduceMargin
+          imageSize="75"
           title="Axies"
           :image-url="axieImg"
           :value="axies.count"
@@ -114,7 +116,8 @@ export default {
         daily: 0
       },
       scholar: {
-        addresses: ""
+        addresses: "",
+        addressArr: []
       },
       axies: {
         count: 0
@@ -179,6 +182,7 @@ export default {
     await Promise.all([
       this.parseScholarAddress(),
       this.getTotalSLP(),
+      this.getTotalAxies(),
       this.getSLPDetails(),
       this.getTopPlayers()
     ]);
@@ -232,7 +236,26 @@ export default {
 
       return Math.ceil(slp / dateDiff) * 0.6;
     },
-    getTotalAxies() {},
+    async getTotalAxies() {
+      console.log("AXIE", this.scholar.addressArr);
+      try {
+        for (let i = 0; i < this.scholar.addressArr.length; i++) {
+          const response = await axios.get(
+            `${AXIE_RAPID_API_BASE_URL}/get-axies/${this.scholar.addressArr[i]}`,
+            {
+              headers: {
+                "x-rapidapi-host": "axie-infinity.p.rapidapi.com",
+                "x-rapidapi-key": this.$config.AXIE_RAPID_API_KEY
+              }
+            }
+          );
+          this.axies.count = this.axies.count + response.data.data.axies.total;
+          console.log("TOTAL", this.axies.count);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getSLPDetails() {
       const response = await axios.get(
         "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=smooth-love-potion&order=market_cap_desc&per_page=100&page=1&sparkline=false"
@@ -252,27 +275,25 @@ export default {
       console.log("TOP MMR", response);
       this.leaderboards.items.world = response.data.items;
     },
-    orderByDesc(array) {},
 
     parseScholarAddress() {
-      var addressArr = [];
-      var index = 0;
+      var addressArrIndex = 0;
       for (let i = 0; i < this.$store.state.scholars.length; i++) {
         if (this.$store.state.scholars[i].ronin_address != null) {
           var address = this.$store.state.scholars[i].ronin_address.split(
             "ronin:"
           );
-          addressArr[index] = address[1];
-          index++;
+          this.scholar.addressArr[addressArrIndex] = "0x" + address[1];
+          addressArrIndex++;
         }
       }
-      for (let i = 0; i < addressArr.length; i++) {
+      for (let i = 0; i < this.scholar.addressArr.length; i++) {
         if (i == 0) {
           this.scholar.addresses =
-            this.scholar.addresses + "0x" + addressArr[i];
+            this.scholar.addresses + this.scholar.addressArr[i];
         } else {
           this.scholar.addresses =
-            this.scholar.addresses + ",0x" + addressArr[i];
+            this.scholar.addresses + "," + this.scholar.addressArr[i];
         }
       }
       console.log("ADDRESS 1", this.scholar.addresses);
