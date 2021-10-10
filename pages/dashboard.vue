@@ -42,7 +42,7 @@
         </app-simple-data-card>
       </v-col>
     </v-row>
-    
+
     <v-row class="mt-10" justify="center" align="center">
       <v-col cols="12" md="4">
         <v-card>
@@ -96,6 +96,9 @@ export default {
         gross: 0,
         net: 0,
         daily: 0
+      },
+      scholar: {
+        addresses: ""
       },
       axies: {
         count: 0
@@ -152,16 +155,23 @@ export default {
       }
     }
   },
-  created() {
-    this.getTotalSLP();
-    this.getSLPDetails();
-    this.getTopPlayers();
+  async created() {
+    const response = await this.$store.dispatch("rpc", "get_team_members");
+    this.$store.commit("setScholars", response);
+
+    console.log(this.$store.state.scholars);
+    await Promise.all([
+      this.parseScholarAddress(),
+      this.getTotalSLP(),
+      this.getSLPDetails(),
+      this.getTopPlayers()
+    ]);
   },
   methods: {
     async getTotalSLP() {
       try {
         const response = await axios.get(
-          `${AXIE_GAME_API_BASE_URL}/api/v1/0xc20dabcad7bf3971fb11e89bf50bf2ff6dec0fd3,ronin:926813711d56434ea6f1e1ae8c53e47e2eface87,ronin:0a59a1440f03d4113a922c2b6b1f5918af2100a5,ronin:ca786a0d7259a866413261d7d08767aa9633ebd9`,
+          `${AXIE_GAME_API_BASE_URL}/api/v1/${this.scholar.addresses}`,
           {
             accept: "application/json"
           }
@@ -181,13 +191,15 @@ export default {
         console.log("MAPPING", data);
         this.scholars.count = data.length;
         data.forEach(item => {
-          console.log(item.total_slp, item.name);
-          this.manager.gross = this.manager.gross + item.total_slp;
-          this.manager.daily = Math.ceil(
-            this.manager.daily +
-              this.getDailySLP(item.last_claim, item.in_game_slp)
-          );
-          this.averageMMR = this.averageMMR + item.mmr;
+          console.log("ITEM", item.total_slp, item.name, item.mmr);
+          if (item.total_slp !== undefined) {
+            this.manager.gross = this.manager.gross + item.total_slp;
+            this.manager.daily = Math.ceil(
+              this.manager.daily +
+                this.getDailySLP(item.last_claim, item.in_game_slp)
+            );
+            this.averageMMR = this.averageMMR + item.mmr;
+          }
         });
         this.manager.net = Math.ceil(this.manager.gross * 0.6);
         console.log("MMR", this.averageMMR);
@@ -226,13 +238,28 @@ export default {
     },
     orderByDesc(array) {},
 
-    async created() {
-      try {
-        const response = await this.$store.dispatch("rpc", "get_team_members");
-        this.$store.commit("setScholars", response);
-      } catch (error) {
-        console.error(error);
+    parseScholarAddress() {
+      var addressArr = [];
+      var index = 0;
+      for (let i = 0; i < this.$store.state.scholars.length; i++) {
+        if (this.$store.state.scholars[i].ronin_address != null) {
+          var address = this.$store.state.scholars[i].ronin_address.split(
+            "ronin:"
+          );
+          addressArr[index] = address[1];
+          index++;
+        }
       }
+      for (let i = 0; i < addressArr.length; i++) {
+        if (i == 0) {
+          this.scholar.addresses =
+            this.scholar.addresses + "0x" + addressArr[i];
+        } else {
+          this.scholar.addresses =
+            this.scholar.addresses + ",0x" + addressArr[i];
+        }
+      }
+      console.log("ADDRESS 1", this.scholar.addresses);
     }
   }
 };
