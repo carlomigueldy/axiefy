@@ -6,6 +6,7 @@ const google = "/google.png";
 const twitter = "/twitter.png";
 const twitch = "/twitch.png";
 const facebook = "/facebook.png";
+const supabase = "/supabase-logo.jpg";
 
 export const state = () => ({
   user: null,
@@ -44,6 +45,7 @@ export const state = () => ({
     }
   ],
   assets: {
+    supabase,
     github,
     discord,
     google,
