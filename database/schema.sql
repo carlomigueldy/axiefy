@@ -23,12 +23,12 @@ DROP FUNCTION IF EXISTS public.disable_account;
 DROP FUNCTION IF EXISTS public.get_auth_uid;
 DROP FUNCTION IF EXISTS public.get_team_members;
 DROP FUNCTION IF EXISTS public.assign_role;
-DROP TRIGGER IF EXISTS on_tenant_created ON public.tenants;
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 DROP FUNCTION IF EXISTS public.handle_new_user;
 DROP FUNCTION IF EXISTS public.has_permission;
 DROP FUNCTION IF EXISTS public.has_role;
 
+DROP VIEW IF EXISTS public.get_team_members;
 DROP TABLE IF EXISTS public.reviews;
 DROP TABLE IF EXISTS public.team_members;
 DROP TABLE IF EXISTS public.teams;
@@ -38,6 +38,7 @@ DROP TABLE IF EXISTS public.permissions;
 DROP TABLE IF EXISTS public.roles;
 DROP TABLE IF EXISTS public.users;
 
+-- setup: fresh auth.users
 DELETE FROM auth.users;
 
 -- table: roles
@@ -136,23 +137,7 @@ CREATE TABLE public.users (
   deleted_at TIMESTAMP
 );
 COMMENT ON COLUMN public.users.id IS 'The auth.users reference';
-
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Only authenticated users can read" ON public.users FOR SELECT USING ( auth.role() = 'authenticated' );
-CREATE POLICY "Only managers and super admins can insert" ON public.users FOR INSERT WITH CHECK ( 
-  public.has_role('manager') OR 
-  public.has_role('super_admin') OR 
-  current_user = 'supabase_admin' 
-);
-CREATE POLICY "Only managers and super admins can update" ON public.users FOR UPDATE USING ( 
-  public.has_role('manager') OR 
-  public.has_role('super_admin') OR 
-  current_user = 'supabase_admin' 
-);
-CREATE POLICY "Only super admins can delete" ON public.users FOR DELETE USING ( 
-  public.has_role('super_admin') OR current_user = 'supabase_admin' 
-);
 
 -- table: user_role
 CREATE TABLE public.user_role (
@@ -264,16 +249,6 @@ CREATE TABLE public.team_members (
   PRIMARY KEY (user_id, team_id)
 );
 
--- function: get_team_members
--- todo: to be removed
-CREATE OR REPLACE FUNCTION public.get_team_members()
-RETURNS SETOF public.get_team_members AS 
-$$
-BEGIN 
-  RETURN QUERY (SELECT * FROM get_team_members);
-END
-$$ LANGUAGE plpgsql SECURITY DEFINER; 
-
 -- view: get_team_members
 CREATE VIEW get_team_members AS (
   SELECT users.*, team_members.share AS share
@@ -287,6 +262,16 @@ CREATE VIEW get_team_members AS (
   )
 );
   
+
+-- function: get_team_members
+-- todo: to be removed
+CREATE OR REPLACE FUNCTION public.get_team_members()
+RETURNS SETOF public.get_team_members AS 
+$$
+BEGIN 
+  RETURN QUERY (SELECT * FROM get_team_members);
+END
+$$ LANGUAGE plpgsql SECURITY DEFINER; 
 
 -- function: get_auth_uid
 -- for testing purposes
@@ -305,8 +290,7 @@ CREATE TABLE public.reviews (
   message TEXT NOT NULL CHECK (message <> ''),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now(),
-  deleted_at TIMESTAMP,
-  PRIMARY KEY (user_id, team_id)
+  deleted_at TIMESTAMP
 );
 COMMENT ON TABLE public.reviews IS 'User feedback/reviews/feature requests will be recorded here.';
 
@@ -322,3 +306,21 @@ BEGIN
   UPDATE public.users SET disabled_at = now() WHERE id = auth.uid();
 END
 $$ LANGUAGE plpgsql SECURITY DEFINER; 
+
+
+CREATE POLICY "Only authenticated users can read" ON public.users FOR SELECT USING ( auth.role() = 'authenticated' );
+CREATE POLICY "Only managers and super admins can insert" ON public.users FOR INSERT WITH CHECK ( 
+  public.has_role('manager') OR 
+  public.has_role('super_admin') OR 
+  current_user = 'supabase_admin' 
+);
+CREATE POLICY "Only managers and super admins can update" ON public.users FOR UPDATE USING ( 
+  public.has_role('manager') OR 
+  public.has_role('super_admin') OR 
+  current_user = 'supabase_admin' 
+);
+CREATE POLICY "Only super admins can delete" ON public.users FOR DELETE USING ( 
+  public.has_role('super_admin') OR current_user = 'supabase_admin' 
+);
+
+
