@@ -19,6 +19,7 @@ DROP POLICY IF EXISTS "Only managers and super admins can insert" ON public.user
 DROP POLICY IF EXISTS "Only managers and super admins can update" ON public.users;
 DROP POLICY IF EXISTS "Only super admins can delete" ON public.users;
 
+DROP FUNCTION IF EXISTS public.has_password;
 DROP FUNCTION IF EXISTS public.disable_account;
 DROP FUNCTION IF EXISTS public.get_auth_uid;
 DROP FUNCTION IF EXISTS public.get_team_members;
@@ -258,6 +259,21 @@ BEGIN
   INSERT INTO user_role (user_id, role_id) VALUES ($1::UUID, (SELECT id FROM roles WHERE name = $2 LIMIT 1)::UUID);
 
   RETURN;
+END
+$$ LANGUAGE plpgsql SECURITY DEFINER; 
+
+-- function: has_password
+CREATE OR REPLACE FUNCTION public.has_password()
+RETURNS boolean AS 
+$$
+BEGIN 
+  IF NOT auth.role() = 'authenticated' THEN 
+    RAISE EXCEPTION 'You are not authenticated';
+  END IF;
+
+  RETURN EXISTS(
+    SELECT id IS NOT NULL FROM auth.users WHERE id = auth.uid() AND encrypted_password != '' LIMIT 1
+  );
 END
 $$ LANGUAGE plpgsql SECURITY DEFINER; 
 
