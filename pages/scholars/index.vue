@@ -22,16 +22,22 @@
             :items-per-page="10"
             :loading="getTeamMembersLoading$"
           >
-            <!-- @click:row="onClickItem" -->
+            <template v-slot:[`item.profile_image_url`]="{ item }">
+              <v-img
+                class="rounded-circle"
+                height="35"
+                width="35"
+                :src="$util.getProfileImageUrl(item.profile_image_url)"
+              />
+            </template>
+            <template v-slot:[`item.share`]="{ item }">
+              {{ item.share ? `${item.share}%` : "" }}
+            </template>
             <template v-slot:[`item.ronin_address`]="{ item }">
               <v-chip
-                v-if="item.ronin_address"
+                v-if="formatRoninAddress(item.ronin_address)"
                 color="orange"
-                v-text="
-                  $stringUtil.truncateAddress(
-                    $stringUtil.extractRoninAddress(item.ronin_address)
-                  )
-                "
+                v-text="formatRoninAddress(item.ronin_address)"
                 class="subtitle-1"
                 style="cursor: pointer"
                 @click="onClickWalletAddress(item.ronin_address)"
@@ -77,7 +83,7 @@
     </v-row>
 
     <template v-slot:action>
-      <app-tooltip message="Invite a Scholar">
+      <app-tooltip bottom message="Invite a Scholar">
         <v-btn
           color="primary"
           style="box-shadow: 0 0 20px var(--rgba-blue-darken-2);"
@@ -116,7 +122,7 @@
             </div>
 
             <p>
-              Inviting a labo.. I mean Scholar will send them a confirmation
+              Inviting a labo... I mean Scholar will send them a confirmation
               link in their email.
             </p>
             <v-text-field
@@ -160,6 +166,10 @@ export default {
     search: "",
     headers: [
       {
+        text: "Avatar",
+        value: "profile_image_url"
+      },
+      {
         text: "Email",
         value: "email"
       },
@@ -172,6 +182,10 @@ export default {
         text: "Ronin Wallet",
         value: "ronin_address",
         width: "15%"
+      },
+      {
+        text: "Share",
+        value: "share"
       },
       {
         text: "Action",
@@ -189,7 +203,10 @@ export default {
       .from("users")
       .on("INSERT", event => {
         if (event.new) {
-          this.$store.commit("addScholar", event.new);
+          this.$store.commit("addScholar", {
+            ...event.new,
+            share: 0
+          });
         }
       })
       .subscribe();
@@ -200,9 +217,10 @@ export default {
 
     try {
       this.getTeamMembersLoading$ = true;
-      const response = await this.$store.dispatch("rpc", "get_team_members");
+      const response = await this.$store.dispatch("users/all");
       this.$store.commit("setScholars", response);
     } catch (error) {
+      this.$toast.showUnexpectedError();
       console.error(error);
     } finally {
       this.getTeamMembersLoading$ = false;
@@ -215,6 +233,12 @@ export default {
   },
 
   methods: {
+    formatRoninAddress(address) {
+      return this.$stringUtil.truncateAddress(
+        this.$stringUtil.extractRoninAddress(address || "")
+      );
+    },
+
     onClickItem(item) {
       console.log("onClickItem", item);
       this.$router.push({
@@ -225,7 +249,7 @@ export default {
 
     onClickWalletAddress(address) {
       this.$copyText(address);
-      this.$toast("Wallet address copied to clipboard.");
+      this.$toast.show("Wallet address copied to clipboard.");
     },
 
     onClickInviteScholar() {
@@ -234,7 +258,7 @@ export default {
 
     async inviteScholar() {
       if (!this.$refs.inviteForm.validate()) {
-        return this.$toast("Must provide an email address");
+        return this.$toast.show("Must provide an email address");
       }
 
       this.inviteScholarLoading$ = true;
@@ -255,15 +279,18 @@ export default {
         this.$confetti.start();
 
         this.$log.info(data);
-        this.$toast(`You have successfully invited ${this.inviteScholarEmail}`);
+        this.$toast.show(
+          `You have successfully invited ${this.inviteScholarEmail}`
+        );
         this.inviteScholarEmail = "";
 
         setTimeout(() => {
           this.$confetti.stop();
         }, 6000);
       } catch (error) {
+        this.$toast.showUnexpectedError();
         this.$log.error(error);
-        this.$toast("An error occurred, try again later");
+        this.$toast.show("An error occurred, try again later");
       } finally {
         this.dialog.inviteScholar = false;
         this.inviteScholarLoading$ = false;

@@ -1,5 +1,33 @@
 # supaaxie
 
+An open-source software that aims to help NFT Game Managers (e.g like "Axie Infinity" ) manage and track their scholars. While also being an entry to Supabase's 2nd Hackathon "Supabase Hacktoberfest Hackathon 2021"
+
+## Demo
+
+App: [https://supa-xi.vercel.app/](https://supa-xi.vercel.app/)
+
+### Screenshots
+
+![image](https://user-images.githubusercontent.com/45052332/136700929-1bde1384-08db-4126-af1e-26a1e12902f2.png)
+
+![image](https://user-images.githubusercontent.com/45052332/136700944-b39e4ee4-6f5a-4f20-b9a5-ba9696a13de5.png)
+
+![image](https://user-images.githubusercontent.com/45052332/136700972-35763900-2402-4622-8c80-c6d653299c93.png)
+
+![image](https://user-images.githubusercontent.com/45052332/136700964-f7aa6a71-b40a-44e0-aaaf-39c60b0daf64.png)
+
+## Members
+
+- [Carlo Miguel Dy](https://twitter.com/CarloMiguelDy)
+- [Ali Asgar Laut](https://github.com/sushiAlii)
+
+## Supabase Usage
+
+- Used for storing data
+- Used RLS (Row Level Security) to prevent unauthorized actions
+- Used authentication, magic link, email and password, and OAuth 2.0 providers
+- Used storage for photo uploads
+
 ## Setup Development Environment
 
 Copy `.env.example` file

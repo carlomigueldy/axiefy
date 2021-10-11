@@ -63,7 +63,7 @@ export default {
 
     async submit() {
       if (!this.$refs.form.validate()) {
-        return this.$toast("Must have a message");
+        return this.$toast.show("Must have a message");
       }
 
       try {
@@ -76,14 +76,15 @@ export default {
 
         if (error) {
           console.error(error);
-          this.$toast(error.message);
+          this.$toast.show(error.message);
           return;
         }
 
         this.$emit("input", false);
-        this.$toast("Thank you so much for the feedback! 🎉");
-        this.form.message = "";
+        this.$toast.show("Your account has been disabled");
+        this.$auth.logout();
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       } finally {
         this.loading$ = false;

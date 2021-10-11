@@ -34,11 +34,17 @@
           class="pa-5 d-flex justify-center"
           width="100%"
         >
-          <div class="title">{{ appName }}</div>
+          <div class="text-center">
+            <app-logo />
+            <div class="title">
+              {{ appName }}
+            </div>
+          </div>
         </v-sheet>
 
         <v-list nav>
           <v-list-item
+            color="primary"
             v-for="(item, i) in items"
             :key="i"
             :to="item.to"
@@ -62,7 +68,7 @@
 
         <div style="position: absolute; bottom: 0; left: 0; right: 0">
           <div class="d-flex justify-center py-3">
-            <app-tooltip message="Coming soon">
+            <app-tooltip top message="Coming soon">
               <v-btn
                 depressed
                 color="secondary"
@@ -76,6 +82,8 @@
           </div>
 
           <v-list-item
+            color="light"
+            nav
             :to="{
               name: 'settings'
             }"
@@ -101,7 +109,22 @@
       <v-row justify="center" align="center">
         <v-col>
           <div class="text-center ">
-            <div class="title">Discovering new ways of making you wait ...</div>
+            <app-logo class="mb-5 display-4" />
+
+            <div class="mt-10">
+              <iframe
+                allow="fullscreen"
+                frameBorder="0"
+                height="320"
+                src="https://giphy.com/embed/u2wg2uXJbHzkXkPphr/video"
+                width="400px"
+                class="mb-10"
+              ></iframe>
+            </div>
+
+            <div class="title">
+              {{ $store.getters["funny/random"] }}
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -166,7 +189,8 @@ export default {
     loggingOut$: false,
     userProfileImage: "",
     dialog: {
-      logoutConfirmation: false
+      logoutConfirmation: false,
+      loadingComplete: false
     },
     items: [
       {
@@ -200,13 +224,16 @@ export default {
       console.log("Init");
       await this.$store.dispatch("init");
 
-      this.userProfileImage = await this.$store.dispatch("getProfileImage");
+      this.userProfileImage = await this.$util.getProfileImageUrl(
+        this.$store.state?.user?.profile_image_url
+      );
     } catch (error) {
+      this.$toast.showUnexpectedError();
       console.error(error);
     } finally {
       setTimeout(() => {
         this.initializing$ = false;
-        this.$toast("Still faster than Windows update 😉");
+        this.$toast.show("Still faster than Windows update 😉");
       }, 3000);
     }
   },
@@ -227,6 +254,7 @@ export default {
         this.loggingOut$ = true;
         await this.$auth.logout();
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       } finally {
         this.loggingOut$ = false;

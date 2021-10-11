@@ -101,7 +101,8 @@
 import AppMainContainer from "~/components/AppMainContainer.vue";
 import {
   AXIE_RAPID_API_BASE_URL,
-  AXIE_GAME_API_BASE_URL
+  AXIE_GAME_API_BASE_URL,
+  COIN_GECKO_API_BASE_URL
 } from "../constants/index.js";
 import { formatUSD, formatPHP } from "~/utils/currencyFormatter.js";
 import axios from "axios";
@@ -195,7 +196,7 @@ export default {
     }
   },
   async created() {
-    const response = await this.$store.dispatch("rpc", "get_team_members");
+    const response = await this.$store.dispatch("users/all");
     this.$store.commit("setScholars", response);
 
     console.log(this.$store.state.scholars);
@@ -247,6 +248,7 @@ export default {
         console.log("TOTAL", this.manager.gross);
         console.log("DAILY", this.manager.daily);
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.log(error);
       }
     },
@@ -278,7 +280,7 @@ export default {
     },
     async getSLPDetails() {
       const response = await axios.get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=smooth-love-potion&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+        `${COIN_GECKO_API_BASE_URL}/api/v3/coins/markets?vs_currency=usd&ids=smooth-love-potion&order=market_cap_desc&per_page=100&page=1&sparkline=false`
       );
       console.log("COIN", response);
 
@@ -289,7 +291,7 @@ export default {
     },
     async getTopPlayers() {
       const response = await axios.get(
-        "https://game-api.axie.technology/toprank?offset=0&limit=50",
+        `${AXIE_GAME_API_BASE_URL}/toprank?offset=0&limit=50`,
         { accept: "application/json" }
       );
       console.log("TOP MMR", response);

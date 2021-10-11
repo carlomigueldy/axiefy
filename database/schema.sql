@@ -14,6 +14,10 @@ DROP POLICY IF EXISTS "Read Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Insert Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Update Policy" ON public.role_permission;
 DROP POLICY IF EXISTS "Delete Policy" ON public.role_permission;
+DROP POLICY IF EXISTS "Only authenticated users can read" ON public.users;
+DROP POLICY IF EXISTS "Only managers and super admins can insert" ON public.users;
+DROP POLICY IF EXISTS "Only managers and super admins can update" ON public.users;
+DROP POLICY IF EXISTS "Only super admins can delete" ON public.users;
 
 DROP FUNCTION IF EXISTS public.disable_account;
 DROP FUNCTION IF EXISTS public.get_auth_uid;
@@ -133,6 +137,23 @@ CREATE TABLE public.users (
 );
 COMMENT ON COLUMN public.users.id IS 'The auth.users reference';
 
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Only authenticated users can read" ON public.users FOR SELECT USING ( auth.role() = 'authenticated' );
+CREATE POLICY "Only managers and super admins can insert" ON public.users FOR INSERT WITH CHECK ( 
+  public.has_role('manager') OR 
+  public.has_role('super_admin') OR 
+  current_user = 'supabase_admin' 
+);
+CREATE POLICY "Only managers and super admins can update" ON public.users FOR UPDATE USING ( 
+  public.has_role('manager') OR 
+  public.has_role('super_admin') OR 
+  current_user = 'supabase_admin' 
+);
+CREATE POLICY "Only super admins can delete" ON public.users FOR DELETE USING ( 
+  public.has_role('super_admin') OR current_user = 'supabase_admin' 
+);
+
 -- table: user_role
 CREATE TABLE public.user_role (
   user_id uuid NOT NULL REFERENCES users (id),
@@ -236,6 +257,7 @@ COMMENT ON COLUMN public.teams.owner_id IS 'The manager/owner that manages schol
 CREATE TABLE public.team_members (
   user_id uuid NOT NULL REFERENCES public.users (id),
   team_id uuid NOT NULL REFERENCES public.teams (id),
+  share SMALLINT CHECK (share <= 100 AND share >= 0 ),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now(),
   deleted_at TIMESTAMP,
@@ -243,22 +265,28 @@ CREATE TABLE public.team_members (
 );
 
 -- function: get_team_members
+-- todo: to be removed
 CREATE OR REPLACE FUNCTION public.get_team_members()
-RETURNS SETOF public.users AS 
+RETURNS SETOF public.get_team_members AS 
 $$
 BEGIN 
-  RETURN QUERY (SELECT users.* 
-    FROM team_members
-    INNER JOIN users 
-    ON team_members.user_id = users.id 
-    WHERE team_id = (
-      SELECT id 
-      FROM teams 
-      WHERE owner_id = auth.uid()
-    )
-  );
+  RETURN QUERY (SELECT * FROM get_team_members);
 END
 $$ LANGUAGE plpgsql SECURITY DEFINER; 
+
+-- view: get_team_members
+CREATE VIEW get_team_members AS (
+  SELECT users.*, team_members.share AS share
+  FROM team_members
+  INNER JOIN users 
+  ON team_members.user_id = users.id 
+  WHERE team_id = (
+    SELECT id 
+    FROM teams 
+    WHERE owner_id = auth.uid()
+  )
+);
+  
 
 -- function: get_auth_uid
 -- for testing purposes

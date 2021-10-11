@@ -28,7 +28,8 @@ export default {
   plugins: [
     "~/plugins/string.util.js",
     "~/plugins/toast.js",
-    "~/plugins/confetti.js"
+    "~/plugins/confetti.js",
+    "~/plugins/util.js"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -47,8 +48,12 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    "nuxt-highcharts",
+
     "nuxt-clipboard",
+
     "nuxt-logger",
+
     "@nuxtjs/auth-next",
     "nuxt-highcharts",
     [

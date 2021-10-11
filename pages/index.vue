@@ -50,6 +50,7 @@ export default {
       const { access_token, refresh_token } = this.$route.query;
 
       await this.$auth.setUserToken(access_token, refresh_token);
+      await this.$store.dispatch("init");
       return;
     }
 

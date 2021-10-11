@@ -25,6 +25,20 @@
               outlined
               dense
             ></v-text-field>
+
+            <v-text-field
+              v-model="form.share"
+              type="number"
+              label="Share %"
+              :rules="validationRules.required"
+              min="0"
+              max="100"
+              hint="Required"
+              persistent-hint
+              outlined
+              dense
+            ></v-text-field>
+
             <v-btn class="mt-5" large color="primary" type="submit">
               Update
             </v-btn>
@@ -42,7 +56,8 @@ export default {
   data: () => ({
     form: {
       name: "",
-      ronin_address: ""
+      ronin_address: "",
+      share: 0
     }
   }),
 
@@ -55,29 +70,51 @@ export default {
   created() {
     this.form.name = this.user.name;
     this.form.ronin_address = this.user.ronin_address;
+    this.form.share = this.user.share;
   },
 
   methods: {
     async update() {
       if (!this.$refs.form.validate()) {
-        return this.$toast("Please fill in the required fields");
+        return this.$toast.show("Please fill in the required fields");
       }
 
       try {
+        const { name, ronin_address } = this.form;
         const { error, data } = await this.$supabase
           .from("users")
-          .update(this.form)
+          .update({ name, ronin_address })
           .eq("id", this.$route.params.id);
 
         if (error) {
           console.error(error);
-          return this.$toast(error.message);
+          return this.$toast.show(error.message);
         }
 
-        return this.$toast("Updated");
+        await this._updateShare();
+
+        return this.$toast.show("Updated");
       } catch (error) {
+        this.$toast.showUnexpectedError();
         console.error(error);
       }
+    },
+
+    async _updateShare() {
+      const share = Number(this.form.share);
+      const { data, error } = await this.$supabase
+        .from("team_members")
+        .update({
+          share
+        })
+        .eq("user_id", this.$route.params.id);
+
+      if (error) {
+        console.error(error);
+        return this.$toast.show(error.message);
+      }
+
+      return data;
     }
   }
 };

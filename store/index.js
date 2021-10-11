@@ -1,16 +1,11 @@
 import axios from "axios";
 
-const github = "https://cdn-icons-png.flaticon.com/512/25/25231.png";
-const discord =
-  "https://www.freepnglogos.com/uploads/discord-logo-png/discord-logo-logodownload-download-logotipos-1.png";
-const google =
-  "https://www.freepnglogos.com/uploads/google-logo-png/google-logo-icon-png-transparent-background-osteopathy-16.png";
-const twitter =
-  "https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-logo-vector-png-clipart-1.png";
-const twitch =
-  "https://www.freepnglogos.com/uploads/twitch-logo-vector-png-2.png";
-const facebook =
-  "https://www.pngarts.com/files/10/Square-Facebook-Logo-PNG-High-Quality-Image.png";
+const github = "/github.png";
+const discord = "/discord.png";
+const google = "/google.png";
+const twitter = "/twitter.png";
+const twitch = "/twitch.png";
+const facebook = "/facebook.png";
 
 export const state = () => ({
   user: null,
@@ -173,23 +168,5 @@ export const actions = {
       this.$log.error(error);
       return null;
     }
-  },
-
-  async getProfileImage({ state }) {
-    const url = state?.user?.profile_image_url;
-    const defaultUrl = "supabase-logo.jpg";
-
-    if (!url) return defaultUrl;
-
-    const { data, error, publicURL } = this.$supabase.storage
-      .from("public")
-      .getPublicUrl(url);
-
-    if (error) {
-      console.error(error);
-      return defaultUrl;
-    }
-
-    return publicURL || defaultUrl;
   }
 };
