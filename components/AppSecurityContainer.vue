@@ -108,20 +108,22 @@ export default {
     },
 
     async confirmPassword() {
+      console.log("confirmPassword->state", this.confirmation);
+
       if (!this.$refs.confirmation.validate()) {
         return this.$toast.show("Must enter your current password to verify");
       }
 
       try {
         this.confirmation.loading$ = true;
-        const { password } = this.form;
+        const { password } = this.confirmation;
 
         const { data, error } = await this.$supabase.auth.signIn({
           email: this.$auth.user.email,
           password
         });
         console.log("confirmPassword", { data, error });
-        await this.$store.dispatch('init')
+        await this.$store.dispatch("init");
 
         if (error) {
           return this.$toast.show("Failed to verify your password");
