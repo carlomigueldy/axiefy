@@ -4,7 +4,7 @@ An open-source software that aims to help NFT Game Managers (e.g like "Axie Infi
 
 ## Demo
 
-App: [https://supa-xi.vercel.app/](https://supa-xi.vercel.app/)
+App: [https://supa-xi.vercel.app/](https://axiefy.vercel.app/)
 
 ### Screenshots
 
