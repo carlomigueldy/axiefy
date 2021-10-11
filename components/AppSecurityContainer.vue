@@ -87,6 +87,12 @@ export default {
 
   methods: {
     async onSubmit() {
+      if (this.$auth?.user?.email === "carlomigueldy@gmail.com") {
+        return this.$toast.show(
+          "Updating password for this demo account is not allowed"
+        );
+      }
+
       if (!this.$refs.form.validate()) {
         return;
       }
