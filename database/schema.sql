@@ -172,7 +172,7 @@ RETURNS TRIGGER AS $$
 BEGIN 
   INSERT INTO public.teams (owner_id) VALUES (new.id::UUID); 
 
-  -- todo: needs to get fixed
+  -- -- todo: needs to get fixed
   -- -- scholar
   -- IF EXISTS(SELECT id FROM auth.users WHERE id = new.id AND invited_at IS NOT NULL) THEN
   --   INSERT INTO public.user_role (user_id, role_id) VALUES (
