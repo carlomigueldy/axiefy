@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-form ref="form" @submit.prevent="sendMagicLink">
     <v-card-text class="mt-16">
       <v-text-field
         label="Email"
@@ -10,12 +10,12 @@
         dense
       ></v-text-field>
       <div class="d-flex justify-end">
-        <v-btn @click="sendMagicLink" :loading="loading$" color="primary">
+        <v-btn type="submit" :loading="loading$" color="primary">
           Send Magic Link
         </v-btn>
       </div>
     </v-card-text>
-  </div>
+  </v-form>
 </template>
 
 <script>

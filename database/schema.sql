@@ -322,5 +322,3 @@ CREATE POLICY "Only managers and super admins can update" ON public.users FOR UP
 CREATE POLICY "Only super admins can delete" ON public.users FOR DELETE USING ( 
   public.has_role('super_admin') OR current_user = 'supabase_admin' 
 );
-
-

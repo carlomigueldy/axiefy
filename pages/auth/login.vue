@@ -34,7 +34,6 @@
               label="Password"
               type="password"
               v-model="form.password"
-              :rules="rules.password"
               outlined
               dense
             ></v-text-field>
@@ -105,13 +104,30 @@ export default {
       this.$log.info(response);
       await this.$store.dispatch("init");
     },
+
     async onSubmit() {
       this.loading$ = true;
 
       if (!this.$refs.form.validate) return this.$log.info("Form invalid");
 
+      if (!this.form.password) {
+        this.$toast.show("Sending you a Magic Link... 🎩");
+        const { email } = this.form;
+        const response = await this.$supabase.auth.signIn({
+          email
+        });
+        console.log(response);
+        await this.$toast.show(
+          "We have sent you a Magic Link, please go and check your inbox 🎉"
+        );
+        this.loading$ = false;
+
+        return;
+      }
+
       try {
         const response = await this.$auth.login({ data: this.form });
+
         this.$log.info("onSubmit", response);
 
         this.$log.info("this.$auth.user", this.$auth.user);
@@ -127,6 +143,7 @@ export default {
         this.loading$ = false;
       }
     },
+
     async fetchUser() {
       const response = await this.$auth.fetchUser();
 
