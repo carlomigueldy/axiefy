@@ -1,4 +1,4 @@
-# supaaxie
+# axiefy
 
 An open-source software that aims to help NFT Game Managers (e.g like "Axie Infinity" ) manage and track their scholars. While also being an entry to Supabase's 2nd Hackathon "Supabase Hacktoberfest Hackathon 2021"
 
