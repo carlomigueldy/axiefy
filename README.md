@@ -22,7 +22,7 @@ App: [https://supa-xi.vercel.app/](https://axiefy.vercel.app/)
 ## Supabase Usage
 
 - Used for storing data
-- Used RLS (Row Level Security) to prevent unauthorized actions
+- Used RLS to prevent unauthorized actions (Current there's a bug we can't figure out in the given time 🐞) 
 - Used authentication, magic link, email and password, and OAuth 2.0 providers
 - Used storage for photo uploads
 
