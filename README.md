@@ -4,7 +4,11 @@ An open-source software that aims to help NFT Game Managers (e.g like "Axie Infi
 
 ## Demo
 
-App: [https://supa-xi.vercel.app/](https://axiefy.vercel.app/)
+App: [https://axiefy.vercel.app/](https://axiefy.vercel.app/)
+
+Credentials:
+- email: carlomigueldy@gmail.com
+- password: password
 
 ### Screenshots
 
@@ -22,7 +26,7 @@ App: [https://supa-xi.vercel.app/](https://axiefy.vercel.app/)
 ## Supabase Usage
 
 - Used for storing data
-- Used RLS (Row Level Security) to prevent unauthorized actions
+- Used RLS to prevent unauthorized actions (Current there's a bug we can't figure out in the given time 🐞) 
 - Used authentication, magic link, email and password, and OAuth 2.0 providers
 - Used storage for photo uploads
 
@@ -160,3 +164,20 @@ More information about the usage of this directory in [the documentation](https:
 This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+
+## Contributors
+
+Thanks for all these wonderful people.
+
+- [Carlo Miguel Dy](https://twitter.com/CarloMiguelDy)
+- [Ali Asgar Laut](https://github.com/sushiAlii)
+- Add your name here!
+
+## Acknowledgements
+
+No one here yet. Want your name to be added? Hit me up! We probably need some cool logo. 😉
+
+## Author
+
+- [Carlo Miguel Dy](https://twitter.com/CarloMiguelDy)
+- [Ali Asgar Laut](https://github.com/sushiAlii)

@@ -84,13 +84,14 @@
             :items="leaderboardsData"
             sort-by.sync="rank"
             :sort-desc.sync="sortDesc"
+            :items-per-page="5"
           >
           </v-data-table>
         </v-card>
       </v-col>
       <v-col cols="12" md="4">
         <v-card>
-          <highchart :options="chartOptions" />
+          <highchart :options="chart.chartOptions" :updateArgs="[true, true]" />
         </v-card>
       </v-col>
     </v-row>
@@ -157,10 +158,29 @@ export default {
         }
       },
       chart: {
-        title: "SLP Farmed by Each Scholars",
-        chartType: "column",
-        xCategories: [],
-        xValues: []
+        chartOptions: {
+          title: {
+            display: true,
+            text: "SLP Farmed by Each Scholars"
+          },
+          chart: {
+            type: "column"
+          },
+          xAxis: {
+            categories: [],
+            labels: {
+              style: {
+                fontSize: "16px"
+              }
+            }
+          },
+          series: [
+            {
+              name: "SLP",
+              data: []
+            }
+          ]
+        }
       }
     };
   },
@@ -184,31 +204,6 @@ export default {
         case 1:
           return this.leaderboards.items.scholars;
       }
-    },
-    chartOptions() {
-      const ctx = this;
-      return {
-        title: {
-          display: true,
-          text: this.chart.title
-        },
-        chart: {
-          type: this.chart.chartType
-        },
-        xAxis: {
-          categories: this.chart.xCategories,
-          labels: {
-            style: {
-              fontSize: "16px"
-            }
-          }
-        },
-        series: [
-          {
-            data: []
-          }
-        ]
-      };
     }
   },
   async created() {
@@ -249,24 +244,32 @@ export default {
         this.leaderboards.items.scholars = data;
         console.log("MAPPING", data);
         this.scholars.count = data.length;
+        var index = 0;
+        var categories = [];
+        var series = [];
         data.forEach(item => {
           console.log("ITEM", item.total_slp, item.name, item.mmr);
           if (item.total_slp !== undefined) {
             this.manager.gross = this.manager.gross + item.total_slp;
-            this.chart.xCategories = item.name;
-            this.chart.xValues = item.total_slp;
+            categories[index] = item.name;
+            series[index] = item.total_slp;
             this.manager.daily = Math.ceil(
               this.manager.daily +
                 this.getDailySLP(item.last_claim, item.in_game_slp)
             );
             this.averageMMR = this.averageMMR + item.mmr;
           }
+          index++;
         });
         this.manager.net = Math.ceil(this.manager.gross * 0.6);
         console.log("MMR", this.averageMMR);
         this.averageMMR = Math.ceil(this.averageMMR / data.length);
         console.log("TOTAL", this.manager.gross);
         console.log("DAILY", this.manager.daily);
+
+        this.chart.chartOptions.xAxis.categories = categories;
+        this.chart.chartOptions.series[0].data = series;
+        console.log("CHART", this.chart.chartOptions.series[0].data);
       } catch (error) {
         this.$toast.showUnexpectedError();
         console.log(error);
