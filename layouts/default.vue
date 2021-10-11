@@ -177,7 +177,7 @@ export default {
         to: "/about"
       }
     ],
-    appName: "App Name"
+    appName: "Axiefy"
   }),
 
   async created() {
