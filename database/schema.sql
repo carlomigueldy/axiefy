@@ -177,7 +177,7 @@ BEGIN
   -- IF EXISTS(SELECT id FROM auth.users WHERE id = new.id AND invited_at IS NOT NULL) THEN
   --   INSERT INTO public.user_role (user_id, role_id) VALUES (
   --     new.id::UUID, 
-  --     (SELECT id FROM roles WHERE name = 'scholar' LIMIT 1)::UUID
+  --     (SELECT id FROM public.roles WHERE name = 'scholar' LIMIT 1)::UUID
   --   );
   -- END IF;
 
@@ -185,7 +185,7 @@ BEGIN
   -- IF EXISTS(SELECT id FROM auth.users WHERE id = new.id AND invited_at IS NULL) THEN
   --   INSERT INTO public.user_role (user_id, role_id) VALUES (
   --     new.id::UUID, 
-  --     (SELECT id FROM roles WHERE name = 'manager' LIMIT 1)::UUID
+  --     (SELECT id FROM public.roles WHERE name = 'manager' LIMIT 1)::UUID
   --   );
   --   INSERT INTO public.teams (owner_id) VALUES (new.id::UUID); 
   -- END IF;

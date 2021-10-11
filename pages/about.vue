@@ -13,17 +13,9 @@
           <v-divider></v-divider>
           <v-card-text>
             <p>
-              An open-source software that aims to help NFT Game Managers (e.g
-              like
-              <a
-                href="axieinfinity.com"
-                target="_blank"
-                class="font-weight-bold"
-              >
-                "Axie Infinity"
-              </a>
-              ) manage and track their scholars. While also being an entry to
-              Supabase's 2nd Hackathon
+              An open-source software that aims to help NFT Game Managers manage
+              and track their scholars. While also being an entry to Supabase's
+              2nd Hackathon
               <a
                 href="https://supabase.io/blog/2021/09/28/supabase-hacktoberfest-hackathon-2021"
                 target="_blank"
@@ -34,12 +26,16 @@
             </p>
 
             <section class="mb-10 mt-10">
-              <div class="subtitle-1 white--text">Core Contributors</div>
+              <div class="subtitle-1 white--text">Author</div>
               <ul style="font-size: 16px">
                 <li>
                   <p>
                     <a href="https://github.com/carlomigueldy" target="_blank">
                       carlomigueldy
+                    </a>
+                    /
+                    <a href="https://twitter.com/CarloMiguelDy" target="_blank">
+                      @CarloMiguelDy
                     </a>
                   </p>
                 </li>
@@ -47,6 +43,13 @@
                   <p>
                     <a href="https://github.com/sushiAlii" target="_blank">
                       sushiAlii
+                    </a>
+                    /
+                    <a
+                      href="https://twitter.com/AliiiLucmanLaut"
+                      target="_blank"
+                    >
+                      AliiiLucmanLaut
                     </a>
                   </p>
                 </li>
