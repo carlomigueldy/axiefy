@@ -88,6 +88,11 @@
           </v-data-table>
         </v-card>
       </v-col>
+      <v-col cols="12" md="4">
+        <v-card>
+          <highchart :options="chartOptions" />
+        </v-card>
+      </v-col>
     </v-row>
   </app-main-container>
 </template>
@@ -149,6 +154,13 @@ export default {
           world: [],
           scholars: []
         }
+      },
+      chart: {
+        caption: "Chart caption here",
+        chartTypes: [],
+        chartType: "",
+        seriesColor: "",
+        sexy: false
       }
     };
   },
@@ -172,6 +184,14 @@ export default {
         case 1:
           return this.leaderboards.items.scholars;
       }
+    },
+    chartOptions() {
+      const ctx = this;
+      return {
+        caption: {
+          text: this.caption
+        }
+      };
     }
   },
   async created() {
