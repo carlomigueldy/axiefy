@@ -157,11 +157,10 @@ export default {
         }
       },
       chart: {
-        caption: "Chart caption here",
-        chartTypes: [],
-        chartType: "",
-        seriesColor: "",
-        sexy: false
+        title: "SLP Farmed by Each Scholars",
+        chartType: "column",
+        xCategories: [],
+        xValues: []
       }
     };
   },
@@ -189,9 +188,26 @@ export default {
     chartOptions() {
       const ctx = this;
       return {
-        caption: {
-          text: this.caption
-        }
+        title: {
+          display: true,
+          text: this.chart.title
+        },
+        chart: {
+          type: this.chart.chartType
+        },
+        xAxis: {
+          categories: this.chart.xCategories,
+          labels: {
+            style: {
+              fontSize: "16px"
+            }
+          }
+        },
+        series: [
+          {
+            data: []
+          }
+        ]
       };
     }
   },
@@ -235,6 +251,8 @@ export default {
           console.log("ITEM", item.total_slp, item.name, item.mmr);
           if (item.total_slp !== undefined) {
             this.manager.gross = this.manager.gross + item.total_slp;
+            this.chart.xCategories = item.name;
+            this.chart.xValues = item.total_slp;
             this.manager.daily = Math.ceil(
               this.manager.daily +
                 this.getDailySLP(item.last_claim, item.in_game_slp)
