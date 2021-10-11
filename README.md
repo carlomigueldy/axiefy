@@ -6,6 +6,10 @@ An open-source software that aims to help NFT Game Managers (e.g like "Axie Infi
 
 App: [https://axiefy.vercel.app/](https://axiefy.vercel.app/)
 
+Credentials:
+- email: carlomigueldy@gmail.com
+- password: password
+
 ### Screenshots
 
 ![image](https://user-images.githubusercontent.com/45052332/136729864-dc64852d-11e0-4b2c-8a35-3cbddcff7804.png)
