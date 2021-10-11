@@ -31,6 +31,8 @@ Credentials:
 - Captain 👑 [Carlo Miguel Dy](https://twitter.com/CarloMiguelDy)
 - [Ali Asgar L. Laut](https://twitter.com/AliiiLucmanLaut)
 
+Submitted on ["Made with Supabase"](https://www.madewithsupabase.com/p/axiefy)
+
 ## Supabase Usage
 
 - Used for storing data
