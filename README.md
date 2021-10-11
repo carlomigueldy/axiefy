@@ -26,10 +26,10 @@ Credentials:
 
 ![image](https://user-images.githubusercontent.com/45052332/136729925-bc8c9774-8999-4d3c-ade3-27385da73607.png)
 
-## Members
+## Supabase Hacktoberfest 2021 Team Members ⚡
 
-- [Carlo Miguel Dy](https://twitter.com/CarloMiguelDy)
-- [Ali Asgar Laut](https://github.com/sushiAlii)
+- Captain 👑 [Carlo Miguel Dy](https://twitter.com/CarloMiguelDy)
+- [Ali Asgar L. Laut](https://twitter.com/AliiiLucmanLaut)
 
 ## Supabase Usage
 
@@ -177,7 +177,7 @@ More information about the usage of this directory in [the documentation](https:
 Thanks for all these wonderful people.
 
 - [Carlo Miguel Dy](https://twitter.com/CarloMiguelDy)
-- [Ali Asgar Laut](https://github.com/sushiAlii)
+- [Ali Asgar Laut](https://twitter.com/AliiiLucmanLaut)
 - Add your name here!
 
 ## Acknowledgements
@@ -187,4 +187,4 @@ No one here yet. Want your name to be added? Hit me up! We probably need some co
 ## Author
 
 - [Carlo Miguel Dy](https://twitter.com/CarloMiguelDy)
-- [Ali Asgar Laut](https://github.com/sushiAlii)
+- [Ali Asgar Laut](https://twitter.com/AliiiLucmanLaut)
