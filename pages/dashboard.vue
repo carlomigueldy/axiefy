@@ -88,6 +88,11 @@
           </v-data-table>
         </v-card>
       </v-col>
+      <v-col cols="12" md="4">
+        <v-card>
+          <highchart :options="chartOptions" />
+        </v-card>
+      </v-col>
     </v-row>
   </app-main-container>
 </template>
@@ -150,6 +155,12 @@ export default {
           world: [],
           scholars: []
         }
+      },
+      chart: {
+        title: "SLP Farmed by Each Scholars",
+        chartType: "column",
+        xCategories: [],
+        xValues: []
       }
     };
   },
@@ -173,6 +184,31 @@ export default {
         case 1:
           return this.leaderboards.items.scholars;
       }
+    },
+    chartOptions() {
+      const ctx = this;
+      return {
+        title: {
+          display: true,
+          text: this.chart.title
+        },
+        chart: {
+          type: this.chart.chartType
+        },
+        xAxis: {
+          categories: this.chart.xCategories,
+          labels: {
+            style: {
+              fontSize: "16px"
+            }
+          }
+        },
+        series: [
+          {
+            data: []
+          }
+        ]
+      };
     }
   },
   async created() {
@@ -190,6 +226,8 @@ export default {
   },
   methods: {
     async getTotalSLP() {
+      console.log("IFNULL", this.scholar.addresses);
+      if (this.scholar.addresses === "") return;
       try {
         const response = await axios.get(
           `${AXIE_GAME_API_BASE_URL}/api/v1/${this.scholar.addresses}`,
@@ -215,6 +253,8 @@ export default {
           console.log("ITEM", item.total_slp, item.name, item.mmr);
           if (item.total_slp !== undefined) {
             this.manager.gross = this.manager.gross + item.total_slp;
+            this.chart.xCategories = item.name;
+            this.chart.xValues = item.total_slp;
             this.manager.daily = Math.ceil(
               this.manager.daily +
                 this.getDailySLP(item.last_claim, item.in_game_slp)
@@ -239,6 +279,7 @@ export default {
       return Math.ceil(slp / dateDiff) * 0.6;
     },
     async getTotalAxies() {
+      if (this.scholar.addresses === "") return;
       console.log("AXIE", this.scholar.addressArr);
       try {
         for (let i = 0; i < this.scholar.addressArr.length; i++) {
