@@ -226,7 +226,8 @@ export default {
   },
   methods: {
     async getTotalSLP() {
-      if (this.scholar.addresses === null) return;
+      console.log("IFNULL", this.scholar.addresses);
+      if (this.scholar.addresses === "") return;
       try {
         const response = await axios.get(
           `${AXIE_GAME_API_BASE_URL}/api/v1/${this.scholar.addresses}`,
@@ -278,7 +279,7 @@ export default {
       return Math.ceil(slp / dateDiff) * 0.6;
     },
     async getTotalAxies() {
-      if (this.scholar.addresses === null) return;
+      if (this.scholar.addresses === "") return;
       console.log("AXIE", this.scholar.addressArr);
       try {
         for (let i = 0; i < this.scholar.addressArr.length; i++) {
