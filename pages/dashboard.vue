@@ -1,5 +1,10 @@
 <template>
   <app-main-container>
+    <template v-slot:action>
+      <v-btn @click="dialog.review = true" depressed>Feedback</v-btn>
+    </template>
+    <app-review-dialog v-model="dialog.review" />
+
     <v-row align="center" justify="center">
       <v-col cols="12" md="2" sm="2">
         <app-simple-data-card
@@ -63,7 +68,7 @@
 
     <v-row class="mt-10" justify="center" align="center">
       <v-col cols="12" md="4">
-        <v-card outlined>
+        <v-card min-height="500" max-height="600" outlined>
           <v-toolbar flat>
             <v-toolbar-title>Leaderboards</v-toolbar-title>
             <template v-slot:extension>
@@ -90,11 +95,18 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="4">
-        <v-card>
-          <highchart :options="chart.chartOptions" :updateArgs="[true, true]" />
+        <v-card min-height="500" max-height="600" outlined>
+          <v-card-text class="d-flex justify-center align-center fill-height">
+            <highchart
+              :options="chart.chartOptions"
+              :updateArgs="[true, true]"
+            />
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
+
+    <v-sheet color="transparent" height="30vh" />
   </app-main-container>
 </template>
 
@@ -112,6 +124,9 @@ export default {
   components: { AppMainContainer },
   data() {
     return {
+      dialog: {
+        review: false
+      },
       sortDesc: false,
       slp: {
         currentPrice: 0,
@@ -164,7 +179,8 @@ export default {
             text: "SLP Farmed by Each Scholars"
           },
           chart: {
-            type: "column"
+            type: "column",
+            backgroundColor: "transparent"
           },
           xAxis: {
             categories: [],
