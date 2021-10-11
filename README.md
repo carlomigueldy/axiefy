@@ -1,6 +1,14 @@
 # supaaxie
 
-An open-source software that aims to help NFT Game Managers (e.g like "Axie Infinity" ) manage and track their scholars. While also being an entry to Supabase's 2nd Hackathon "Supabase Hacktoberfest Hackathon 2021"
+An open-source software that aims to help primarily on NFT Game Managers of Axie Infinity in order for them to conveniently manage and track their scholars, while also being an entry to Supabase's 2nd Hackathon "Supabase Hacktoberfest Hackathon 2021". We are also interested in building features not only suitable for Managers, but for the player base as a whole (e.g like Breeding). Currently the App enables manager to invite their Scholars to the app (making it so that the scholars are the one inputing their ronin address) and oversee their performance like total SLP farmed and PVP Rankings
+
+## Axie Infinity
+
+Axie Infinity is a Pokémon-inspired universe where anyone can earn tokens through skilled gameplay and contributions to the ecosystem. Players can battle, collect, raise, and build a land-based kingdom for their pets. (https://whitepaper.axieinfinity.com/)
+
+## Motivation/Ideas
+
+On our brain storming phase, we aim to build an app that has both Web2 and Web3 element inside it. However, we couldn't seem to think of anything at that time until we thought about building an App within Axie Infinity ecosystem, since it is one of the most popular blockchain related game in the Web3 environment. But we couldn't find any docs regarding Ronin Wallet, which is an Ethereum side chain governing Axie Ecosystem. Thus for now, we are only creating an app focuses on giving convenience to the interactions between Managers and their Scholars.
 
 ## Demo
 
@@ -135,7 +143,6 @@ More information about the usage of this directory in [the documentation](https:
 Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
-
 
 ### `pages`
 
