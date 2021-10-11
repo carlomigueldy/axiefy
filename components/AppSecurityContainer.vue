@@ -17,7 +17,7 @@
               dense
             ></v-text-field>
 
-            <v-btn color="primary" :loading="form.loading$" type="submit">
+            <v-btn color="primary" :loading="check.loading$" type="submit">
               Save
             </v-btn>
           </v-sheet>
@@ -69,6 +69,9 @@
 <script>
 export default {
   data: () => ({
+    check: {
+      loading$: false
+    },
     form: {
       password: "",
       loading$: false
@@ -83,9 +86,22 @@ export default {
   }),
 
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (!this.$refs.form.validate()) {
         return;
+      }
+
+      this.check.loading$ = true;
+
+      const { data, error } = await this.$supabase.rpc("has_password");
+      this.check.loading$ = false;
+
+      if (error) {
+        return this.$toast.show(error.message);
+      }
+
+      if (!data) {
+        return await this.update();
       }
 
       this.dialog.confirm = true;
@@ -105,6 +121,7 @@ export default {
           password
         });
         console.log("confirmPassword", { data, error });
+        await this.$store.dispatch('init')
 
         if (error) {
           return this.$toast.show("Failed to verify your password");
