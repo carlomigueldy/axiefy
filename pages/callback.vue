@@ -1,25 +1,13 @@
 <template>
-  <div>
-    <iframe
-      src="https://giphy.com/embed/Sqa4huGTDwJZNtvMky"
-      width="480"
-      height="268"
-      frameBorder="0"
-      class="giphy-embed"
-      allowFullScreen
-    ></iframe>
-    <p>
-      <a
-        href="https://giphy.com/gifs/ctvcomedy-lights-out-david-spade-call-back-Sqa4huGTDwJZNtvMky"
-      >
-        via GIPHY
-      </a>
-    </p>
-  </div>
+  <app-callback-container />
 </template>
 
 <script>
 export default {
+  auth: "guest",
+
+  layout: "auth",
+
   async created() {
     if (Object.keys(this.$route.query).length !== 0) {
       const { access_token, refresh_token } = this.$route.query;
@@ -39,6 +27,8 @@ export default {
       }, 1000);
       return;
     }
+
+    return this.$router.push("/dashboard");
   }
 };
 </script>

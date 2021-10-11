@@ -1,22 +1,8 @@
 <template>
   <v-app dark>
-    <v-container
-      fill-height
+    <app-disabled-account-container
       v-if="$store.getters.userDisabled && !initializing$"
-    >
-      <v-row justify="center" align="center">
-        <v-col>
-          <div class="text-center ">
-            <div class="display-1 error--text">Account Disabled</div>
-            <div class="subtitle-1 mb-5">
-              <span>Send a message to re-enable your account at</span>
-              <app-main-author-email />
-            </div>
-            <v-btn @click="logout" x-large text>Ok</v-btn>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+    />
 
     <div
       ref="wrapper"
@@ -105,30 +91,7 @@
       <Nuxt />
     </div>
 
-    <v-container fill-height v-else-if="initializing$">
-      <v-row justify="center" align="center">
-        <v-col>
-          <div class="text-center ">
-            <app-logo class="mb-5 display-4" />
-
-            <div class="mt-10">
-              <iframe
-                allow="fullscreen"
-                frameBorder="0"
-                height="320"
-                src="https://giphy.com/embed/u2wg2uXJbHzkXkPphr/video"
-                width="400px"
-                class="mb-10"
-              ></iframe>
-            </div>
-
-            <div class="title">
-              {{ $store.getters["funny/random"] }}
-            </div>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+    <app-random-joke-container v-else-if="initializing$" />
 
     <v-dialog v-model="dialog.logoutConfirmation" width="500">
       <app-dialog-card>
