@@ -24,6 +24,8 @@ DROP FUNCTION IF EXISTS public.get_auth_uid;
 DROP FUNCTION IF EXISTS public.get_team_members;
 DROP FUNCTION IF EXISTS public.assign_role;
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+DROP TRIGGER IF EXISTS on_public_user_created ON public.users;
+DROP FUNCTION IF EXISTS public.handle_new_auth_user;
 DROP FUNCTION IF EXISTS public.handle_new_user;
 DROP FUNCTION IF EXISTS public.has_permission;
 DROP FUNCTION IF EXISTS public.has_role;
@@ -137,7 +139,7 @@ CREATE TABLE public.users (
   deleted_at TIMESTAMP
 );
 COMMENT ON COLUMN public.users.id IS 'The auth.users reference';
-ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 
 -- table: user_role
 CREATE TABLE public.user_role (
@@ -148,12 +150,10 @@ CREATE TABLE public.user_role (
 COMMENT ON TABLE public.user_role IS 'Each user can have multiple roles.';
 
 -- trigger: handle new registered user
-CREATE OR REPLACE FUNCTION public.handle_new_user()
+CREATE OR REPLACE FUNCTION public.handle_new_auth_user()
 RETURNS TRIGGER AS $$
 BEGIN 
-  INSERT INTO public.users (id, email) VALUES (new.id, new.email);
-
-  INSERT INTO public.teams (owner_id) VALUES (new.id); 
+  INSERT INTO public.users (id, email) VALUES (new.id::UUID, new.email::TEXT);
 
   return new;
 END
@@ -163,7 +163,41 @@ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW
-  EXECUTE PROCEDURE public.handle_new_user();
+  EXECUTE PROCEDURE public.handle_new_auth_user();
+
+-- trigger: handle new public user created by auth.users trigger
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN 
+  INSERT INTO public.teams (owner_id) VALUES (new.id::UUID); 
+
+  -- todo: needs to get fixed
+  -- -- scholar
+  -- IF EXISTS(SELECT id FROM auth.users WHERE id = new.id AND invited_at IS NOT NULL) THEN
+  --   INSERT INTO public.user_role (user_id, role_id) VALUES (
+  --     new.id::UUID, 
+  --     (SELECT id FROM roles WHERE name = 'scholar' LIMIT 1)::UUID
+  --   );
+  -- END IF;
+
+  -- -- manager
+  -- IF EXISTS(SELECT id FROM auth.users WHERE id = new.id AND invited_at IS NULL) THEN
+  --   INSERT INTO public.user_role (user_id, role_id) VALUES (
+  --     new.id::UUID, 
+  --     (SELECT id FROM roles WHERE name = 'manager' LIMIT 1)::UUID
+  --   );
+  --   INSERT INTO public.teams (owner_id) VALUES (new.id::UUID); 
+  -- END IF;
+
+  return new;
+END
+$$
+LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_public_user_created
+AFTER INSERT ON public.users
+FOR EACH ROW
+EXECUTE PROCEDURE public.handle_new_user();
 
 -- function: check user role
 CREATE OR REPLACE FUNCTION public.has_role(role VARCHAR)
@@ -218,7 +252,7 @@ BEGIN
   END IF;
 
   IF NOT public.has_role('super_admin') THEN 
-      RAISE EXCEPTION 'Not authorized to perform this action';
+    RAISE EXCEPTION 'Not authorized to perform this action';
   END IF;
 
   INSERT INTO user_role (user_id, role_id) VALUES ($1::UUID, (SELECT id FROM roles WHERE name = $2 LIMIT 1)::UUID);
