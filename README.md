@@ -35,10 +35,11 @@ Submitted on ["Made with Supabase"](https://www.madewithsupabase.com/p/axiefy)
 
 ## Supabase Usage
 
-- Used for storing data
-- Used RLS to prevent unauthorized actions (Current there's a bug we can't figure out in the given time 🐞) 
-- Used authentication, magic link, email and password, and OAuth 2.0 providers
-- Used storage for photo uploads
+- Supabase Serverless Database: Used for storing data
+- Supabase Authentication: Used authentication, magic link, email and password, and OAuth 2.0 providers
+- Supabase Storage: Used storage for photo uploads
+- Supabase Functions & Triggers
+- Postgres or Supabase feature?: Used RLS to prevent unauthorized actions (Current there's a bug we can't figure out in the given time 🐞) 
 
 ## Setup Development Environment
 
