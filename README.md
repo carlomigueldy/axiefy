@@ -20,7 +20,7 @@ Credentials:
 
 ### Screenshots
 
-![image](https://user-images.githubusercontent.com/45052332/136729864-dc64852d-11e0-4b2c-8a35-3cbddcff7804.png)
+![Screenshot_380](https://user-images.githubusercontent.com/45052332/136742862-d1064d1a-cdce-440a-b5d2-03e7214fe50c.png)
 
 ![image](https://user-images.githubusercontent.com/45052332/136729891-a4573b37-9056-435e-a613-30ffe65648e3.png)
 
