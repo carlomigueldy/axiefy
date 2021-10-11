@@ -23,7 +23,7 @@
           <div class="text-center">
             <app-logo />
             <div class="title">
-              {{ appName }}
+              {{ $store.state.appName }}
             </div>
           </div>
         </v-sheet>

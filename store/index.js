@@ -11,6 +11,7 @@ export const state = () => ({
   user: null,
   drawer: true,
   scholars: [],
+  appName: "Axiefy",
   oauthProviders: [
     {
       provider: "github",
